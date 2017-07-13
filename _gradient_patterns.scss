@@ -88,6 +88,36 @@ $tr: transparent;
   background-size: $scale $scale;
 }
 
+// http://lea.verou.me/css3patterns/#chocolate-weave
+@mixin weave($background-color: #753, $scale: 25px, $first-color: #dca, $second-color: #a85) {
+  @if $background-color != #753 {
+    @if $second-color == #a85 {
+      $second-color: lighten(adjust-hue(desaturate($background-color, 7%), 6deg), 17%);
+    }
+    @if $first-color == #dca {
+      $first-color: lighten(adjust-hue(saturate($background-color, 3%), 10deg), 44%);
+    }
+  }
+  background-image:
+    sharp-linear(45deg, $first-color 12%, $tr 88%, $first-color),
+    sharp-linear(135deg, $tr 37%, $second-color 63%, $tr),
+    sharp-linear(45deg, $tr 37%, $first-color 63%, $tr);
+  background-color: $background-color;
+  background-size: $scale $scale;
+}
+
+// http://lea.verou.me/css3patterns/#seigaiha
+@mixin seigaiha($color: white, $background-color: silver, $scale: 100px) {
+  background-image:
+    radial-gradient(circle at 100% 150%, $background-color 24%, $color 25%, $color 28%, $background-color 29%, $background-color 36%, $color 36%, $color 40%, $tr 40%),
+    radial-gradient(circle at 0 150%, $background-color 24%, $color 25%, $color 28%, $background-color 29%, $background-color 36%, $color 36%, $color 40%, $tr 40%),
+    radial-gradient(circle at 50% 100%, $color 10%, $background-color 11%, $background-color 23%, $color 24%, $color 30%, $background-color 31%, $background-color 43%, $color 44%, $color 50%, $background-color 51%, $background-color 63%, $color 64%, $color 71%, $tr 71%),
+    radial-gradient(circle at 100% 50%, $color 5%, $background-color 6%, $background-color 15%, $color 16%, $color 20%, $background-color 21%, $background-color 30%, $color 31%, $color 35%, $background-color 36%, $background-color 45%, $color 46%, $color 49%, $tr 49%),
+    radial-gradient(circle at 0 50%, $color 5%, $background-color 6%, $background-color 15%, $color 16%, $color 20%, $background-color 21%, $background-color 30%, $color 31%, $color 35%, $background-color 36%, $background-color 45%, $color 46%, $color 49%, $tr 49%);
+  background-color: $background-color;
+  background-size: $scale $scale / 2;
+}
+
 xyz {
-  @include gingham($scale: 100px);
+  @include seigaiha;
 }
