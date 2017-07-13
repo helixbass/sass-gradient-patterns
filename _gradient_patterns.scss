@@ -78,6 +78,16 @@ $tr: transparent;
   background-color: $background-color;
 }
 
+// http://lea.verou.me/css3patterns/#tablecloth
+@mixin gingham($color: rgb(200, 0, 0), $background-color: white, $scale: 50px, $color-opacity: .5, $color-width: 50%) {
+  $color: rgba($color, $color-opacity);
+  $stops: $color $color-width, $tr;
+  background-image:
+    sharp-linear(90deg, $stops...),
+    sharp-linear(0deg,  $stops...);
+  background-size: $scale $scale;
+}
+
 xyz {
-  @include honeycomb($scale: 100px);
+  @include gingham($scale: 100px);
 }
