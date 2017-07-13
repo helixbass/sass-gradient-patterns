@@ -1,0 +1,83 @@
+@function sharp($repeating, $angle, $stops...) {
+  @return sharp-stagger($repeating, "linear", $angle, 0, $stops...);
+}
+
+@function sharp-linear($angle, $stops...) {
+  @return sharp-stagger(false, "linear", $angle, 0, $stops...);
+}
+
+@function sharp-repeating-linear($angle, $stops...) {
+  @return sharp-stagger(true, "linear", $angle, 0, $stops...);
+}
+
+@function sharp-radial($angle, $stops...) {
+  @return sharp-stagger(false, "radial", $angle, 0, $stops...);
+}
+
+@function sharp-repeating-radial($angle, $stops...) {
+  @return sharp-stagger(true, "radial", $angle, 0, $stops...);
+}
+
+@function sharp-stagger($repeating, $type, $angle, $stagger, $stops...) {
+  $gradient: ();
+
+  @for $i from 1 through length($stops) {
+    $stop: nth($stops, $i);
+    $dump: ();
+
+    @if $i > 1 {
+      $previous-stop: nth($stops, $i - 1);
+      $dump: append($dump, nth($stop, 1) (nth($previous-stop, 2) + $stagger));
+      @if $i != length($stops) {
+          $dump: append($dump, $stop);
+      }
+    }
+    @else {
+      $dump: append($dump, $stop);
+    }
+
+    $gradient: join($gradient, $dump, comma);
+  }
+
+  @if $type == "radial" {
+    @if $repeating {
+      @return repeating-radial-gradient($angle, $gradient...);
+    }
+    @else {
+      @return radial-gradient($angle, $gradient...);
+    }
+  }
+  @else {
+    @if $repeating {
+      @return repeating-linear-gradient($angle, $gradient...);
+    }
+    @else {
+      @return linear-gradient($angle, $gradient...);
+    }
+  }
+}
+
+$tr: transparent;
+
+// http://lea.verou.me/css3patterns/#honeycomb
+@mixin honeycomb($background-color: #fb1, $line-color: #b71, $scale: 60px) {
+  @if $background-color != #fb1 {
+    @if $line-color == #b71 {
+      $line-color: darken(adjust-hue(desaturate($background-color, 17%), -7deg), 13%);
+    }
+  }
+
+  background:
+      sharp-radial(circle farthest-side at 0% 50%, $background-color 23.5%, $tr) $scale * 21 / 60 $scale / 2,
+      sharp-radial(circle farthest-side at 0% 50%, $line-color 24%, $tr) $scale * 19 / 60 $scale / 2,
+      sharp-linear(to bottom, $background-color 14%, $tr 85%, $background-color),
+      sharp-linear(150deg, $background-color 24%, $line-color 26%, $tr 74%, $line-color 76%, $background-color),
+      sharp-linear(30deg,  $background-color 24%, $line-color 26%, $tr 74%, $line-color 76%, $background-color),
+      sharp-linear(90deg, $line-color 2%, $background-color 98%, $line-color);
+  background-size: $scale / 1.5 $scale;
+  background-color: $background-color;
+}
+
+xyz {
+  @include honeycomb($scale: 100px);
+}
