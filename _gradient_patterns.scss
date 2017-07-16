@@ -118,6 +118,7 @@ $tr: transparent;
   background-size: $scale $scale / 2;
 }
 
+// http://lea.verou.me/css3patterns/#japanese-cube
 @mixin cubes($first-color: #556, $second-color: #445, $third-color: #99a, $scale: 140px) {
     @if $first-color != #556 {
       @if $second-color == #445 {
@@ -142,6 +143,7 @@ $tr: transparent;
     background-color: $first-color;
 }
 
+// http://thenewcode.com/1057/SVG-Patterns-of-Japan
 @mixin asanoha($line-color: black, $background-color: white, $scale: 140px) {
     $stops: $background-color 12%, $line-color 13%, $tr 87%, $line-color 88%, $background-color;
     $other-stops: $line-color 1%, $tr 99%, $line-color;
@@ -164,6 +166,17 @@ $tr: transparent;
     background-color: $background-color;
 }
 
+// http://lea.verou.me/css3patterns/#marrakesh
+@mixin marrakesh($background-color: white, $color: midnightblue, $scale: 90px, $dot-size: $scale / 10) {
+    background-color: $background-color;
+    background-image:
+      // sharp-stagger(false, "radial", circle, 1, $color 43%, $tr),
+      // sharp-stagger(false, "radial", circle, 1, $tr 31.4%, $color 39%, $tr 78%, $color 84%, $tr);
+      sharp-stagger(false, "radial", circle, 1, $color $dot-size, $tr),
+      sharp-stagger(false, "radial", circle, 1, $tr $scale * 2/9, $color $scale * 25/90, $tr $scale * 5/9, $color $scale * 54/90, $tr);
+    background-size: $scale / 3 $scale / 3, $scale $scale
+}
+
 xyz {
-  @include asanoha;
+  @include marrakesh;
 }
