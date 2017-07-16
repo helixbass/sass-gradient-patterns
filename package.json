@@ -1,0 +1,12 @@
+{
+  "name": "sass-gradient-patterns",
+  "version": "0.1",
+  "description": "CSS3 gradient pattern Sass mixins",
+  "main": "index.js",
+  "repository": "git@github.com:helixbass/sass-gradient-patterns.git",
+  "author": "Julian Rosse",
+  "license": "MIT",
+  "devDependencies": {
+    "sassdoc": "^2.3.0"
+  }
+}
