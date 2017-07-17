@@ -192,7 +192,7 @@ $tr: transparent;
 /// @link http://lea.verou.me/css3patterns/#marrakesh
 /// @param {color} $background-color [white]
 /// @param {color} $color [midnightblue]
-/// @param {length} $scale [90px]
+/// @param {length} $scale [90px] - hint: use a multiple of 3px
 /// @param {length} $dot-size [$scale / 10 (9px)]
 @mixin marrakesh($background-color: white, $color: midnightblue, $scale: 90px, $dot-size: $scale / 10) {
     @if $dot-size == 9px {
