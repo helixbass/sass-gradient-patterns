@@ -207,6 +207,202 @@ $tr: transparent;
     background-size: $scale / 3 $scale / 3, $scale $scale
 }
 
-xyz {
-  @include marrakesh;
+/// @link http://lea.verou.me/css3patterns/#diagonal-stripes
+/// @param {color} $background-color [gray]
+/// @param {color} $stripe-color [rgba(255, 255, 255, .5)]
+/// @param {direction} $angle [45deg]
+/// @param {length} $scale [70px]
+/// @param {length} $stripe-width [$scale / 2 (35px)]
+@mixin diagonal-stripes($background-color: gray, $stripe-color: rgba(255, 255, 255, .5), $angle: 45deg, $scale: 70px, $stripe-width: $scale / 2) {
+    @if $stripe-width == 35px {
+      $stripe-width: $scale / 2;
+    }
+    background-color: $background-color;
+    background-image:
+      repeating-linear-gradient($angle, $tr, $tr $scale - $stripe_width, $stripe-color $scale - $stripe_width, $stripe-color $scale);
+}
+
+/// @link http://lea.verou.me/css3patterns/#horizontal-stripes
+/// @param {color} $background-color [gray]
+/// @param {color} $stripe-color [rgba(255, 255, 255, .5)]
+/// @param {length} $scale [50px]
+/// @param {length} $stripe-width [50%]
+@mixin horizontal-stripes($background-color: gray, $stripe-color: rgba(255, 255, 255, .5), $scale: 50px, $stripe-width: 50%) {
+    background-color: $background-color;
+    background-image:
+      sharp-linear(0deg, $tr 100% - $stripe-width, $stripe-color $stripe-width);
+    background-size: $scale $scale;
+}
+
+/// @link http://lea.verou.me/css3patterns/#vertical-stripes
+/// @param {color} $background-color [gray]
+/// @param {color} $stripe-color [rgba(255, 255, 255, .5)]
+/// @param {length} $scale [50px]
+/// @param {length} $stripe-width [50%]
+@mixin vertical-stripes($background-color: gray, $stripe-color: rgba(255, 255, 255, .5), $scale: 50px, $stripe-width: 50%) {
+    background-color: $background-color;
+    background-image:
+      sharp-linear(90deg, $tr 100% - $stripe-width, $stripe-color $stripe-width);
+    background-size: $scale $scale;
+}
+
+/// @link http://lea.verou.me/css3patterns/#microbial-mat
+/// @param {color} $background-color [#8a3]
+/// @param {color} $line-color [#613]
+/// @param {length} $scale [20px]
+/// @param {length} $line-thickness [1px]
+@mixin microbial-mat($background-color: #8a3, $line-color: #613, $scale: 20px, $line-thickness: 1px) {
+    $tr-line-color: rgba($line-color, 0);
+    $stops:
+      $tr-line-color $scale / 2 - ($line-thickness + 1) / 2,
+      $line-color    $scale / 2 - ($line-thickness + 1) / 2 + 1,
+      $line-color    $scale / 2 + ($line-thickness + 1) / 2 - 1,
+      $tr-line-color $scale / 2 + ($line-thickness + 1) / 2;
+    background:
+      radial-gradient(circle at 0% 50%,    $stops...) 0px $scale / 2,
+      radial-gradient(circle at 100% 100%, $stops...);
+    background-color: $background-color;
+    background-size: $scale $scale;
+}
+
+/// @link http://lea.verou.me/css3patterns/#checkerboard
+/// @param {color} $background-color [#eee]
+/// @param {color} $color [black]
+/// @param {length} $scale [60px]
+@mixin checkerboard($background-color: #eee, $color: black, $scale: 60px) {
+    $stops: $color 25%, $tr 75%, $color;
+    background:
+      sharp-linear(45deg, $stops...),
+      sharp-linear(45deg, $stops...) $scale / 2 $scale / 2;
+    background-color: $background-color;
+    background-size: $scale $scale;
+}
+
+/// @link http://lea.verou.me/css3patterns/#diagonal-checkerboard
+/// @param {color} $background-color [#eee]
+/// @param {color} $color [black]
+/// @param {length} $scale [60px]
+@mixin diagonal-checkerboard($background-color: #eee, $color: black, $scale: 60px) {
+    $stops: $color 25%, $tr 75%, $color;
+    background:
+      sharp-linear(45deg, $stops...),
+      sharp-linear(-45deg, $stops...);
+    background-color: $background-color;
+    background-size: $scale $scale;
+}
+
+/// @link http://lea.verou.me/css3patterns/#weave
+/// @param {color} $background-color [#708090]
+/// @param {color} $line-color [#d9ecff]
+/// @param {length} $scale [128px]
+/// @param {length} $line-thickness [2px]
+@mixin brick-inlay($background-color: #708090, $line-color: #d9ecff, $scale: 128px, $line-thickness: 2px) {
+    $stops:
+      $background-color ($scale * 23 / 128) - $line-thickness / 2,
+      $line-color       ($scale * 23 / 128) + $line-thickness / 2,
+      $tr               ($scale * 68 / 128) - $line-thickness / 2,
+      $line-color       ($scale * 68 / 128) + $line-thickness / 2,
+      $tr;
+    background:
+      sharp-linear(135deg, $stops...),
+      sharp-linear(225deg, $stops...) 0 $scale / 2;
+    background-color: $background-color;
+    background-size: $scale / 2 $scale;
+}
+
+/// @link http://lea.verou.me/css3patterns/#hearts
+/// @param {color} $background-color [#b03]
+/// @param {color} $color [#d35]
+/// @param {length} $scale [100px]
+@mixin hearts($background-color: #b03, $color: #d35, $scale: 100px) {
+    $tr-color:            rgba($color,            0);
+    $tr-background-color: rgba($background-color, 0);
+    $heart-gradients:
+      radial-gradient(circle closest-side at 60% 43%, $background-color 26%, $tr-background-color 27%),
+      radial-gradient(circle closest-side at 40% 43%, $background-color 26%, $tr-background-color 27%),
+      radial-gradient(circle closest-side at 40% 22%, $color 45%, $tr-color 46%),
+      radial-gradient(circle closest-side at 60% 22%, $color 45%, $tr-color 46%),
+      radial-gradient(circle closest-side at 50% 35%, $color 30%, $tr-color 31%);
+    background-image:
+      $heart-gradients,
+      $heart-gradients;
+      // radial-gradient(circle closest-side at 60% 43%, $background-color 26%, $tr-background-color 27%),
+      // radial-gradient(circle closest-side at 40% 43%, $background-color 26%, $tr-background-color 27%),
+      // radial-gradient(circle closest-side at 40% 22%, $color 45%, $tr-color 46%),
+      // radial-gradient(circle closest-side at 60% 22%, $color 45%, $tr-color 46%),
+      // radial-gradient(circle closest-side at 50% 35%, $color 30%, $tr-color 31%),
+      // radial-gradient(circle closest-side at 60% 43%, $background-color 26%, $tr-background-color 27%),
+      // radial-gradient(circle closest-side at 40% 43%, $background-color 26%, $tr-background-color 27%),
+      // radial-gradient(circle closest-side at 40% 22%, $color 45%, $tr-color 46%),
+      // radial-gradient(circle closest-side at 60% 22%, $color 45%, $tr-color 46%),
+      // radial-gradient(circle closest-side at 50% 35%, $color 30%, $tr-color 31%);
+    background-color: $background-color;
+    background-size: $scale $scale;
+    background-position: 0 0, 0 0, 0 0, 0 0, 0 0, $scale / 2 $scale / 2, $scale / 2 $scale / 2, $scale / 2 $scale / 2, $scale / 2 $scale / 2, $scale / 2 $scale / 2;
+}
+
+/// @link http://lea.verou.me/css3patterns/#arrows
+/// @param {color} $background-color [#e1ebbd]
+/// @param {color} $color [#92baac]
+/// @param {length} $scale [128px]
+@mixin arrows($background-color: #e1ebbd, $color: #92baac, $scale: 128px) {
+    background:
+      sharp-linear(45deg, $color $scale * 45 / 128, $tr) $scale / 2 $scale / 2,
+      sharp-linear(45deg, $color $scale * 45 / 128, $tr $scale * 91 / 128, $background-color $scale * 135 / 128, $tr),
+      sharp-linear(-45deg, $color $scale * 23 / 128, $tr $scale * 68 / 128, $color $scale * 113 / 128, $tr $scale * 158 / 128, $color);
+    background-color: $background-color;
+    background-size: $scale $scale;
+}
+
+/// @link http://lea.verou.me/css3patterns/#half-rombes
+/// @param {color} $background-color [#36c]
+/// @param {color} $color [rgba(255, 255, 255, .8)]
+/// @param {length} $scale [15px]
+@mixin half-rombes($background-color: #36c, $color: rgba(255, 255, 255, .8), $scale: 15px) {
+    $stops: $tr 75%, $color;
+    background:
+      sharp-linear(115deg, $stops...),
+      sharp-linear(245deg, $stops...),
+      sharp-linear(115deg, $stops...) $scale * 7 / 15 (-$scale),
+      sharp-linear(245deg, $stops...) $scale * 7 / 15 (-$scale);
+    background-color: $background-color;
+    background-size: $scale $scale * 2;
+}
+
+/// @link http://lea.verou.me/css3patterns/#polka-dot
+/// @param {color} $background-color [#001]
+/// @param {color} $color [white]
+/// @param {length} $scale [60px]
+/// @param {length} $dot-width [15%]
+/// @param {color} $ring-color [$background-color (#001)]
+/// @param {length} $ring-width [0%]
+@mixin polka-dot($background-color: #001, $color: white, $scale: 60px, $dot-width: 15%, $ring-color: $background-color, $ring-width: 0%) {
+    // $stops: $color $dot-width, $tr $dot-width + 1%;
+    $stops: $color $dot-width, $tr $dot-width + 1%, $tr $dot-width + $ring-width, $tr $dot-width + $ring-width + 1%;
+    @if $ring-width > 0% {
+      $stops: $color $dot-width, $ring-color $dot-width + 1%, $ring-color $dot-width + $ring-width, $tr $dot-width + $ring-width + 1%;
+    }
+    background:
+      radial-gradient($stops...),
+      radial-gradient($stops...) $scale / 2 $scale / 2;
+    background-color: $background-color;
+    background-size: $scale $scale;
+}
+
+/// @link http://lea.verou.me/css3patterns/#blueprint-grid
+/// @param {color} $background-color [#269]
+/// @param {color} $thick-line-color [white]
+/// @param {color} $thin-line-color [rgba($thick-line-color, .3) (rgba(255, 255, 255, .3))]
+/// @param {length} $scale [100px]
+/// @param {length} $thick-line-thickness [2px]
+/// @param {length} $thin-line-thickness [1px]
+/// @param {number} $per [5]
+@mixin blueprint-grid($background-color: #269, $thick-line-color: white, $thin-line-color: rgba($thick-line-color, .3), $scale: 15px, $thick-line-thickness: 2px, $thin-line-thickness: 1px, $per: 5) {
+    background:
+      sharp-linear(180deg, $thick-line-color $thick-line-thickness, $tr) -$thick-line-thickness (-$thick-line-thickness),
+      sharp-linear(90deg,  $thick-line-color $thick-line-thickness, $tr) -$thick-line-thickness (-$thick-line-thickness),
+      sharp-linear(180deg, $thin-line-color $thin-line-thickness, $tr) -$thin-line-thickness (-$thin-line-thickness),
+      sharp-linear(90deg,  $thin-line-color $thin-line-thickness, $tr) -$thin-line-thickness (-$thin-line-thickness);
+    background-color: $background-color;
+    background-size: $scale $scale, $scale $scale, $scale / $per $scale / $per, $scale / $per $scale / $per;
 }
