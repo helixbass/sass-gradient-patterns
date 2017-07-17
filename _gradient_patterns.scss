@@ -406,3 +406,38 @@ $tr: transparent;
     background-color: $background-color;
     background-size: $scale $scale, $scale $scale, $scale / $per $scale / $per, $scale / $per $scale / $per;
 }
+
+/// @link http://lea.verou.me/css3patterns/#lined-paper
+/// @param {color} $background-color [white]
+/// @param {color} $thick-line-color [#abced4]
+/// @param {color} $thin-line-color [#eee]
+/// @param {length} $line-separation [1.2em]
+/// @param {length} $thick-line-thickness [2px]
+/// @param {length} $thin-line-thickness [.1em]
+/// @param {length} $margin [79px]
+@mixin lined-paper($background-color: white, $thick-line-color: #abced4, $thin-line-color: #eee, $line-separation: 1.2em, $thick-line-thickness: 2px, $thin-line-thickness: .1em, $margin: 79px) {
+    background:
+      sharp-linear(90deg, $tr $margin, $thick-line-color $margin + $thick-line-thickness, $tr),
+      sharp-linear(to bottom, $thin-line-color $thin-line-thickness, $tr);
+    background-color: $background-color;
+    background-size: 100% $line-separation;
+}
+
+/// @link http://lea.verou.me/css3patterns/#steps
+/// @param {color} $background-color [#ff7d9d]
+/// @param {color} $color [#c90032]
+/// @param {length} $scale [58px]
+@mixin steps($background-color: #ff7d9d, $color: #c90032, $line-color: #c90032, $scale: 58px) {
+    background:
+      sharp-linear(335deg, $color $scale * 23 / 58, $tr) 0                $scale * 2  / 58,
+      sharp-linear(155deg, $color $scale * 23 / 58, $tr) $scale * 4  / 58 $scale * 35 / 58,
+      sharp-linear(335deg, $color $scale * 23 / 58, $tr) $scale * 29 / 58 $scale * 31 / 58,
+      sharp-linear(155deg, $color $scale * 23 / 58, $tr) $scale * 33 / 58 $scale * 6  / 58,
+
+      sharp-linear(335deg, $color $scale * 10 / 58, $tr) 0                $scale * 36 / 58,
+      sharp-linear(155deg, $color $scale * 10 / 58, $tr) $scale * 4  / 58 $scale * 2  / 58,
+      sharp-linear(335deg, $color $scale * 10 / 58, $tr) $scale * 29 / 58 $scale * 6  / 58,
+      sharp-linear(155deg, $color $scale * 10 / 58, $tr) $scale * 33 / 58 $scale * 30 / 58;
+    background-color: $background-color;
+    background-size: $scale $scale;
+}
