@@ -59,7 +59,10 @@
 
 $tr: transparent;
 
-// http://lea.verou.me/css3patterns/#honeycomb
+/// @link http://lea.verou.me/css3patterns/#honeycomb
+/// @param {color} $background-color [#fb1]
+/// @param {color} $line-color [#b71]
+/// @param {length} $scale [60px]
 @mixin honeycomb($background-color: #fb1, $line-color: #b71, $scale: 60px) {
   @if $background-color != #fb1 {
     @if $line-color == #b71 {
@@ -78,7 +81,12 @@ $tr: transparent;
   background-color: $background-color;
 }
 
-// http://lea.verou.me/css3patterns/#tablecloth
+/// @link http://lea.verou.me/css3patterns/#tablecloth
+/// @param {color} $color [rgb(200, 0, 0)]
+/// @param {color} $background-color [white]
+/// @param {length} $scale [50px]
+/// @param {opacity} $color-opacity [.5]
+/// @param {length} $color-width [50%]
 @mixin gingham($color: rgb(200, 0, 0), $background-color: white, $scale: 50px, $color-opacity: .5, $color-width: 50%) {
   $color: rgba($color, $color-opacity);
   $stops: $color $color-width, $tr;
@@ -86,9 +94,14 @@ $tr: transparent;
     sharp-linear(90deg, $stops...),
     sharp-linear(0deg,  $stops...);
   background-size: $scale $scale;
+  background-color: $background-color;
 }
 
-// http://lea.verou.me/css3patterns/#chocolate-weave
+/// @link http://lea.verou.me/css3patterns/#chocolate-weave
+/// @param {color} $background-color [#753]
+/// @param {length} $scale [25px]
+/// @param {color} $first-color [#dca]
+/// @param {color} $second-color [#a85]
 @mixin weave($background-color: #753, $scale: 25px, $first-color: #dca, $second-color: #a85) {
   @if $background-color != #753 {
     @if $second-color == #a85 {
@@ -106,7 +119,10 @@ $tr: transparent;
   background-size: $scale $scale;
 }
 
-// http://lea.verou.me/css3patterns/#seigaiha
+/// @link http://lea.verou.me/css3patterns/#seigaiha
+/// @param {color} $color [white]
+/// @param {color} $background-color [silver]
+/// @param {length} $scale [100px]
 @mixin seigaiha($color: white, $background-color: silver, $scale: 100px) {
   background-image:
     radial-gradient(circle at 100% 150%, $background-color 24%, $color 25%, $color 28%, $background-color 29%, $background-color 36%, $color 36%, $color 40%, $tr 40%),
@@ -118,14 +134,18 @@ $tr: transparent;
   background-size: $scale $scale / 2;
 }
 
-// http://lea.verou.me/css3patterns/#japanese-cube
-@mixin cubes($first-color: #556, $second-color: #445, $third-color: #99a, $scale: 140px) {
-    @if $first-color != #556 {
+/// @link http://lea.verou.me/css3patterns/#japanese-cube
+/// @param {color} $background-color [#556]
+/// @param {color} $second-color [#445]
+/// @param {color} $third-color [#99a]
+/// @param {length} $scale [140px]
+@mixin cubes($background-color: #556, $second-color: #445, $third-color: #99a, $scale: 140px) {
+    @if $background-color != #556 {
       @if $second-color == #445 {
-        $second-color: darken(saturate($first-color, 2%), 7%);
+        $second-color: darken(saturate($background-color, 2%), 7%);
       }
       @if $third-color == #99a {
-        $third-color: lighten($first-color, 26%);
+        $third-color: lighten($background-color, 26%);
       }
     }
     $stops: $second-color 12%, $tr 12.5%, $tr 87%, $second-color 87.5%;
@@ -140,10 +160,13 @@ $tr: transparent;
       linear-gradient(60deg,  $other-stops...),
       linear-gradient(60deg,  $other-stops...) $short-dim / 2 $long-dim / 2;
     background-size: $short-dim $long-dim;
-    background-color: $first-color;
+    background-color: $background-color;
 }
 
-// http://thenewcode.com/1057/SVG-Patterns-of-Japan
+/// @link http://thenewcode.com/1057/SVG-Patterns-of-Japan
+/// @param {color} $line-color [black]
+/// @param {color} $background-color [white]
+/// @param {length} $scale [140px]
 @mixin asanoha($line-color: black, $background-color: white, $scale: 140px) {
     $stops: $background-color 12%, $line-color 13%, $tr 87%, $line-color 88%, $background-color;
     $other-stops: $line-color 1%, $tr 99%, $line-color;
@@ -172,6 +195,9 @@ $tr: transparent;
 /// @param {length} $scale [90px]
 /// @param {length} $dot-size [$scale / 10 (9px)]
 @mixin marrakesh($background-color: white, $color: midnightblue, $scale: 90px, $dot-size: $scale / 10) {
+    @if $dot-size == 9px {
+      $dot-size: $scale / 10;
+    }
     background-color: $background-color;
     background-image:
       // sharp-stagger(false, "radial", circle, 1, $color 43%, $tr),
