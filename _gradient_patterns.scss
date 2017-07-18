@@ -14,6 +14,10 @@
   @return sharp-stagger(false, "radial", $angle, 0, $stops...);
 }
 
+@function fuzzy-radial($angle, $stops...) {
+  @return sharp-stagger(false, "radial", $angle, 1%, $stops...);
+}
+
 @function sharp-repeating-radial($angle, $stops...) {
   @return sharp-stagger(true, "radial", $angle, 0, $stops...);
 }
@@ -58,6 +62,70 @@
 }
 
 $tr: transparent;
+
+// https://unindented.org/articles/trigonometry-in-sass/
+@function pow($number, $exp) {
+  $value: 1;
+  @if $exp > 0 {
+    @for $i from 1 through $exp {
+      $value: $value * $number;
+    }
+  }
+  @else if $exp < 0 {
+    @for $i from 1 through -$exp {
+      $value: $value / $number;
+    }
+  }
+  @return $value;
+}
+
+@function fact($number) {
+  $value: 1;
+  @if $number > 0 {
+    @for $i from 1 through $number {
+      $value: $value * $i;
+    }
+  }
+  @return $value;
+}
+
+@function pi() {
+  @return 3.14159265359;
+}
+
+@function rad($angle) {
+  $unit: unit($angle);
+  $unitless: $angle / ($angle * 0 + 1);
+  // If the angle has 'deg' as unit, convert to radians.
+  @if $unit == deg {
+    $unitless: $unitless / 180 * pi();
+  }
+  @return $unitless;
+}
+
+@function sin($angle) {
+  $sin: 0;
+  $angle: rad($angle);
+  // Iterate a bunch of times.
+  @for $i from 0 through 10 {
+    $sin: $sin + pow(-1, $i) * pow($angle, (2 * $i + 1)) / fact(2 * $i + 1);
+  }
+  @return $sin;
+}
+
+@function cos($angle) {
+  $cos: 0;
+  $angle: rad($angle);
+  // Iterate a bunch of times.
+  @for $i from 0 through 10 {
+    $cos: $cos + pow(-1, $i) * pow($angle, 2 * $i) / fact(2 * $i);
+  }
+  @return $cos;
+}
+
+@function tan($angle) {
+  @return sin($angle) / cos($angle);
+}
 
 /// @link http://lea.verou.me/css3patterns/#honeycomb
 /// @param {color} $background-color [#fb1]
@@ -438,6 +506,167 @@ $tr: transparent;
       sharp-linear(155deg, $color $scale * 10 / 58, $tr) $scale * 4  / 58 $scale * 2  / 58,
       sharp-linear(335deg, $color $scale * 10 / 58, $tr) $scale * 29 / 58 $scale * 6  / 58,
       sharp-linear(155deg, $color $scale * 10 / 58, $tr) $scale * 33 / 58 $scale * 30 / 58;
+    background-color: $background-color;
+    background-size: $scale $scale;
+}
+
+/// @link http://lea.verou.me/css3patterns/#waves
+/// @param {color} $background-color [slategray]
+/// @param {color} $line-color [rgba(255, 255, 255, .3)]
+/// @param {length} $scale [100px]
+@mixin waves($background-color: slategray, $line-color: rgba(255, 255, 255, .3), $scale: 100px) {
+    $stops: $tr 20%, $line-color 21%, $line-color 34%, $tr 35%;
+    background:
+      radial-gradient(circle at 100% 50%, $stops...),
+      radial-gradient(circle at 0%   50%, $stops...) 0 (-$scale / 2);
+    background-color: $background-color;
+    background-size: $scale * .75 $scale;
+}
+
+/// @link http://lea.verou.me/css3patterns/#cross
+/// @param {color} $background-color [slategray]
+/// @param {color} $line-color [#a8b1bb]
+/// @param {length} $scale [100px]
+/// @param {length} $line-width [8px]
+/// @param {length} $line-length [20%]
+@mixin cross($background-color: slategray, $line-color: #a8b1bb, $scale: 100px, $line-width: 8px, $line-length: 20%) {
+    background:
+      sharp-radial(circle, $tr $line-length, $background-color 100% - $line-length, $tr),
+      sharp-radial(circle, $tr $line-length, $background-color 100% - $line-length, $tr) $scale / 2 $scale / 2,
+      sharp-linear(to bottom, $line-color $line-width, $tr) 0 (-$line-width / 2),
+      sharp-linear(90deg, $line-color $line-width, $tr) -$line-width / 2 0;
+    background-color: $background-color;
+    background-size: $scale $scale, $scale $scale, $scale / 2 $scale / 2, $scale / 2 $scale / 2;
+}
+
+/// @link http://lea.verou.me/css3patterns/#yin-yang
+/// @param {color} $background-color [#63773f]
+/// @param {color} $first-color [#d2caab]
+/// @param {color} $second-color [#364e27]
+/// @param {length} $scale [100px]
+/// @param {length} $size [16%]
+/// @param {length} $inner-circle-size [3%]
+// TODO: @param {direction} $rotation [0deg]
+@mixin yin-yang($background-color: #63773f, $first-color: #d2caab, $second-color: #364e27, $scale: 100px, $size: 16%, $inner-circle-size: 3%) {
+    $tr-first-color:  rgba($first-color, 0);
+    $tr-second-color: rgba($second-color, 0);
+    // $rotation-offset-x: sin($rotation) * $size * 9 / 16;
+    // $rotation-offset-y: cos($rotation) * $size * 9 / 16;
+    background:
+      // fuzzy-radial(circle at 50% + $rotation-offset-x 50% + $rotation-offset-y, $first-color  $inner-circle-size, $second-color $size * 11 / 16, $tr-second-color) $scale / 2 0,
+      // fuzzy-radial(circle at 50% - $rotation-offset-x 50% - $rotation-offset-y, $second-color $inner-circle-size, $first-color  $size * 11 / 16, $tr-first-color ) $scale / 2 0,
+      // fuzzy-radial(circle at 50% + $rotation-offset-x 50% + $rotation-offset-y, $first-color  $inner-circle-size, $second-color $size * 11 / 16, $tr-second-color) 0 $scale / 2,
+      // fuzzy-radial(circle at 50% - $rotation-offset-x 50% - $rotation-offset-y, $second-color $inner-circle-size, $first-color  $size * 11 / 16, $tr-first-color ) 0 $scale / 2,
+      fuzzy-radial(circle at 50% 50% + $size * 9 / 16, $first-color  $inner-circle-size, $second-color $size * 11 / 16, $tr-second-color) $scale / 2 0,
+      fuzzy-radial(circle at 50% 50% - $size * 9 / 16, $second-color $inner-circle-size, $first-color  $size * 11 / 16, $tr-first-color ) $scale / 2 0,
+      fuzzy-radial(circle at 50% 50% + $size * 9 / 16, $first-color  $inner-circle-size, $second-color $size * 11 / 16, $tr-second-color) 0 $scale / 2,
+      fuzzy-radial(circle at 50% 50% - $size * 9 / 16, $second-color $inner-circle-size, $first-color  $size * 11 / 16, $tr-first-color ) 0 $scale / 2,
+      fuzzy-radial(circle at 100% 50%, $first-color  $size, $tr-first-color ),
+      fuzzy-radial(circle at 0%   50%, $second-color $size, $tr-second-color),
+      fuzzy-radial(circle at 100% 50%, $first-color  $size, $tr-first-color ) $scale / 2 $scale / 2,
+      fuzzy-radial(circle at 0%   50%, $second-color $size, $tr-second-color) $scale / 2 $scale / 2;
+    background-color: $background-color;
+    background-size: $scale $scale;
+}
+
+/// @link http://lea.verou.me/css3patterns/#stars
+/// @param {color} $background-color [#232927]
+/// @param {color} $color [#e3d7bf]
+/// @param {length} $scale [100px]
+@mixin stars($background-color: #232927, $color: #e3d7bf, $scale: 100px) {
+    $star:
+      sharp-linear(324deg, $background-color 4%, $tr),
+      sharp-linear( 36deg, $background-color 4%, $tr),
+      sharp-linear( 72deg, $color 8.5%, $tr),
+      sharp-linear(288deg, $color 8.5%, $tr),
+      sharp-linear(216deg, $color 7.5%, $tr),
+      sharp-linear(144deg, $color 7.5%, $tr);
+    background-image:
+      $star, $star;
+    background-position:
+      $scale * -70 / 100 $scale * 43 / 100,
+      $scale *  30 / 100 $scale * 43 / 100,
+      $scale *  30 / 100 $scale * 43 / 100,
+      $scale * -70 / 100 $scale * 43 / 100,
+      $scale * -70 / 100 $scale * 23 / 100,
+      $scale *  30 / 100 $scale * 23 / 100,
+      $scale * -20 / 100 $scale * 93 / 100,
+      $scale *  80 / 100 $scale * 93 / 100,
+      $scale *  80 / 100 $scale * 93 / 100,
+      $scale * -20 / 100 $scale * 93 / 100,
+      $scale * -20 / 100 $scale * 73 / 100,
+      $scale *  80 / 100 $scale * 73 / 100;
+    background-color: $background-color;
+    background-size: $scale $scale;
+}
+
+/// @link http://lea.verou.me/css3patterns/#shippo
+/// @param {color} $background-color [#def]
+/// @param {color} $color [rgba(0, 0, 0, .3)]
+/// @param {length} $scale [80px]
+@mixin shippo($background-color: #def, $color: rgba(0, 0, 0, .3), $scale: 80px) {
+    $stops: $tr 98%, $color 99%;
+    background:
+      radial-gradient(closest-side, $stops...),
+      radial-gradient(closest-side, $stops...) $scale / 2 $scale / 2;
+    background-color: $background-color;
+    background-size: $scale $scale;
+}
+
+/// @link http://lea.verou.me/css3patterns/#brady-bunch
+/// @param {color} $background-color [#c8d3a7]
+/// @param {color} $first-color [#b6cc66]
+/// @param {color} $second-color [#edffdb]
+/// @param {color} $third-color [#ffffff]
+/// @param {color} $fourth-color [#d9e6a7]
+/// @param {color} $fifth-color [#798b3c]
+/// @param {color} $sixth-color [#e0ead7]
+/// @param {length} $scale [110px]
+/// @param {length} $start-position [75%]
+/// @param {length} $ring-width [9%]
+@mixin brady-bunch(
+  $background-color: #c8d3a7,
+  $first-color: #b6cc66,
+  $second-color: #edffdb,
+  $third-color: #ffffff,
+  $fourth-color: #d9e6a7,
+  $fifth-color: #798b3c,
+  $sixth-color: #e0ead7,
+  $scale: 110px,
+  $start-position: 75%,
+  $ring-width: 9%
+) {
+    @if $first-color != #b6cc66 {
+      @if $second-color == #edffdb {
+        $second-color: lighten(adjust-hue(saturate($first-color, 50%), 17deg), 33%);
+      }
+      // @if $third-color == #ffffff {
+      // }
+      @if $fourth-color == #d9e6a7 {
+        $fourth-color: lighten(adjust-hue(saturate($first-color, 6%), -1deg), 18%);
+      }
+      @if $fifth-color == #798b3c {
+        $fifth-color: darken(adjust-hue(desaturate($first-color, 10%), 1deg), 21%);
+      }
+      @if $sixth-color == #e0ead7 {
+        $sixth-color: lighten(adjust-hue(desaturate($first-color, 19%), 19deg), 28%);
+      }
+      @if $background-color == #c8d3a7 {
+        $background-color: lighten(adjust-hue(desaturate($first-color, 17%), 2deg), 14%);
+      }
+    }
+    $stops:
+      $tr $start-position,
+      $first-color  $start-position + $ring-width     + 1%,
+      $second-color $start-position + $ring-width * 2 + 1%,
+      $third-color  $start-position + $ring-width * 3 + 1%,
+      $fourth-color $start-position + $ring-width * 4 + 1%,
+      $fifth-color  $start-position + $ring-width * 5 + 1%,
+      $third-color  $start-position + $ring-width * 6 + 1%,
+      $sixth-color  $start-position + $ring-width * 7 + 2%;
+    background:
+      fuzzy-radial(closest-side, $stops...),
+      fuzzy-radial(closest-side, $stops...) $scale / 2 $scale / 2;
     background-color: $background-color;
     background-size: $scale $scale;
 }
