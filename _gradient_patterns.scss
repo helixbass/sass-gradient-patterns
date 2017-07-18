@@ -32,11 +32,14 @@
     @if $i > 1 {
       $previous-stop: nth($stops, $i - 1);
       $dump: append($dump, nth($stop, 1) (nth($previous-stop, 2) + $stagger));
-      @if $i != length($stops) {
-          $dump: append($dump, $stop);
+      @if $i != length($stops) or $repeating {
+        $dump: append($dump, $stop);
       }
     }
     @else {
+      @if repeating {
+        $dump: append($dump, nth($stop, 1) 0);
+      }
       $dump: append($dump, $stop);
     }
 
@@ -669,4 +672,112 @@ $tr: transparent;
       fuzzy-radial(closest-side, $stops...) $scale / 2 $scale / 2;
     background-color: $background-color;
     background-size: $scale $scale;
+}
+
+/// @link http://bennettfeely.com/gradients/
+/// @group blend-modes
+/// @param {color} $background-color [blanchedalmond]
+/// @param {color} $first-color [beige]
+/// @param {color} $second-color [khaki]
+/// @param {color} $third-color [navajowhite]
+/// @param {color} $fourth-color [peachpuff]
+/// @param {color} $fifth-color [palegoldenrod]
+/// @param {length} $scale [10em]
+@mixin gummi-worms(
+  $background-color: blanchedalmond,
+  $first-color: beige,
+  $second-color: khaki,
+  $third-color: navajowhite,
+  $fourth-color: peachpuff,
+  $fifth-color: palegoldenrod,
+  $scale: 10em
+) {
+    $single-width: $scale / 5;
+    $stops:
+      $tr           $single-width,
+      $first-color  $single-width * 2,
+      $tr           $single-width * 3,
+      $second-color $single-width * 4,
+      $tr;
+    background:
+      sharp-radial(circle at bottom left, $stops...),
+      sharp-radial(circle at top right,   $stops...),
+      sharp-radial(circle at top left,
+        $tr           $single-width,
+        $third-color  $single-width * 2,
+        $tr           $single-width * 3,
+        $fourth-color $single-width * 4,
+        $tr
+      ) $scale / 2 $scale / 2,
+      sharp-radial(circle at bottom right,
+        $tr           $single-width,
+        $fifth-color  $single-width * 2,
+        $tr           $single-width * 3,
+        $fourth-color $single-width * 4,
+        $tr
+      ) $scale / 2 $scale / 2;
+    background-color: $background-color;
+    background-size: $scale $scale;
+    background-blend-mode: multiply;
+}
+
+/// @link http://bennettfeely.com/gradients/
+/// @group blend-modes
+/// @param {color} $background-color [floralwhite]
+/// @param {color} $first-color [tomato]
+/// @param {color} $second-color [dodgerblue]
+/// @param {color} $line-color [gold]
+/// @param {length} $scale [10em]
+/// @param {length} $ring-start [$scale * .35 (3.5em)]
+/// @param {length} $ring-width [$scale / 10 (1em)]
+/// @param {length} $line-start [$scale / 4 (2.5em)]
+/// @param {length} $line-width [$scale * .025 (.25em)]
+/// @param {length} $outer-line-start [$line-start * 2 + $line-width (5.25em)]
+/// @param {length} $outer-line-width [$line-width (.25em)]
+@mixin o-rings(
+  $background-color: floralwhite,
+  $first-color: tomato,
+  $second-color: dodgerblue,
+  $line-color: gold,
+  $scale: 10em,
+  $ring-start: $scale * .35,
+  $ring-width: $scale / 10,
+  $line-start: $scale / 4,
+  $line-width: $scale * .025,
+  $outer-line-start: $line-start * 2 + $line-width,
+  $outer-line-width: $line-width
+) {
+    background:
+      sharp-radial(circle, $tr $ring-start, $first-color  $ring-start + $ring-width, $tr),
+      sharp-radial(circle, $tr $ring-start, $second-color $ring-start + $ring-width, $tr) $scale / 2 $scale / 2,
+      sharp-radial(circle, $tr $line-start, $line-color $line-start + $line-width, $tr $outer-line-start, $line-color $outer-line-start + $outer-line-width, $tr) $scale $scale / 2;
+    background-color: $background-color;
+    background-size: $scale $scale;
+    background-blend-mode: multiply;
+}
+
+/// @link http://bennettfeely.com/gradients/
+/// @group blend-modes
+/// @param {color} $background-color [white]
+/// @param {color} $first-color [beige]
+/// @param {color} $second-color [wheat]
+/// @param {color} $third-color [moccasin]
+/// @param {length} $scale [6em]
+/// @param {direction} $angle [to top left]
+/// @param {direction} $other-angle [to left]
+@mixin slant-stripes(
+  $background-color: white,
+  $first-color: beige,
+  $second-color: wheat,
+  $third-color: moccasin,
+  $scale: 6em,
+  $angle: to top left,
+  $other-angle: to left,
+) {
+    $single-width: $scale / 3;
+    background:
+      sharp-repeating-linear($angle, $first-color $single-width, $third-color $single-width * 2, $second-color $single-width * 3),
+      sharp-repeating-linear($other-angle, $background-color $single-width, $second-color $single-width * 2, $first-color $single-width * 3);
+    background-color: $background-color;
+    background-blend-mode: multiply;
 }
