@@ -494,16 +494,16 @@ $tr: transparent;
 
 /// @link http://lea.verou.me/css3patterns/#polka-dot
 /// @param {color} $background-color [#001]
-/// @param {color} $color [white]
+/// @param {color} $dot-color [white]
 /// @param {length} $scale [60px]
 /// @param {length} $dot-width [15%]
 /// @param {color} $ring-color [$background-color (#001)]
 /// @param {length} $ring-width [0%]
-@mixin polka-dot($background-color: #001, $color: white, $scale: 60px, $dot-width: 15%, $ring-color: $background-color, $ring-width: 0%) {
+@mixin polka-dot($background-color: #001, $dot-color: white, $scale: 60px, $dot-width: 15%, $ring-color: $background-color, $ring-width: 0%) {
     // $stops: $color $dot-width, $tr $dot-width + 1%;
-    $stops: $color $dot-width, $tr $dot-width + 1%, $tr $dot-width + $ring-width + 1%, $tr $dot-width + $ring-width + 1%;
+    $stops: $dot-color $dot-width, $tr $dot-width + 1%, $tr $dot-width + $ring-width + 1%, $tr $dot-width + $ring-width + 1%;
     @if $ring-width > 0% {
-      $stops: $color $dot-width, $ring-color $dot-width + 1%, $ring-color $dot-width + $ring-width, $tr $dot-width + $ring-width + 1%;
+      $stops: $dot-color $dot-width, $ring-color $dot-width + 1%, $ring-color $dot-width + $ring-width, $tr $dot-width + $ring-width + 1%;
     }
     background-image:
       radial-gradient($stops...),
@@ -931,4 +931,122 @@ $tr: transparent;
       sharp-repeating-linear( $angle, $stops...),
       sharp-repeating-linear(-$angle, $stops...);
     background-blend-mode: multiply;
+}
+
+/// @link http://bennettfeely.com/gradients/
+/// @group blend-modes
+/// @param {color} $background-color [lightgreen]
+/// @param {color} $first-color [limegreen]
+/// @param {color} $second-color [olivedrab]
+/// @param {color} $third-color [green]
+/// @param {length} $ring-width [4em]
+@mixin vesica-pisces(
+  $background-color: lightgreen,
+  $first-color: limegreen,
+  $second-color: olivedrab,
+  $third-color: green,
+  $ring-width: 4em
+) {
+    @if $first-color != limegreen {
+      @if $second-color == olivedrab {
+        $second-color: darken(adjust-hue(desaturate($first-color, 1%), -40deg), 15%);
+      }
+      @if $third-color == green {
+        $third-color: darken(saturate($first-color, 39%), 25%);
+      }
+      @if $background-color == lightgreen {
+        $background-color: lighten(saturate($first-color, 12%), 25%);
+      }
+    }
+    background-image:
+      repeating-radial-gradient(
+        circle at 50% 25%,
+        $first-color,
+        $first-color $ring-width / 8,
+        $tr $ring-width * .75,
+        $tr $ring-width
+      ),
+      repeating-radial-gradient(
+        circle at 25% 50%,
+        $second-color,
+        $second-color $ring-width / 8,
+        $tr $ring-width * .5,
+        $tr $ring-width
+      ),
+      repeating-radial-gradient(
+        circle at 75% 50%,
+        $third-color,
+        $third-color $ring-width / 8,
+        $tr $ring-width * .5,
+        $tr $ring-width
+      );
+    background-color: $background-color;
+    background-blend-mode: multiply;
+}
+
+/// @link http://bennettfeely.com/gradients/
+/// @group blend-modes
+/// @param {color} $first-color [cyan]
+/// @param {color} $second-color [yellow]
+/// @param {color} $third-color [magenta]
+/// @param {length} $scale [6em]
+@mixin light-machine(
+  $first-color: cyan,
+  $second-color: yellow,
+  $third-color: magenta,
+  $scale: 6em
+) {
+    $single-width: $scale / 3;
+    $stops:
+      $first-color,
+      $second-color $single-width,
+      $third-color  $single-width * 2,
+      $first-color  $single-width * 3;
+    background-image:
+      repeating-radial-gradient(circle at top    left,  $stops...),
+      repeating-radial-gradient(circle at bottom left,  $stops...),
+      repeating-radial-gradient(circle at top    right, $stops...),
+      repeating-radial-gradient(circle at bottom right, $stops...);
+    background-blend-mode: multiply;
+}
+
+/// @link http://bennettfeely.com/gradients/
+/// @group blend-modes
+/// @param {color} $first-color [red]
+/// @param {color} $second-color [lime]
+/// @param {color} $third-color [yellow]
+/// @param {color} $fourth-color [blue]
+/// @param {color} $background-color [white]
+/// @param {length} $scale [15em]
+@mixin harness(
+  $first-color: red,
+  $second-color: lime,
+  $third-color: yellow,
+  $fourth-color: blue,
+  $background-color: white,
+  $scale: 15em
+) {
+    background-image:
+      sharp-repeating-radial(
+        circle at top left,
+        $first-color $scale * 4 / 15,
+        $tr $scale
+      ),
+      sharp-repeating-radial(
+        circle at top right,
+        $second-color $scale * 4 / 15,
+        $tr $scale
+      ),
+      sharp-repeating-radial(
+        circle at bottom right,
+        $third-color $scale * 4 / 15,
+        $tr $scale
+      ),
+      sharp-repeating-radial(
+        circle at bottom left,
+        $fourth-color $scale * 4 / 15,
+        $tr $scale
+      );
+    background-color: $background-color;
+    background-blend-mode: difference;
 }
