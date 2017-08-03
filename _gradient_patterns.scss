@@ -139,6 +139,10 @@ $tr: transparent;
   @return $number;
 }
 
+@function percent-to-decimal($percent) {
+  @return strip-unit($percent) / 100;
+}
+
 /// @link http://lea.verou.me/css3patterns/#honeycomb
 /// @param {color} $background-color [#fb1]
 /// @param {color} $line-color [#b71]
@@ -1049,4 +1053,73 @@ $tr: transparent;
       );
     background-color: $background-color;
     background-blend-mode: difference;
+}
+
+/// @link http://bennettfeely.com/gradients/
+/// @group blend-modes
+/// @param {color} $first-color [#f19181]
+/// @param {color} $second-color [#3cbac8]
+/// @param {color} $third-color [#f3f5c4]
+/// @param {color} $fourth-color [#f9cb84]
+/// @param {length} $horizontal-scale [6em]
+/// @param {length} $horizontal-stripe-width [50%]
+/// @param {length} $vertical-scale [$horizontal-scale (6em)]
+/// @param {length} $vertical-stripe-width [50%]
+/// @param {color} $cross-color [$first-color (#f19181)]
+/// @param {length} $cross-scale [2 * $horizontal-scale (12em)]
+/// @param {length} $first-cross-angle [45deg]
+/// @param {length} $second-cross-angle [-45deg]
+@mixin cross-multiply(
+  $first-color: #f19181,
+  $second-color: #3cbac8,
+  $third-color: #f3f5c4,
+  $fourth-color: #f9cb84,
+  $background-color: white,
+  $horizontal-scale: 6em,
+  $horizontal-stripe-width: 50%,
+  $vertical-scale: 6em,
+  $vertical-stripe-width: 50%,
+  $cross-color: #f19181,
+  $cross-scale: 12em,
+  $first-cross-angle: 45deg,
+  $second-cross-angle: -45deg
+) {
+    @if $first-color != #f19181 {
+      @if $cross-color == #f19181 {
+        $cross-color: $first-color;
+      }
+    }
+    @if $horizontal-scale != 6em {
+      @if $vertical-scale == 6em {
+        $vertical-scale: $horizontal-scale;
+      }
+      @if $cross-scale == 12em {
+        $cross-scale: 2 * $horizontal-scale;
+      }
+    }
+
+    background-image:
+      sharp-repeating-linear(
+        to bottom,
+        $third-color $vertical-scale * (1 - percent-to-decimal($vertical-stripe-width)),
+        $first-color $vertical-scale
+      ),
+      sharp-repeating-linear(
+        90deg,
+        $fourth-color $horizontal-scale * (1 - percent-to-decimal($horizontal-stripe-width)),
+        $second-color $horizontal-scale
+      ),
+      repeating-linear-gradient(
+        $first-cross-angle,
+        $tr 0,
+        $tr $cross-scale / 2,
+        $cross-color $cross-scale
+      ),
+      repeating-linear-gradient(
+        $second-cross-angle,
+        $tr 0,
+        $tr $cross-scale / 2,
+        $cross-color $cross-scale
+      );
+    background-blend-mode: multiply;
 }
