@@ -1,29 +1,38 @@
-@function sharp($repeating, $angle, $stops...) {
-  @return sharp-stagger($repeating, "linear", $angle, 0, $stops...);
-}
-
-@function sharp-linear($angle, $stops...) {
+@function sharp-linear-gradient($angle, $stops...) {
   @return sharp-stagger(false, "linear", $angle, 0, $stops...);
 }
 
-@function sharp-repeating-linear($angle, $stops...) {
+@function sharp-repeating-linear-gradient($angle, $stops...) {
   @return sharp-stagger(true, "linear", $angle, 0, $stops...);
 }
 
-@function sharp-radial($angle, $stops...) {
+@function sharp-radial-gradient($angle, $stops...) {
   @return sharp-stagger(false, "radial", $angle, 0, $stops...);
 }
 
-@function fuzzy-radial($angle, $stops...) {
+@function fuzzy-radial-gradient($angle, $stops...) {
   @return sharp-stagger(false, "radial", $angle, 1%, $stops...);
 }
 
-@function sharp-repeating-radial($angle, $stops...) {
+@function sharp-repeating-radial-gradient($angle, $stops...) {
   @return sharp-stagger(true, "radial", $angle, 0, $stops...);
 }
 
+@function is-stop($angle) {
+  @if type-of($angle) == 'list' {
+    @return type-of(nth($angle, 1)) == 'color';
+  }
+  @return type-of($angle) == 'color';
+}
+
 @function sharp-stagger($repeating, $type, $angle, $stagger, $stops...) {
-  $gradient: ();
+  $args: ();
+  $has-angle: true;
+
+  @if is-stop($angle) {
+    $stops: join(append((), $angle, comma), $stops);
+    $has-angle: false;
+  }
 
   @for $i from 1 through length($stops) {
     $stop: nth($stops, $i);
@@ -37,29 +46,33 @@
       }
     }
     @else {
-      @if repeating {
+      @if $repeating {
         $dump: append($dump, nth($stop, 1) 0);
       }
       $dump: append($dump, $stop);
     }
 
-    $gradient: join($gradient, $dump, comma);
+    $args: join($args, $dump, comma);
+  }
+
+  @if $has-angle {
+    $args: join(append((), $angle, comma), $args);
   }
 
   @if $type == "radial" {
     @if $repeating {
-      @return repeating-radial-gradient($angle, $gradient...);
+      @return repeating-radial-gradient($args...);
     }
     @else {
-      @return radial-gradient($angle, $gradient...);
+      @return radial-gradient($args...);
     }
   }
   @else {
     @if $repeating {
-      @return repeating-linear-gradient($angle, $gradient...);
+      @return repeating-linear-gradient($args...);
     }
     @else {
-      @return linear-gradient($angle, $gradient...);
+      @return linear-gradient($args...);
     }
   }
 }
@@ -155,12 +168,12 @@ $tr: transparent;
   }
 
   background-image:
-      sharp-radial(circle farthest-side at 0% 50%, $background-color 23.5%, $tr),
-      sharp-radial(circle farthest-side at 0% 50%, $line-color 24%, $tr),
-      sharp-linear(to bottom, $background-color 14%, $tr 85%, $background-color),
-      sharp-linear(150deg, $background-color 24%, $line-color 26%, $tr 74%, $line-color 76%, $background-color),
-      sharp-linear(30deg,  $background-color 24%, $line-color 26%, $tr 74%, $line-color 76%, $background-color),
-      sharp-linear(90deg, $line-color 2%, $background-color 98%, $line-color);
+      sharp-radial-gradient(circle farthest-side at 0% 50%, $background-color 23.5%, $tr),
+      sharp-radial-gradient(circle farthest-side at 0% 50%, $line-color 24%, $tr),
+      sharp-linear-gradient(to bottom, $background-color 14%, $tr 85%, $background-color),
+      sharp-linear-gradient(150deg, $background-color 24%, $line-color 26%, $tr 74%, $line-color 76%, $background-color),
+      sharp-linear-gradient(30deg,  $background-color 24%, $line-color 26%, $tr 74%, $line-color 76%, $background-color),
+      sharp-linear-gradient(90deg, $line-color 2%, $background-color 98%, $line-color);
   background-position:
       $scale * 21 / 60 $scale / 2,
       $scale * 19 / 60 $scale / 2,
@@ -182,8 +195,8 @@ $tr: transparent;
   $color: rgba($color, $color-opacity);
   $stops: $color $color-width, $tr;
   background-image:
-    sharp-linear(90deg, $stops...),
-    sharp-linear(0deg,  $stops...);
+    sharp-linear-gradient(90deg, $stops...),
+    sharp-linear-gradient(0deg,  $stops...);
   background-size: $scale $scale;
   background-color: $background-color;
 }
@@ -203,9 +216,9 @@ $tr: transparent;
     }
   }
   background-image:
-    sharp-linear(45deg, $first-color 12%, $tr 88%, $first-color),
-    sharp-linear(135deg, $tr 37%, $second-color 63%, $tr),
-    sharp-linear(45deg, $tr 37%, $first-color 63%, $tr);
+    sharp-linear-gradient(45deg, $first-color 12%, $tr 88%, $first-color),
+    sharp-linear-gradient(135deg, $tr 37%, $second-color 63%, $tr),
+    sharp-linear-gradient(45deg, $tr 37%, $first-color 63%, $tr);
   background-color: $background-color;
   background-size: $scale $scale;
 }
@@ -273,16 +286,16 @@ $tr: transparent;
     $long-dim: $scale;
     $short-dim: $scale * 4 / 7;
     background-image:
-      sharp-linear(0deg,   $other-stops-thinner...),
-      sharp-linear(0deg,   $other-stops-thinner...),
-      sharp-linear(120deg, $last-stops...),
-      sharp-linear(60deg,  $last-stops...),
-      sharp-linear(30deg,  $stops...),
-      sharp-linear(150deg, $stops...),
-      sharp-linear(30deg,  $stops...),
-      sharp-linear(150deg, $stops...),
-      sharp-linear(90deg,  $other-stops...),
-      sharp-linear(90deg,  $other-stops...);
+      sharp-linear-gradient(0deg,   $other-stops-thinner...),
+      sharp-linear-gradient(0deg,   $other-stops-thinner...),
+      sharp-linear-gradient(120deg, $last-stops...),
+      sharp-linear-gradient(60deg,  $last-stops...),
+      sharp-linear-gradient(30deg,  $stops...),
+      sharp-linear-gradient(150deg, $stops...),
+      sharp-linear-gradient(30deg,  $stops...),
+      sharp-linear-gradient(150deg, $stops...),
+      sharp-linear-gradient(90deg,  $other-stops...),
+      sharp-linear-gradient(90deg,  $other-stops...);
     background-position:
       0 0,
       0 $long-dim / 2,
@@ -311,8 +324,8 @@ $tr: transparent;
     background-image:
       // sharp-stagger(false, "radial", circle, 1, $color 43%, $tr),
       // sharp-stagger(false, "radial", circle, 1, $tr 31.4%, $color 39%, $tr 78%, $color 84%, $tr);
-      sharp-stagger(false, "radial", circle, 1, $color $dot-size, $tr),
-      sharp-stagger(false, "radial", circle, 1, $tr $scale * 2/9, $color $scale * 25/90, $tr $scale * 5/9, $color $scale * 54/90, $tr);
+      sharp-stagger(false, 'radial', circle, 1, $color $dot-size, $tr),
+      sharp-stagger(false, 'radial', circle, 1, $tr $scale * 2/9, $color $scale * 25/90, $tr $scale * 5/9, $color $scale * 54/90, $tr);
     background-size: $scale / 3 $scale / 3, $scale $scale
 }
 
@@ -339,7 +352,7 @@ $tr: transparent;
 @mixin horizontal-stripes($background-color: gray, $stripe-color: rgba(255, 255, 255, .5), $scale: 50px, $stripe-width: 50%) {
     background-color: $background-color;
     background-image:
-      sharp-linear(0deg, $tr 100% - $stripe-width, $stripe-color $stripe-width);
+      sharp-linear-gradient(0deg, $tr 100% - $stripe-width, $stripe-color $stripe-width);
     background-size: $scale $scale;
 }
 
@@ -351,7 +364,7 @@ $tr: transparent;
 @mixin vertical-stripes($background-color: gray, $stripe-color: rgba(255, 255, 255, .5), $scale: 50px, $stripe-width: 50%) {
     background-color: $background-color;
     background-image:
-      sharp-linear(90deg, $tr 100% - $stripe-width, $stripe-color $stripe-width);
+      sharp-linear-gradient(90deg, $tr 100% - $stripe-width, $stripe-color $stripe-width);
     background-size: $scale $scale;
 }
 
@@ -384,8 +397,8 @@ $tr: transparent;
 @mixin checkerboard($background-color: #eee, $color: black, $scale: 60px) {
     $stops: $color 25%, $tr 75%, $color;
     background-image:
-      sharp-linear(45deg, $stops...),
-      sharp-linear(45deg, $stops...);
+      sharp-linear-gradient(45deg, $stops...),
+      sharp-linear-gradient(45deg, $stops...);
     background-position:
       0 0,
       $scale / 2 $scale / 2;
@@ -400,8 +413,8 @@ $tr: transparent;
 @mixin diagonal-checkerboard($background-color: #eee, $color: black, $scale: 60px) {
     $stops: $color 25%, $tr 75%, $color;
     background-image:
-      sharp-linear(45deg, $stops...),
-      sharp-linear(-45deg, $stops...);
+      sharp-linear-gradient(45deg, $stops...),
+      sharp-linear-gradient(-45deg, $stops...);
     background-color: $background-color;
     background-size: $scale $scale;
 }
@@ -419,8 +432,8 @@ $tr: transparent;
       $line-color       ($scale * 68 / 128) + $line-thickness / 2,
       $tr;
     background-image:
-      sharp-linear(135deg, $stops...),
-      sharp-linear(225deg, $stops...);
+      sharp-linear-gradient(135deg, $stops...),
+      sharp-linear-gradient(225deg, $stops...);
     background-position:
       0 0,
       0 $scale / 2;
@@ -436,24 +449,14 @@ $tr: transparent;
     $tr-color:            rgba($color,            0);
     $tr-background-color: rgba($background-color, 0);
     $heart-gradients:
-      radial-gradient(circle closest-side at 60% 43%, $background-color 26%, $tr-background-color 27%),
-      radial-gradient(circle closest-side at 40% 43%, $background-color 26%, $tr-background-color 27%),
-      radial-gradient(circle closest-side at 40% 22%, $color 45%, $tr-color 46%),
-      radial-gradient(circle closest-side at 60% 22%, $color 45%, $tr-color 46%),
-      radial-gradient(circle closest-side at 50% 35%, $color 30%, $tr-color 31%);
+      fuzzy-radial-gradient(circle closest-side at 60% 43%, $background-color 26%, $tr-background-color),
+      fuzzy-radial-gradient(circle closest-side at 40% 43%, $background-color 26%, $tr-background-color),
+      fuzzy-radial-gradient(circle closest-side at 40% 22%, $color 45%, $tr-color),
+      fuzzy-radial-gradient(circle closest-side at 60% 22%, $color 45%, $tr-color),
+      fuzzy-radial-gradient(circle closest-side at 50% 35%, $color 30%, $tr-color);
     background-image:
       $heart-gradients,
       $heart-gradients;
-      // radial-gradient(circle closest-side at 60% 43%, $background-color 26%, $tr-background-color 27%),
-      // radial-gradient(circle closest-side at 40% 43%, $background-color 26%, $tr-background-color 27%),
-      // radial-gradient(circle closest-side at 40% 22%, $color 45%, $tr-color 46%),
-      // radial-gradient(circle closest-side at 60% 22%, $color 45%, $tr-color 46%),
-      // radial-gradient(circle closest-side at 50% 35%, $color 30%, $tr-color 31%),
-      // radial-gradient(circle closest-side at 60% 43%, $background-color 26%, $tr-background-color 27%),
-      // radial-gradient(circle closest-side at 40% 43%, $background-color 26%, $tr-background-color 27%),
-      // radial-gradient(circle closest-side at 40% 22%, $color 45%, $tr-color 46%),
-      // radial-gradient(circle closest-side at 60% 22%, $color 45%, $tr-color 46%),
-      // radial-gradient(circle closest-side at 50% 35%, $color 30%, $tr-color 31%);
     background-color: $background-color;
     background-size: $scale $scale;
     background-position: 0 0, 0 0, 0 0, 0 0, 0 0, $scale / 2 $scale / 2, $scale / 2 $scale / 2, $scale / 2 $scale / 2, $scale / 2 $scale / 2, $scale / 2 $scale / 2;
@@ -465,9 +468,9 @@ $tr: transparent;
 /// @param {length} $scale [128px]
 @mixin arrows($background-color: #e1ebbd, $color: #92baac, $scale: 128px) {
     background-image:
-      sharp-linear(45deg, $color $scale * 45 / 128, $tr),
-      sharp-linear(45deg, $color $scale * 45 / 128, $tr $scale * 91 / 128, $background-color $scale * 135 / 128, $tr),
-      sharp-linear(-45deg, $color $scale * 23 / 128, $tr $scale * 68 / 128, $color $scale * 113 / 128, $tr $scale * 158 / 128, $color);
+      sharp-linear-gradient(45deg, $color $scale * 45 / 128, $tr),
+      sharp-linear-gradient(45deg, $color $scale * 45 / 128, $tr $scale * 91 / 128, $background-color $scale * 135 / 128, $tr),
+      sharp-linear-gradient(-45deg, $color $scale * 23 / 128, $tr $scale * 68 / 128, $color $scale * 113 / 128, $tr $scale * 158 / 128, $color);
     background-position:
       $scale / 2 $scale / 2,
       0 0,
@@ -483,10 +486,10 @@ $tr: transparent;
 @mixin half-rombes($background-color: #36c, $color: rgba(255, 255, 255, .8), $scale: 15px) {
     $stops: $tr 75%, $color;
     background-image:
-      sharp-linear(115deg, $stops...),
-      sharp-linear(245deg, $stops...),
-      sharp-linear(115deg, $stops...),
-      sharp-linear(245deg, $stops...);
+      sharp-linear-gradient(115deg, $stops...),
+      sharp-linear-gradient(245deg, $stops...),
+      sharp-linear-gradient(115deg, $stops...),
+      sharp-linear-gradient(245deg, $stops...);
     background-position:
       0 0,
       0 0,
@@ -529,10 +532,10 @@ $tr: transparent;
 /// @param {number} $per [5]
 @mixin blueprint-grid($background-color: #269, $thick-line-color: white, $thin-line-color: rgba($thick-line-color, .3), $scale: 15px, $thick-line-thickness: 2px, $thin-line-thickness: 1px, $per: 5) {
     background-image:
-      sharp-linear(180deg, $thick-line-color $thick-line-thickness, $tr),
-      sharp-linear(90deg,  $thick-line-color $thick-line-thickness, $tr),
-      sharp-linear(180deg, $thin-line-color $thin-line-thickness, $tr),
-      sharp-linear(90deg,  $thin-line-color $thin-line-thickness, $tr);
+      sharp-linear-gradient(180deg, $thick-line-color $thick-line-thickness, $tr),
+      sharp-linear-gradient(90deg,  $thick-line-color $thick-line-thickness, $tr),
+      sharp-linear-gradient(180deg, $thin-line-color  $thin-line-thickness,  $tr),
+      sharp-linear-gradient(90deg,  $thin-line-color  $thin-line-thickness,  $tr);
     background-position:
       -$thick-line-thickness (-$thick-line-thickness),
       -$thick-line-thickness (-$thick-line-thickness),
@@ -552,8 +555,8 @@ $tr: transparent;
 /// @param {length} $margin [79px]
 @mixin lined-paper($background-color: white, $thick-line-color: #abced4, $thin-line-color: #eee, $line-separation: 1.2em, $thick-line-thickness: 2px, $thin-line-thickness: .1em, $margin: 79px) {
     background-image:
-      sharp-linear(90deg, $tr $margin, $thick-line-color $margin + $thick-line-thickness, $tr),
-      sharp-linear(to bottom, $thin-line-color $thin-line-thickness, $tr);
+      sharp-linear-gradient(90deg, $tr $margin, $thick-line-color $margin + $thick-line-thickness, $tr),
+      sharp-linear-gradient($thin-line-color $thin-line-thickness, $tr);
     background-color: $background-color;
     background-size: 100% $line-separation;
 }
@@ -564,15 +567,15 @@ $tr: transparent;
 /// @param {length} $scale [58px]
 @mixin steps($background-color: #ff7d9d, $color: #c90032, $line-color: #c90032, $scale: 58px) {
     background-image:
-      sharp-linear(335deg, $color $scale * 23 / 58, $tr),
-      sharp-linear(155deg, $color $scale * 23 / 58, $tr),
-      sharp-linear(335deg, $color $scale * 23 / 58, $tr),
-      sharp-linear(155deg, $color $scale * 23 / 58, $tr),
+      sharp-linear-gradient(335deg, $color $scale * 23 / 58, $tr),
+      sharp-linear-gradient(155deg, $color $scale * 23 / 58, $tr),
+      sharp-linear-gradient(335deg, $color $scale * 23 / 58, $tr),
+      sharp-linear-gradient(155deg, $color $scale * 23 / 58, $tr),
 
-      sharp-linear(335deg, $color $scale * 10 / 58, $tr),
-      sharp-linear(155deg, $color $scale * 10 / 58, $tr),
-      sharp-linear(335deg, $color $scale * 10 / 58, $tr),
-      sharp-linear(155deg, $color $scale * 10 / 58, $tr);
+      sharp-linear-gradient(335deg, $color $scale * 10 / 58, $tr),
+      sharp-linear-gradient(155deg, $color $scale * 10 / 58, $tr),
+      sharp-linear-gradient(335deg, $color $scale * 10 / 58, $tr),
+      sharp-linear-gradient(155deg, $color $scale * 10 / 58, $tr);
     background-position:
       0                $scale * 2  / 58,
       $scale * 4  / 58 $scale * 35 / 58,
@@ -592,10 +595,10 @@ $tr: transparent;
 /// @param {color} $line-color [rgba(255, 255, 255, .3)]
 /// @param {length} $scale [100px]
 @mixin waves($background-color: slategray, $line-color: rgba(255, 255, 255, .3), $scale: 100px) {
-    $stops: $tr 20%, $line-color 21%, $line-color 34%, $tr 35%;
+    $stops: $tr 20%, $line-color 34%, $tr;
     background-image:
-      radial-gradient(circle at 100% 50%, $stops...),
-      radial-gradient(circle at 0%   50%, $stops...);
+      fuzzy-radial-gradient(circle at 100% 50%, $stops...),
+      fuzzy-radial-gradient(circle at 0%   50%, $stops...);
     background-position:
       0 0,
       0 (-$scale / 2);
@@ -611,10 +614,10 @@ $tr: transparent;
 /// @param {length} $line-length [20%]
 @mixin cross($background-color: slategray, $line-color: #a8b1bb, $scale: 100px, $line-width: 8px, $line-length: 20%) {
     background-image:
-      sharp-radial(circle, $tr $line-length, $background-color 100% - $line-length, $tr),
-      sharp-radial(circle, $tr $line-length, $background-color 100% - $line-length, $tr),
-      sharp-linear(to bottom, $line-color $line-width, $tr),
-      sharp-linear(90deg, $line-color $line-width, $tr);
+      sharp-radial-gradient(circle, $tr $line-length, $background-color 100% - $line-length, $tr),
+      sharp-radial-gradient(circle, $tr $line-length, $background-color 100% - $line-length, $tr),
+      sharp-linear-gradient(to bottom, $line-color $line-width, $tr),
+      sharp-linear-gradient(90deg, $line-color $line-width, $tr);
     background-position:
       0 0,
       $scale / 2 $scale / 2,
@@ -642,14 +645,14 @@ $tr: transparent;
       // fuzzy-radial(circle at 50% - $rotation-offset-x 50% - $rotation-offset-y, $second-color $inner-circle-size, $first-color  $size * 11 / 16, $tr-first-color ) $scale / 2 0,
       // fuzzy-radial(circle at 50% + $rotation-offset-x 50% + $rotation-offset-y, $first-color  $inner-circle-size, $second-color $size * 11 / 16, $tr-second-color) 0 $scale / 2,
       // fuzzy-radial(circle at 50% - $rotation-offset-x 50% - $rotation-offset-y, $second-color $inner-circle-size, $first-color  $size * 11 / 16, $tr-first-color ) 0 $scale / 2,
-      fuzzy-radial(circle at 50% 50% + $size * 9 / 16, $first-color  $inner-circle-size, $second-color $size * 11 / 16, $tr-second-color),
-      fuzzy-radial(circle at 50% 50% - $size * 9 / 16, $second-color $inner-circle-size, $first-color  $size * 11 / 16, $tr-first-color ),
-      fuzzy-radial(circle at 50% 50% + $size * 9 / 16, $first-color  $inner-circle-size, $second-color $size * 11 / 16, $tr-second-color),
-      fuzzy-radial(circle at 50% 50% - $size * 9 / 16, $second-color $inner-circle-size, $first-color  $size * 11 / 16, $tr-first-color ),
-      fuzzy-radial(circle at 100% 50%, $first-color  $size, $tr-first-color ),
-      fuzzy-radial(circle at 0%   50%, $second-color $size, $tr-second-color),
-      fuzzy-radial(circle at 100% 50%, $first-color  $size, $tr-first-color ),
-      fuzzy-radial(circle at 0%   50%, $second-color $size, $tr-second-color);
+      fuzzy-radial-gradient(circle at 50% 50% + $size * 9 / 16, $first-color  $inner-circle-size, $second-color $size * 11 / 16, $tr-second-color),
+      fuzzy-radial-gradient(circle at 50% 50% - $size * 9 / 16, $second-color $inner-circle-size, $first-color  $size * 11 / 16, $tr-first-color ),
+      fuzzy-radial-gradient(circle at 50% 50% + $size * 9 / 16, $first-color  $inner-circle-size, $second-color $size * 11 / 16, $tr-second-color),
+      fuzzy-radial-gradient(circle at 50% 50% - $size * 9 / 16, $second-color $inner-circle-size, $first-color  $size * 11 / 16, $tr-first-color ),
+      fuzzy-radial-gradient(circle at 100% 50%, $first-color  $size, $tr-first-color ),
+      fuzzy-radial-gradient(circle at 0%   50%, $second-color $size, $tr-second-color),
+      fuzzy-radial-gradient(circle at 100% 50%, $first-color  $size, $tr-first-color ),
+      fuzzy-radial-gradient(circle at 0%   50%, $second-color $size, $tr-second-color);
     background-position:
       $scale / 2 0,
       $scale / 2 0,
@@ -672,12 +675,12 @@ $tr: transparent;
 @mixin stars($background-color: #232927, $color: #e3d7bf, $scale: 100px, $star-size: 8.5%, $staggered-row: true) {
     $offset: 20 + (strip-unit($star-size / 8.5) - 1) * 20;
     $star:
-      sharp-linear(324deg, $background-color $star-size * 4 / 8.5, $tr),
-      sharp-linear( 36deg, $background-color $star-size * 4 / 8.5, $tr),
-      sharp-linear( 72deg, $color $star-size, $tr),
-      sharp-linear(288deg, $color $star-size, $tr),
-      sharp-linear(216deg, $color $star-size * 7.5 / 8.5, $tr),
-      sharp-linear(144deg, $color $star-size * 7.5 / 8.5, $tr);
+      sharp-linear-gradient(324deg, $background-color $star-size * 4 / 8.5, $tr),
+      sharp-linear-gradient( 36deg, $background-color $star-size * 4 / 8.5, $tr),
+      sharp-linear-gradient( 72deg, $color $star-size, $tr),
+      sharp-linear-gradient(288deg, $color $star-size, $tr),
+      sharp-linear-gradient(216deg, $color $star-size * 7.5 / 8.5, $tr),
+      sharp-linear-gradient(144deg, $color $star-size * 7.5 / 8.5, $tr);
     @if $staggered-row {
       background-image:
         $star, $star;
@@ -714,10 +717,10 @@ $tr: transparent;
 /// @param {color} $color [rgba(0, 0, 0, .3)]
 /// @param {length} $scale [80px]
 @mixin shippo($background-color: #def, $color: rgba(0, 0, 0, .3), $scale: 80px) {
-    $stops: $tr 98%, $color 99%;
+    $stops: $tr 98%, $color;
     background-image:
-      radial-gradient(closest-side, $stops...),
-      radial-gradient(closest-side, $stops...);
+      fuzzy-radial-gradient(closest-side, $stops...),
+      fuzzy-radial-gradient(closest-side, $stops...);
     background-position:
       0 0,
       $scale / 2 $scale / 2;
@@ -777,8 +780,8 @@ $tr: transparent;
       $third-color  $start-position + $ring-width * 6 + 1%,
       $sixth-color  $start-position + $ring-width * 7 + 2%;
     background-image:
-      fuzzy-radial(closest-side, $stops...),
-      fuzzy-radial(closest-side, $stops...);
+      fuzzy-radial-gradient(closest-side, $stops...),
+      fuzzy-radial-gradient(closest-side, $stops...);
     background-position:
       0 0,
       $scale / 2 $scale / 2;
@@ -812,16 +815,16 @@ $tr: transparent;
       $second-color $single-width * 4,
       $tr;
     background-image:
-      sharp-radial(circle at bottom left, $stops...),
-      sharp-radial(circle at top right,   $stops...),
-      sharp-radial(circle at top left,
+      sharp-radial-gradient(circle at bottom left, $stops...),
+      sharp-radial-gradient(circle at top right,   $stops...),
+      sharp-radial-gradient(circle at top left,
         $tr           $single-width,
         $third-color  $single-width * 2,
         $tr           $single-width * 3,
         $fourth-color $single-width * 4,
         $tr
       ),
-      sharp-radial(circle at bottom right,
+      sharp-radial-gradient(circle at bottom right,
         $tr           $single-width,
         $fifth-color  $single-width * 2,
         $tr           $single-width * 3,
@@ -865,9 +868,9 @@ $tr: transparent;
   $outer-line-width: $line-width
 ) {
     background-image:
-      sharp-radial(circle, $tr $ring-start, $first-color  $ring-start + $ring-width, $tr),
-      sharp-radial(circle, $tr $ring-start, $second-color $ring-start + $ring-width, $tr),
-      sharp-radial(circle, $tr $line-start, $line-color $line-start + $line-width, $tr $outer-line-start, $line-color $outer-line-start + $outer-line-width, $tr);
+      sharp-radial-gradient(circle, $tr $ring-start, $first-color  $ring-start + $ring-width, $tr),
+      sharp-radial-gradient(circle, $tr $ring-start, $second-color $ring-start + $ring-width, $tr),
+      sharp-radial-gradient(circle, $tr $line-start, $line-color $line-start + $line-width, $tr $outer-line-start, $line-color $outer-line-start + $outer-line-width, $tr);
     background-position:
       0 0,
       $scale / 2 $scale / 2,
@@ -897,8 +900,8 @@ $tr: transparent;
 ) {
     $single-width: $scale / 3;
     background-image:
-      sharp-repeating-linear($angle, $first-color $single-width, $third-color $single-width * 2, $second-color $single-width * 3),
-      sharp-repeating-linear($other-angle, $background-color $single-width, $second-color $single-width * 2, $first-color $single-width * 3);
+      sharp-repeating-linear-gradient($angle, $first-color $single-width, $third-color $single-width * 2, $second-color $single-width * 3),
+      sharp-repeating-linear-gradient($other-angle, $background-color $single-width, $second-color $single-width * 2, $first-color $single-width * 3);
     background-color: $background-color;
     background-blend-mode: multiply;
 }
@@ -932,8 +935,8 @@ $tr: transparent;
       $fifth-color  $single-width * 5,
       $sixth-color  $single-width * 6;
     background-image:
-      sharp-repeating-linear( $angle, $stops...),
-      sharp-repeating-linear(-$angle, $stops...);
+      sharp-repeating-linear-gradient( $angle, $stops...),
+      sharp-repeating-linear-gradient(-$angle, $stops...);
     background-blend-mode: multiply;
 }
 
@@ -1031,22 +1034,22 @@ $tr: transparent;
   $scale: 15em
 ) {
     background-image:
-      sharp-repeating-radial(
+      sharp-repeating-radial-gradient(
         circle at top left,
         $first-color $scale * 4 / 15,
         $tr $scale
       ),
-      sharp-repeating-radial(
+      sharp-repeating-radial-gradient(
         circle at top right,
         $second-color $scale * 4 / 15,
         $tr $scale
       ),
-      sharp-repeating-radial(
+      sharp-repeating-radial-gradient(
         circle at bottom right,
         $third-color $scale * 4 / 15,
         $tr $scale
       ),
-      sharp-repeating-radial(
+      sharp-repeating-radial-gradient(
         circle at bottom left,
         $fourth-color $scale * 4 / 15,
         $tr $scale
@@ -1099,12 +1102,11 @@ $tr: transparent;
     }
 
     background-image:
-      sharp-repeating-linear(
-        to bottom,
+      sharp-repeating-linear-gradient(
         $third-color $vertical-scale * (1 - percent-to-decimal($vertical-stripe-width)),
         $first-color $vertical-scale
       ),
-      sharp-repeating-linear(
+      sharp-repeating-linear-gradient(
         90deg,
         $fourth-color $horizontal-scale * (1 - percent-to-decimal($horizontal-stripe-width)),
         $second-color $horizontal-scale
@@ -1122,4 +1124,59 @@ $tr: transparent;
         $cross-color $cross-scale
       );
     background-blend-mode: multiply;
+}
+
+/// @link http://bennettfeely.com/gradients/
+/// @group blend-modes
+/// @param {color} $first-color [lightblue]
+/// @param {color} $second-color [aquamarine]
+/// @param {color} $third-color [khaki]
+/// @param {color} $fourth-color [pink]
+/// @param {color} $background-color [linen]
+/// @param {length} $scale [5em]
+/// @param {length} $ring-start [40%]
+/// @param {length} $ring-width [10%]
+@mixin flowa(
+  $first-color: lightblue,
+  $second-color: aquamarine,
+  $third-color: khaki,
+  $fourth-color: pink,
+  $background-color: linen,
+  $scale: 5em,
+  $ring-start: 40%,
+  $ring-width: 10%
+) {
+    $ring-start: percent-to-decimal($ring-start);
+    $ring-end: $ring-start + percent-to-decimal($ring-width);
+    $ring-width-dec: percent-to-decimal($ring-width);
+
+    background-image:
+      sharp-radial-gradient(
+        $tr $scale * $ring-start,
+        $first-color $scale * $ring-end,
+        $tr
+      ),
+      sharp-radial-gradient(
+        $tr $scale * $ring-start,
+        $second-color $scale * $ring-end,
+        $tr
+      ),
+      sharp-radial-gradient(
+        $tr $scale * $ring-start,
+        $third-color $scale * $ring-end,
+        $tr
+      ),
+      sharp-radial-gradient(
+        $tr $scale * $ring-start,
+        $fourth-color $scale * $ring-end,
+        $tr
+      );
+    background-color: $background-color;
+    background-blend-mode: multiply;
+    background-size: $scale $scale;
+    background-position:
+      0 $scale / 2,
+      $scale / 2 0,
+      $scale / 2 $scale / 2,
+      0 0;
 }
