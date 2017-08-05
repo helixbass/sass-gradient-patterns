@@ -11,7 +11,7 @@
 }
 
 @function fuzzy-radial-gradient($angle, $stops...) {
-  @return sharp-stagger(false, "radial", $angle, 1%, $stops...);
+  @return sharp-stagger(false, "radial", $angle, 1, $stops...);
 }
 
 @function sharp-repeating-radial-gradient($angle, $stops...) {
@@ -324,8 +324,10 @@ $tr: transparent;
     background-image:
       // sharp-stagger(false, "radial", circle, 1, $color 43%, $tr),
       // sharp-stagger(false, "radial", circle, 1, $tr 31.4%, $color 39%, $tr 78%, $color 84%, $tr);
-      sharp-stagger(false, 'radial', circle, 1, $color $dot-size, $tr),
-      sharp-stagger(false, 'radial', circle, 1, $tr $scale * 2/9, $color $scale * 25/90, $tr $scale * 5/9, $color $scale * 54/90, $tr);
+      // sharp-stagger(false, 'radial', circle, 1, $color $dot-size, $tr),
+      // sharp-stagger(false, 'radial', circle, 1, $tr $scale * 2/9, $color $scale * 25/90, $tr $scale * 5/9, $color $scale * 54/90, $tr);
+      fuzzy-radial-gradient(circle, $color $dot-size, $tr),
+      fuzzy-radial-gradient(circle, $tr $scale * 2/9, $color $scale * 25/90, $tr $scale * 5/9, $color $scale * 54/90, $tr);
     background-size: $scale / 3 $scale / 3, $scale $scale
 }
 
@@ -1179,4 +1181,68 @@ $tr: transparent;
       $scale / 2 0,
       $scale / 2 $scale / 2,
       0 0;
+}
+
+/// @group me
+/// @param {color} $ring-color [gold]
+/// @param {color} $line-color [black]
+/// @param {color} $background-color [black]
+/// @param {length} $scale [50px]
+/// @param {length} $ring-width [30%]
+/// @param {length} $line-width [5%]
+@mixin band-weave(
+  $ring-color: gold,
+  $line-color: black,
+  $background-color: black,
+  $scale: 50px,
+  $ring-width: 30%,
+  $line-width: 5%,
+) {
+    $line-width: percent-to-decimal($line-width) * $scale;
+    $ring-width: percent-to-decimal($ring-width) * $scale;
+    $ring-end:   percent-to-decimal(103%       ) * $scale;
+    $ring-start: $ring-end - $ring-width;
+    $line-start: ($ring-width - $line-width) / 2 + $ring-start;
+    $line-end: $line-start + $line-width;
+    $stops:
+      $tr $ring-start,
+      $ring-color $line-start,
+      $line-color $line-end,
+      $ring-color $ring-end,
+      $tr;
+
+    background-image:
+      sharp-radial-gradient(
+        circle at 100% 135%,
+        $stops...
+      ),
+      sharp-radial-gradient(
+        circle at 0% 135%,
+        $stops...
+      ),
+      sharp-radial-gradient(
+        circle at 100% 95%,
+        $stops...
+      ),
+      sharp-radial-gradient(
+        circle at 0% 95%,
+        $stops...
+      ),
+      sharp-radial-gradient(
+        circle at 100% 95%,
+        $stops...
+      ),
+      sharp-radial-gradient(
+        circle at 0% 95%,
+        $stops...
+      );
+    background-position:
+      0 (-$scale * .8),
+      0 (-$scale * .8),
+      0 $scale,
+      0 $scale,
+      0 0,
+      0 0;
+    background-color: $background-color;
+    background-size: $scale $scale * 2;
 }
