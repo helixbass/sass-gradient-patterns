@@ -1246,3 +1246,176 @@ $tr: transparent;
     background-color: $background-color;
     background-size: $scale $scale * 2;
 }
+
+/// @link http://thenewcode.com/810/Web-Developer-Reading-List-SVG-Text
+/// @param {color} $first-color [#ffb13b]
+/// @param {color} $stroke-color [black]
+/// @param {color} $background-color [white]
+/// @param {length} $scale [145px]
+/// @param {length} $size [30%]
+/// @param {length} $line-thickness [26.6%]
+/// @param {length} $dot-size [20%]
+/// @param {length} $stroke-width [20%]
+@mixin jacks(
+  $first-color: #ffb13b,
+  $stroke-color: black,
+  $background-color: white,
+  $scale: 145px,
+  $size: 30%,
+  $line-thickness: 26.6%,
+  $dot-size: 20%,
+  $stroke-width: 20%,
+) {
+    $size:           percent-to-decimal($size          );
+    $line-thickness: percent-to-decimal($line-thickness) * $scale * $size;
+    $dot-size:       percent-to-decimal($dot-size      ) * $scale * $size;
+    $stroke-width:   percent-to-decimal($stroke-width  ) * $scale * $size;
+
+    background-image:
+      sharp-radial-gradient(
+        circle at $scale * (.5 - sin(45deg) * $size) $scale * (1 - cos(45deg) * $size),
+        $first-color $dot-size,
+        $tr
+      ),
+      sharp-radial-gradient(
+        circle at $scale * (.5 + sin(45deg) * $size) $scale * (1 - cos(45deg) * $size),
+        $first-color $dot-size,
+        $tr
+      ),
+      sharp-radial-gradient(
+        circle at $scale * (.5 - $size + .02) 100%,
+        $first-color $dot-size,
+        $tr
+      ),
+      sharp-radial-gradient(
+        circle at $scale * (.5 + $size - .02) 100%,
+        $first-color $dot-size,
+        $tr
+      ),
+      sharp-radial-gradient(
+        circle at 50% $scale * (1 - $size),
+        $first-color $dot-size,
+        $tr
+      ),
+      sharp-radial-gradient(
+        circle at 100% $scale * (1 - cos(45deg) * $size),
+        $tr $dot-size,
+        $stroke-color $dot-size + $stroke-width,
+        $tr
+      ),
+      sharp-radial-gradient(
+        circle at $scale * (.5 - sin(45deg) * $size) 100%,
+        $tr $dot-size,
+        $stroke-color $dot-size + $stroke-width,
+        $tr
+      ),
+      sharp-radial-gradient(
+        circle at 0% $scale * (1 - cos(45deg) * $size),
+        $tr $dot-size,
+        $stroke-color $dot-size + $stroke-width,
+        $tr
+      ),
+      sharp-radial-gradient(
+        circle at $scale * (.5 + sin(45deg) * $size) 100%,
+        $tr $dot-size,
+        $stroke-color $dot-size + $stroke-width,
+        $tr
+      ),
+      sharp-radial-gradient(
+        circle at 100% 100%,
+        $tr $dot-size,
+        $stroke-color $dot-size + $stroke-width,
+        $tr
+      ),
+      sharp-radial-gradient(
+        circle at 0% 100%,
+        $tr $dot-size,
+        $stroke-color $dot-size + $stroke-width,
+        $tr
+      ),
+      sharp-radial-gradient(
+        circle at 50% 97%,
+        $tr $dot-size,
+        $stroke-color $dot-size + $stroke-width,
+        $tr
+      ),
+      // sharp-radial-gradient(
+      //   circle at $scale * (.5 - sin(45deg) * $size) $scale * (1 - cos(45deg) * $size),
+      //   $stroke-color $dot-size + $stroke-width,
+      //   $tr
+      // ),
+      // sharp-radial-gradient(
+      //   circle at $scale * (.5 + sin(45deg) * $size) $scale * (1 - cos(45deg) * $size),
+      //   $stroke-color $dot-size + $stroke-width,
+      //   $tr
+      // ),
+      // sharp-radial-gradient(
+      //   circle at $scale * (.5 - $size + .02) 100%,
+      //   $stroke-color $dot-size + $stroke-width,
+      //   $tr
+      // ),
+      // sharp-radial-gradient(
+      //   circle at $scale * (.5 + $size - .02) 100%,
+      //   $stroke-color $dot-size + $stroke-width,
+      //   $tr
+      // ),
+      // sharp-radial-gradient(
+      //   circle at 50% $scale * (1 - $size),
+      //   $stroke-color $dot-size + $stroke-width,
+      //   $tr
+      // ),
+      sharp-radial-gradient(
+        circle at 50% 100%,
+        $tr $scale * $size,
+        $background-color
+      ),
+      sharp-linear-gradient(
+        0deg,
+        $first-color $scale * .01 + $line-thickness / 2,
+        $tr
+      ),
+      sharp-linear-gradient(
+        -45deg,
+        $tr          $scale * .35 - $line-thickness / 2,
+        $first-color $scale * .35 + $line-thickness / 2,
+        $tr
+      ),
+      sharp-linear-gradient(
+        90deg,
+        $tr          $scale * .5 - $line-thickness / 2,
+        $first-color $scale * .5 + $line-thickness / 2,
+        $tr
+      ),
+      sharp-linear-gradient(
+        45deg,
+        $tr          $scale * .35 - $line-thickness / 2,
+        $first-color $scale * .35 + $line-thickness / 2,
+        $tr
+      ),
+      sharp-radial-gradient(
+        circle at 50% 100%,
+        $stroke-color $scale * $size,
+        $tr
+      );
+    background-position:
+      0 0,
+      0 0,
+      0 0,
+      0 0,
+      0 0,
+      $scale * (.5 - sin(45deg) * $size) - $scale 0,
+      0 $scale * (1 - cos(45deg) * $size),
+      $scale * (.5 + sin(45deg) * $size) - $scale 0,
+      0 $scale * (1 - cos(45deg) * $size),
+      $scale * (.5 - $size + .02) 0,
+      $scale * (.5 + $size - .02) 0,
+      0 $scale * (1 - $size + .03),
+      0 0,
+      0 0,
+      0 0,
+      0 0,
+      0 0,
+      0 0;
+    background-color: $background-color;
+    background-size: $scale $scale;
+}
