@@ -1283,12 +1283,12 @@ $tr: transparent;
         $tr
       ),
       sharp-radial-gradient(
-        circle at $scale * (.5 - $size + .02) 100%,
+        circle at $scale * (.5 - $size + $size / 15) 100%,
         $first-color $dot-size,
         $tr
       ),
       sharp-radial-gradient(
-        circle at $scale * (.5 + $size - .02) 100%,
+        circle at $scale * (.5 + $size - $size / 15) 100%,
         $first-color $dot-size,
         $tr
       ),
@@ -1371,7 +1371,7 @@ $tr: transparent;
       ),
       sharp-linear-gradient(
         0deg,
-        $first-color $scale * .01 + $line-thickness / 2,
+        $first-color $line-thickness * .125 + $line-thickness / 2,
         $tr
       ),
       sharp-linear-gradient(
