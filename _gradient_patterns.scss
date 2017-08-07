@@ -1256,7 +1256,7 @@ $tr: transparent;
 /// @param {length} $line-thickness [26.6%]
 /// @param {length} $dot-size [20%]
 /// @param {length} $stroke-width [20%]
-@mixin jacks(
+@mixin svg-logo(
   $first-color: #ffb13b,
   $stroke-color: black,
   $background-color: white,
@@ -1272,6 +1272,7 @@ $tr: transparent;
     $stroke-width:   percent-to-decimal($stroke-width  ) * $scale * $size;
 
     background-image:
+      // top half dots
       sharp-radial-gradient(
         circle at $scale * (.5 - sin(45deg) * $size) $scale * (1 - cos(45deg) * $size),
         $first-color $dot-size,
@@ -1297,6 +1298,7 @@ $tr: transparent;
         $first-color $dot-size,
         $tr
       ),
+      // top half strokes
       sharp-radial-gradient(
         circle at 100% $scale * (1 - cos(45deg) * $size),
         $tr $dot-size,
@@ -1364,11 +1366,13 @@ $tr: transparent;
       //   $stroke-color $dot-size + $stroke-width,
       //   $tr
       // ),
+      // top half cutoff
       sharp-radial-gradient(
         circle at 50% 100%,
         $tr $scale * $size,
         $background-color
       ),
+      // top half lines
       sharp-linear-gradient(
         0deg,
         $first-color $line-thickness * .125 + $line-thickness / 2,
@@ -1392,6 +1396,7 @@ $tr: transparent;
         $first-color $scale * .35 + $line-thickness / 2,
         $tr
       ),
+      // top half stroke circle
       sharp-radial-gradient(
         circle at 50% 100%,
         $stroke-color $scale * $size,
@@ -1418,4 +1423,134 @@ $tr: transparent;
       0 0;
     background-color: $background-color;
     background-size: $scale $scale;
+}
+
+/// @link http://bennettfeely.com/gradients/
+/// @group blend-modes
+/// @param {color} $first-color [yellow]
+/// @param {color} $second-color [cyan]
+/// @param {color} $third-color [magenta]
+/// @param {color} $background-color [floralwhite]
+/// @param {length} $scale [8em]
+/// @param {length} $small-dot-size [40%]
+/// @param {length} $medium-dot-size [50%]
+/// @param {length} $large-dot-size [50%]
+@mixin dotsy(
+  $first-color: yellow,
+  $second-color: cyan,
+  $third-color: magenta,
+  $background-color: floralwhite,
+  $scale: 8em,
+  $small-dot-size: 40%,
+  $medium-dot-size: 50%,
+  $large-dot-size: 50%
+) {
+    background-image:
+      sharp-radial-gradient(
+        $first-color $large-dot-size,
+        $tr
+      ),
+      sharp-radial-gradient(
+        $second-color $medium-dot-size,
+        $tr
+      ),
+      sharp-radial-gradient(
+        $third-color $small-dot-size,
+        $tr
+      );
+    background-color: $background-color;
+    background-blend-mode: multiply;
+    background-size:
+      $scale $scale,
+      $scale * .75 $scale * .75,
+      $scale * .25 $scale * .25;
+    background-position:
+      0 0,
+      -33% -33%,
+      -200% -200%;
+}
+
+/// @link http://bennettfeely.com/gradients/
+/// @group blend-modes
+/// @param {color} $first-color [#dc143c]
+/// @param {color} $second-color [#3cb371]
+/// @param {color} $background-color [linen]
+/// @param {length} $scale [40px]
+/// @param {length} $ring-start [50%]
+/// @param {length} $ring-width [12.5%]
+@mixin ring-pairs(
+  $first-color: #dc143c,
+  $second-color: #3cb371,
+  $background-color: linen,
+  $scale: 40px,
+  $ring-start: 50%,
+  $ring-width: 12.5%,
+) {
+    $ring-start: percent-to-decimal($ring-start) * $scale;
+    $ring-width: percent-to-decimal($ring-width) * $scale;
+    $ring-end: $ring-start + $ring-width;
+    background-image:
+      sharp-radial-gradient(
+        $tr $ring-start,
+        $first-color $ring-end,
+        $tr
+      ),
+      sharp-radial-gradient(
+        $tr $ring-start,
+        $first-color $ring-end,
+        $tr
+      ),
+      sharp-radial-gradient(
+        $tr $ring-start,
+        $second-color $ring-end,
+        $tr
+      ),
+      sharp-radial-gradient(
+        $tr $ring-start,
+        $second-color $ring-end,
+        $tr
+      );
+    background-color: $background-color;
+    background-blend-mode: multiply;
+    background-size: $scale * 2 $scale * 2;
+    background-position:
+      $scale $scale,
+      $scale 0,
+      0 0,
+      0 $scale;
+}
+
+/// @link http://bennettfeely.com/gradients/
+/// @group blend-modes
+/// @param {color} $first-color [limegreen]
+/// @param {color} $second-color [skyblue]
+/// @param {color} $third-color [coral]
+/// @param {direction} $first-angle [180deg]
+/// @param {direction} $second-angle [90deg]
+/// @param {direction} $third-angle [-90deg]
+@mixin tri-fade(
+  $first-color: limegreen,
+  $second-color: skyblue,
+  $third-color: coral,
+  $first-angle: 180deg,
+  $second-angle: 90deg,
+  $third-angle: -90deg,
+) {
+    background-image:
+      linear-gradient(
+        $first-angle,
+        $first-color,
+        $tr
+      ),
+      linear-gradient(
+        $second-angle,
+        $second-color,
+        $tr
+      ),
+      linear-gradient(
+        $third-angle,
+        $third-color,
+        $tr
+      );
+    background-blend-mode: screen;
 }
