@@ -1672,7 +1672,7 @@ $default-threshold: pi()/180/10;
 /// @param {color} $top-color [#d00]
 /// @param {color} $bottom-color [#b00]
 /// @param {color} $mortar-color [silver]
-/// @param {length} $scale [58px]
+/// @param {length} $scale [58px] - hint: use a multiple of 2px
 /// @param {length} $mortar-width [6.9%]
 /// @param {length} $mortar-height [6.9%]
 @mixin bricks(
@@ -1689,7 +1689,7 @@ $default-threshold: pi()/180/10;
     $long-side-length:  $scale     - $mortar-width;
     $short-side-length: $scale / 2 - $mortar-height;
     $angle: atan($short-side-length / $long-side-length);
-    $gradient-length: sin($angle) * $long-side-length + $scale * .002;
+    $gradient-length: sin($angle) * $long-side-length + $scale * .003;
     background-image:
       sharp-linear-gradient(
         360deg - $angle,
@@ -1718,4 +1718,57 @@ $default-threshold: pi()/180/10;
       $mortar-width $scale / 2 + $mortar-height + $vertical-offset,
       $scale / 2 $scale / 2 + $vertical-offset,
       $mortar-width + $scale / 2 $mortar-height + $vertical-offset;
+}
+
+/// @link http://lea.verou.me/css3patterns/#pyramid
+/// @param {color} $first-color [#a7332b]
+/// @param {color} $second-color [#d45d55]
+/// @param {color} $third-color [#6a201b]
+/// @param {color} $fourth-color [#561a16]
+/// @param {length} $scale [20px]
+@mixin pyramid(
+  $first-color: #a7332b,
+  $second-color: #d45d55,
+  $third-color: #6a201b,
+  $fourth-color: #561a16,
+  $scale: 20px,
+) {
+    @if $first-color != #a7332b {
+      @if $second-color == #d45d55 {
+        $second-color: lighten(saturate($first-color, 1%), 17%);
+      }
+      @if $third-color == #6a201b {
+        $third-color: darken($first-color, 15%);
+      }
+      @if $fourth-color == #561a16 {
+        $fourth-color: darken($first-color, 20%);
+      }
+    }
+    background-image:
+      sharp-linear-gradient(
+        315deg,
+        $tr 75%,
+        $second-color
+      ),
+      sharp-linear-gradient(
+        45deg,
+        $tr 75%,
+        $second-color
+      ),
+      sharp-linear-gradient(
+        135deg,
+        $first-color 50%,
+        $tr
+      ),
+      sharp-linear-gradient(
+        45deg,
+        $third-color 50%,
+        $fourth-color
+      );
+    background-size: $scale $scale;
+    background-position:
+      - $scale / 2 0,
+      - $scale / 2 0,
+      0 0,
+      0 0;
 }
