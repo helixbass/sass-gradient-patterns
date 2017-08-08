@@ -1554,3 +1554,73 @@ $tr: transparent;
       );
     background-blend-mode: screen;
 }
+
+/// @link http://bennettfeely.com/gradients/
+/// @group blend-modes
+/// @param {color} $first-color [cyan]
+/// @param {color} $second-color [magenta]
+/// @param {color} $third-color [yellow]
+/// @param {direction} $first-angle [180deg]
+/// @param {direction} $second-angle [-45deg]
+/// @param {direction} $third-angle [45deg]
+@mixin hazy(
+  $first-color: cyan,
+  $second-color: magenta,
+  $third-color: yellow,
+  $first-angle: 180deg,
+  $second-angle: -45deg,
+  $third-angle: 45deg,
+) {
+    background-image:
+      linear-gradient(
+        $first-angle,
+        $first-color,
+        $tr
+      ),
+      linear-gradient(
+        $second-angle,
+        $second-color,
+        $tr
+      ),
+      linear-gradient(
+        $third-angle,
+        $third-color,
+        $tr
+      );
+    background-blend-mode: multiply;
+}
+
+/// @link http://lea.verou.me/css3patterns/#stairs
+/// @param {color} $color [#999]
+/// @param {color} $background-color [#444]
+/// @param {length} $scale [48px]
+@mixin stairs(
+  $color: #999,
+  $background-color: #444,
+  $scale: 48px,
+) {
+    background-image:
+      sharp-linear-gradient(
+        63deg,
+        $color 23%,
+        $tr
+      ),
+      linear-gradient(
+        63deg,
+        $tr 74%,
+        $color 78%
+      ),
+      linear-gradient(
+        63deg,
+        $tr 34%,
+        $color 38%,
+        $color 58%,
+        $tr 62%
+      );
+    background-color: $background-color;
+    background-size: $scale / 3 $scale;
+    background-position:
+      $scale * 7 / 48 0,
+      0 0,
+      0 0;
+}
