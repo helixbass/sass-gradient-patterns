@@ -143,6 +143,49 @@ $tr: transparent;
   @return sin($angle) / cos($angle);
 }
 
+@function unitless-rad-to-deg($rad) {
+  @return $rad * 180deg / pi();
+}
+
+@function atan($tan) {
+  $atan: 0;
+  // Iterate a bunch of times.
+  @for $i from 0 through 10 {
+    $atan: $atan + pow(-1, $i) * pow($tan, (2 * $i + 1)) / (2 * $i + 1);
+  }
+  @return unitless-rad-to-deg($atan);
+}
+
+// http://thesassway.com/advanced/inverse-trigonometric-functions-with-sass
+$default-threshold: pi()/180/10;
+@function asin($z, $threshold: $default-threshold) {
+  $sum: 0;
+  $complement: false;
+  $sign: $z/abs($z);
+  $z: abs($z);
+
+  @if $z > sin(pi()/4) {
+    $complement: true;
+    $z: sqrt(1 - pow($z, 2));
+  }
+
+  $term: $z;
+  $i: 0;
+  $k: 1;
+
+  @while $term > $threshold {
+    $sum: $sum + $term;
+
+    $i: $i + 1;
+    $k: $k*(2*$i - 1)/(2*$i);
+    $j: 2*$i + 1;
+
+    $term: $k*pow($z, $j)/$j;
+  }
+
+  @return unitless-rad-to-deg($sign * (if($complement, pi()/2 - $sum, $sum)));
+}
+
 // https://css-tricks.com/snippets/sass/strip-unit-function/
 @function strip-unit($number) {
   @if type-of($number) == 'number' and not unitless($number) {
@@ -1623,4 +1666,56 @@ $tr: transparent;
       $scale * 7 / 48 0,
       0 0,
       0 0;
+}
+
+/// @link http://lea.verou.me/css3patterns/#bricks
+/// @param {color} $top-color [#d00]
+/// @param {color} $bottom-color [#b00]
+/// @param {color} $mortar-color [silver]
+/// @param {length} $scale [58px]
+/// @param {length} $mortar-width [6.9%]
+/// @param {length} $mortar-height [6.9%]
+@mixin bricks(
+  $top-color: #d00,
+  $bottom-color: #b00,
+  $mortar-color: silver,
+  $scale: 58px,
+  $mortar-width: 6.9%,
+  $mortar-height: 6.9%,
+) {
+    $mortar-width:  percent-to-decimal($mortar-width ) * $scale;
+    $mortar-height: percent-to-decimal($mortar-height) * $scale;
+    $vertical-offset: $mortar-height / 2;
+    $long-side-length:  $scale     - $mortar-width;
+    $short-side-length: $scale / 2 - $mortar-height;
+    $angle: atan($short-side-length / $long-side-length);
+    $gradient-length: sin($angle) * $long-side-length + $scale * .002;
+    background-image:
+      sharp-linear-gradient(
+        360deg - $angle,
+        $bottom-color $gradient-length,
+        $tr
+      ),
+      sharp-linear-gradient(
+        180deg - $angle,
+        $top-color $gradient-length,
+        $tr
+      ),
+      sharp-linear-gradient(
+        360deg - $angle,
+        $bottom-color $gradient-length,
+        $tr
+      ),
+      sharp-linear-gradient(
+        180deg - $angle,
+        $top-color $gradient-length,
+        $tr
+      );
+    background-color: $mortar-color;
+    background-size: $scale $scale;
+    background-position:
+      0 $vertical-offset,
+      $mortar-width $scale / 2 + $mortar-height + $vertical-offset,
+      $scale / 2 $scale / 2 + $vertical-offset,
+      $mortar-width + $scale / 2 $mortar-height + $vertical-offset;
 }
