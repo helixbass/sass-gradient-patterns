@@ -1772,3 +1772,136 @@ $default-threshold: pi()/180/10;
       0 0,
       0 0;
 }
+
+/// @link http://lea.verou.me/css3patterns/#houndstooth
+/// @param {color} $color [black]
+/// @param {color} $background-color [white]
+/// @param {length} $scale [2em]
+@mixin houndstooth(
+  $color: black,
+  $background-color: white,
+  $scale: 2em,
+) {
+    background-image:
+      sharp-linear-gradient(
+        -45deg,
+        $background-color 25%,
+        $tr 75%,
+        $color
+      ),
+      sharp-linear-gradient(
+        -45deg,
+        $color 25%,
+        $tr 75%,
+        $background-color
+      ),
+      sharp-linear-gradient(
+        45deg,
+        $color 17%,
+        $tr 25%,
+        $color 36%,
+        $tr 64%,
+        $color 75%,
+        $tr 83%,
+        $color
+      );
+    background-color: $background-color;
+    background-size: $scale $scale;
+    background-position:
+      0 0,
+      $scale / 2 $scale / 2,
+      $scale / 2 $scale / 2;
+}
+
+/// @link http://lea.verou.me/css3patterns/#wave
+/// @param {color} $sky-color [white]
+/// @param {color} $water-color [#48b]
+/// @param {length} $wave-width [55px]
+/// @param {length} $offset [200px]
+@mixin wave(
+  $sky-color: white,
+  $water-color: #48b,
+  $wave-width: 55px,
+  $offset: 200px,
+) {
+    background-image:
+      sharp-linear-gradient(
+        $sky-color 50%,
+        $tr
+      ),
+      sharp-radial-gradient(
+        circle closest-side,
+        $sky-color 53%,
+        $tr
+      ),
+      sharp-radial-gradient(
+        circle closest-side,
+        $sky-color 50%,
+        $tr
+      );
+    background-color: $water-color;
+    background-size: $wave-width * 2 $offset;
+    background-position:
+      0 0,
+      0 0,
+      $wave-width 0;
+    background-repeat: repeat-x;
+}
+
+/// @link http://bennettfeely.com/gradients/
+/// @group blend-modes
+/// @param {color} $first-color [hotpink]
+/// @param {color} $second-color [tomato]
+/// @param {color} $third-color [cornflowerblue]
+/// @param {color} $fourth-color [gold]
+/// @param {color} $background-color [white]
+/// @param {length} $scale [10em]
+/// @param {length} $first-ring-size [10%]
+/// @param {length} $second-ring-size [40%]
+/// @param {length} $third-ring-size [40%]
+@mixin hot-tomato(
+  $first-color: hotpink,
+  $second-color: tomato,
+  $third-color: cornflowerblue,
+  $fourth-color: gold,
+  $background-color: white,
+  $scale: 10em,
+  $first-ring-size: 10%,
+  $second-ring-size: 40%,
+  $third-ring-size: 40%,
+) {
+    $first-ring-size:  percent-to-decimal($first-ring-size ) * $scale;
+    $second-ring-size: percent-to-decimal($second-ring-size) * $scale;
+    $third-ring-size:  percent-to-decimal($third-ring-size ) * $scale;
+    background-image:
+      repeating-radial-gradient(
+        $tr,
+        $tr           $scale * .3,
+        $first-color  $scale * .3,
+        $tr           $scale * .6,
+        $second-color $scale * .65
+      ),
+      repeating-radial-gradient(
+        $tr           $scale * .1,
+        $third-color  $scale * .1,
+        $tr           $scale * .1 + $second-ring-size,
+        $third-color  $scale * .1 + $second-ring-size
+      ),
+      repeating-radial-gradient(
+        $tr,
+        $tr           $third-ring-size - $scale * .1,
+        $fourth-color $third-ring-size
+      ),
+      repeating-radial-gradient(
+        $tr,
+        $fourth-color $first-ring-size
+      );
+    background-color: $background-color;
+    background-size: $scale $scale;
+    background-position:
+      0 0,
+      $scale / 2 $scale / 2,
+      $scale / 2 0,
+      0 0;
+    background-blend-mode: multiply;
+}
