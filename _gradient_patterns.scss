@@ -2047,3 +2047,95 @@ $default-threshold: pi()/180/10;
       );
     background-color: $background-color;
 }
+
+/// @link http://bennettfeely.com/gradients/
+/// @param {color} $background-color [wheat]
+/// @param {color} $first-color [tomato]
+/// @param {length} $first-width [50%]
+/// @param {color} $second-color [dodgerblue]
+/// @param {length} $second-width [50%]
+/// @param {length} $scale [7em]
+/// @param {direction} $first-angle [-45deg]
+/// @param {direction} $second-angle [45deg]
+@mixin bingham(
+  $background-color: wheat,
+  $first-color: tomato,
+  $first-width: 50%,
+  $second-color: dodgerblue,
+  $second-width: 50%,
+  $scale: 7em,
+  $first-angle: -45deg,
+  $second-angle: 45deg,
+) {
+    $first-width:  percent-to-decimal($first-width ) * $scale;
+    $second-width: percent-to-decimal($second-width) * $scale;
+    $first-start:  ($scale - $first-width ) / 2;
+    $second-start: ($scale - $second-width) / 2;
+    background-image:
+      sharp-repeating-linear-gradient(
+        $first-angle,
+        $tr $first-start,
+        $first-color $first-start + $first-width,
+        $tr $scale
+      ),
+      sharp-repeating-linear-gradient(
+        $second-angle,
+        $tr $second-start,
+        $second-color $second-start + $second-width,
+        $tr $scale
+      );
+    background-color: $background-color;
+    background-blend-mode: multiply;
+}
+
+/// @link http://bennettfeely.com/gradients/
+/// @param {color} $background-color [whitesmoke]
+/// @param {color} $first-color [moccasin]
+/// @param {color} $second-color [powderblue]
+/// @param {color} $third-color [lavender]
+/// @param {color} $fourth-color [beige]
+/// @param {color} $fifth-color [khaki]
+/// @param {color} $sixth-color [peachpuff]
+/// @param {length} $scale [2em]
+/// @param {direction} $first-angle [-45deg]
+/// @param {direction} $second-angle [45deg]
+/// @param {length} $stripe-width [50%]
+@mixin j-crew(
+  $background-color: whitesmoke,
+  $first-color: moccasin,
+  $second-color: powderblue,
+  $third-color: lavender,
+  $fourth-color: beige,
+  $fifth-color: khaki,
+  $sixth-color: peachpuff,
+  $scale: 2em,
+  $first-angle: -45deg,
+  $second-angle: 45deg,
+  $stripe-width: 50%,
+) {
+    $stripe-width: percent-to-decimal($stripe-width) * $scale;
+    $tr-width: $scale - $stripe-width;
+    background-image:
+      sharp-repeating-linear-gradient(
+        $first-angle,
+        $tr               $tr-width,
+        $first-color      $tr-width +     $stripe-width,
+        $tr           2 * $tr-width +     $stripe-width,
+        $second-color 2 * $tr-width + 2 * $stripe-width,
+        $tr           3 * $tr-width + 2 * $stripe-width,
+        $third-color  3 * $tr-width + 3 * $stripe-width,
+        $tr           4 * $tr-width + 3 * $stripe-width,
+        $fourth-color 4 * $tr-width + 4 * $stripe-width,
+      ),
+      sharp-repeating-linear-gradient(
+        $second-angle,
+        $tr $tr-width,
+        $fifth-color      $tr-width +     $stripe-width,
+        $tr           2 * $tr-width +     $stripe-width,
+        $fourth-color 2 * $tr-width + 2 * $stripe-width,
+        $tr           3 * $tr-width + 2 * $stripe-width,
+        $sixth-color  3 * $tr-width + 3 * $stripe-width,
+      );
+    background-color: $background-color;
+    background-blend-mode: multiply;
+}
