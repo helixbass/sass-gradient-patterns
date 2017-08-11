@@ -1905,3 +1905,60 @@ $default-threshold: pi()/180/10;
       0 0;
     background-blend-mode: multiply;
 }
+
+/// @link http://lea.verou.me/css3patterns/#tartan
+/// @group lea-verou
+/// @param {color} $background-color [hsl(2, 57%, 40%)]
+/// @param {length} $scale [232px]
+/// @param {color} $thick-stripe-color [rgba(0, 0, 0, .5)]
+/// @param {length} $thick-stripe-width [50%]
+/// @param {color} $thin-stripe-color [rgba(0, 0, 0, .4)]
+/// @param {color} $thin-stripe-overlay-color [rgba(255, 255, 255, .2)]
+/// @param {length} $thin-stripe-width [1.3%]
+/// @param {length} $thin-stripe-between-width [4.3%]
+/// @param {color} $crossing-stripe-color [rgba(0, 0, 0, .2)]
+/// @param {length} $crossing-stripe-width [1px]
+/// @param {length} $crossing-stripe-gap [4px]
+/// @param {direction} $crossing-stripe-angle [125deg]
+@mixin tartan(
+  $background-color: hsl(2, 57%, 40%),
+  $scale: 232px,
+  $thick-stripe-color: rgba(0, 0, 0, .5),
+  $thick-stripe-width: 50%,
+  $thin-stripe-color: rgba(0, 0, 0, .4),
+  $thin-stripe-overlay-color: rgba(255, 255, 255, .2),
+  $thin-stripe-width: 1.3%,
+  $thin-stripe-between-width: 4.3%,
+  $crossing-stripe-color: rgba(0, 0, 0, .2),
+  $crossing-stripe-width: 1px,
+  $crossing-stripe-gap: 4px,
+  $crossing-stripe-angle: 125deg,
+) {
+    $thick-stripe-width: percent-to-decimal($thick-stripe-width) * $scale;
+    $thin-stripe-width:  percent-to-decimal($thin-stripe-width ) * $scale;
+    $thin-stripe-between-width: percent-to-decimal($thin-stripe-between-width ) * $scale;
+    $tr-total-width: $scale - $thick-stripe-width;
+    $tr-single-width: ($tr-total-width - 2 * $thin-stripe-width - $thin-stripe-between-width) / 2;
+    $thick-stripe-single-width: ($thick-stripe-width - 2 * $thin-stripe-width - $thin-stripe-between-width) / 2;
+    $stops:
+      $tr $tr-single-width,
+      $thin-stripe-color         $tr-single-width + $thin-stripe-width,
+      $tr                        $tr-single-width + $thin-stripe-width + $thin-stripe-between-width,
+      $thin-stripe-color         $tr-single-width + 2 * $thin-stripe-width + $thin-stripe-between-width,
+      $tr 2 * $tr-single-width + 2 * $thin-stripe-width + $thin-stripe-between-width,
+      $thick-stripe-color        2 * $tr-single-width + 2 * $thin-stripe-width + $thin-stripe-between-width + $thick-stripe-single-width,
+      $thin-stripe-overlay-color 2 * $tr-single-width + 3 * $thin-stripe-width + $thin-stripe-between-width + $thick-stripe-single-width,
+      $thick-stripe-color        2 * $tr-single-width + 3 * $thin-stripe-width + 2 * $thin-stripe-between-width + $thick-stripe-single-width,
+      $thin-stripe-overlay-color 2 * $tr-single-width + 4 * $thin-stripe-width + 2 * $thin-stripe-between-width + $thick-stripe-single-width,
+      $thick-stripe-color        2 * $tr-single-width + 4 * $thin-stripe-width + 2 * $thin-stripe-between-width + 2 * $thick-stripe-single-width;
+    background-image:
+      sharp-repeating-linear-gradient(        $stops...),
+      sharp-repeating-linear-gradient(270deg, $stops...),
+      sharp-repeating-linear-gradient(
+        $crossing-stripe-angle,
+        $tr                    $crossing-stripe-gap / 2,
+        $crossing-stripe-color $crossing-stripe-gap / 2 + $crossing-stripe-width,
+        $tr                    $crossing-stripe-gap     + $crossing-stripe-width,
+      );
+    background-color: $background-color;
+}
