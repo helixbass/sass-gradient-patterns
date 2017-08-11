@@ -1962,3 +1962,88 @@ $default-threshold: pi()/180/10;
       );
     background-color: $background-color;
 }
+
+/// @link http://lea.verou.me/css3patterns/#carbon-fibre
+/// @param {color} $background-color [#282828]
+/// @param {color} $hole-color [black]
+/// @param {color} $shadow-color [rgba(255, 255, 255, .1)]
+/// @param {length} $scale [16px]
+@mixin carbon-fibre(
+  $background-color: #282828,
+  $hole-color: black,
+  $shadow-color: rgba(255, 255, 255, .1),
+  $scale: 16px,
+) {
+    $shadow-size: $scale * .0625;
+    background-image:
+      fuzzy-radial-gradient(
+        $hole-color 15%,
+        $tr
+      ),
+      fuzzy-radial-gradient(
+        $hole-color 15%,
+        $tr
+      ),
+      radial-gradient(
+        $shadow-color 15%,
+        $tr 20%
+      ),
+      radial-gradient(
+        $shadow-color 15%,
+        $tr 20%
+      );
+    background-position:
+      0 0,
+      $scale / 2 $scale / 2,
+      0 $shadow-size,
+      $scale / 2 $scale / 2 + $shadow-size;
+    background-color: $background-color;
+    background-size: $scale $scale;
+}
+
+/// @link http://lea.verou.me/css3patterns/#cicada-stripes
+/// @param {color} $background-color [#026873]
+/// @param {color} $first-color [rgba(255, 255, 255, .07)]
+/// @param {length} $first-size [13px]
+/// @param {color} $second-color [rgba(255, 255, 255, .13)]
+/// @param {length} $second-size [29px]
+/// @param {color} $third-color [rgba(255, 255, 255, .17)]
+/// @param {length} $third-size [37px]
+/// @param {color} $fourth-color [rgba(255, 255, 255, .19)]
+/// @param {length} $fourth-size [53px]
+/// @param {direction} $angle [90deg]
+@mixin cicada-stripes(
+  $background-color: #026873,
+  $first-color: rgba(255, 255, 255, .07),
+  $first-size: 13px,
+  $second-color: rgba(255, 255, 255, .13),
+  $second-size: 29px,
+  $third-color: rgba(255, 255, 255, .17),
+  $third-size: 37px,
+  $fourth-color: rgba(255, 255, 255, .19),
+  $fourth-size: 53px,
+  $angle: 90deg,
+) {
+    background-image:
+      sharp-repeating-linear-gradient(
+        $angle,
+        $first-color $first-size / 2,
+        $tr $first-size
+      ),
+      sharp-repeating-linear-gradient(
+        $angle,
+        $second-color $second-size / 2,
+        $tr $second-size
+      ),
+      sharp-repeating-linear-gradient(
+        $angle,
+        $tr $third-size / 2,
+        $third-color $third-size
+      ),
+      sharp-repeating-linear-gradient(
+        $angle,
+        $tr $fourth-size / 2,
+        $fourth-color $fourth-size
+      );
+    background-color: $background-color;
+}
