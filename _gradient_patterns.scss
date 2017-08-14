@@ -1,21 +1,25 @@
 @function sharp-linear-gradient($angle, $stops...) {
-  @return sharp-stagger(false, "linear", $angle, 0, $stops...);
+  @return sharp-stagger($angle: $angle, $stops: $stops);
 }
 
 @function sharp-repeating-linear-gradient($angle, $stops...) {
-  @return sharp-stagger(true, "linear", $angle, 0, $stops...);
+  @return sharp-stagger($repeating: true, $angle: $angle, $stops: $stops);
+}
+
+@function cumulative-sharp-repeating-linear-gradient($angle, $stops...) {
+  @return sharp-stagger($repeating: true, $cumulative: true, $angle: $angle, $stops: $stops);
 }
 
 @function sharp-radial-gradient($angle, $stops...) {
-  @return sharp-stagger(false, "radial", $angle, 0, $stops...);
+  @return sharp-stagger($type: 'radial', $angle: $angle, $stops: $stops);
 }
 
 @function fuzzy-radial-gradient($angle, $stops...) {
-  @return sharp-stagger(false, "radial", $angle, 1, $stops...);
+  @return sharp-stagger($type: 'radial', $angle: $angle, $stagger: 1, $stops: $stops);
 }
 
 @function sharp-repeating-radial-gradient($angle, $stops...) {
-  @return sharp-stagger(true, "radial", $angle, 0, $stops...);
+  @return sharp-stagger($repeating: true, $type: 'radial', $angle: $angle, $stops: $stops);
 }
 
 @function is-stop($angle) {
@@ -25,9 +29,10 @@
   @return type-of($angle) == 'color';
 }
 
-@function sharp-stagger($repeating, $type, $angle, $stagger, $stops...) {
+@function sharp-stagger($repeating: false, $type: 'linear', $angle: 180deg, $stagger: 0, $cumulative: false, $stops: ()) {
   $args: ();
   $has-angle: true;
+  $cum: 0;
 
   @if is-stop($angle) {
     $stops: join(append((), $angle, comma), $stops);
@@ -36,20 +41,33 @@
 
   @for $i from 1 through length($stops) {
     $stop: nth($stops, $i);
+    $stop-color: nth($stop, 1);
     $dump: ();
 
     @if $i > 1 {
       $previous-stop: nth($stops, $i - 1);
-      $dump: append($dump, nth($stop, 1) (nth($previous-stop, 2) + $stagger));
+      $previous-stop-pos: nth($previous-stop, 2);
+      $start-pos: 0;
+      @if $stagger > 0 {
+        $start-pos: $previous-stop-pos + $stagger;
+      }
+      $dump: append($dump, $stop-color $start-pos);
       @if $i != length($stops) or $repeating {
+        @if $cumulative {
+          $cum: $cum + nth($stop, 2);
+          $stop: $stop-color $cum;
+        }
         $dump: append($dump, $stop);
       }
     }
     @else {
       @if $repeating {
-        $dump: append($dump, nth($stop, 1) 0);
+        $dump: append($dump, $stop-color 0);
       }
       $dump: append($dump, $stop);
+      @if $cumulative {
+        $cum: nth($stop, 2);
+      }
     }
 
     $args: join($args, $dump, comma);
@@ -2097,8 +2115,8 @@ $default-threshold: pi()/180/10;
 /// @param {color} $fifth-color [khaki]
 /// @param {color} $sixth-color [peachpuff]
 /// @param {length} $scale [2em]
-/// @param {direction} $first-angle [-45deg]
-/// @param {direction} $second-angle [45deg]
+/// @param {direction} $first-angle [45deg]
+/// @param {direction} $second-angle [-45deg]
 /// @param {length} $stripe-width [50%]
 @mixin j-crew(
   $background-color: whitesmoke,
@@ -2109,8 +2127,8 @@ $default-threshold: pi()/180/10;
   $fifth-color: khaki,
   $sixth-color: peachpuff,
   $scale: 2em,
-  $first-angle: -45deg,
-  $second-angle: 45deg,
+  $first-angle: 45deg,
+  $second-angle: -45deg,
   $stripe-width: 50%,
 ) {
     $stripe-width: percent-to-decimal($stripe-width) * $scale;
@@ -2137,5 +2155,153 @@ $default-threshold: pi()/180/10;
         $sixth-color  3 * $tr-width + 3 * $stripe-width,
       );
     background-color: $background-color;
+    background-blend-mode: multiply;
+}
+
+/// @link http://bennettfeely.com/gradients/
+/// @param {color} $first-color [firebrick]
+/// @param {color} $second-color [beige]
+/// @param {color} $third-color [forestgreen]
+/// @param {color} $fourth-color [gold]
+/// @param {color} $fifth-color [crimson]
+/// @param {length} $scale [60px]
+/// @param {direction} $first-angle [90deg]
+/// @param {direction} $second-angle [180deg]
+/// @param {length} $center-stripe-width [16.7%]
+/// @param {length} $surrounding-stripe-width [8.3%]
+@mixin thatchy(
+  $first-color: firebrick,
+  $second-color: beige,
+  $third-color: forestgreen,
+  $fourth-color: gold,
+  $fifth-color: crimson,
+  $scale: 60px,
+  $first-angle: 90deg,
+  $second-angle: 180deg,
+  $center-stripe-width: 16.7%,
+  $surrounding-stripe-width: 8.3%,
+) {
+    $center-stripe-width:      percent-to-decimal($center-stripe-width     ) * $scale;
+    $surrounding-stripe-width: percent-to-decimal($surrounding-stripe-width) * $scale;
+    $inter-stripe-width: ($scale - $center-stripe-width - 2 * $surrounding-stripe-width) / 2;
+    $stops:
+      $first-color      $inter-stripe-width,
+      $second-color     $inter-stripe-width +     $surrounding-stripe-width,
+      $third-color      $inter-stripe-width +     $surrounding-stripe-width + $center-stripe-width,
+      $fourth-color     $inter-stripe-width + 2 * $surrounding-stripe-width + $center-stripe-width,
+      $fifth-color  2 * $inter-stripe-width + 2 * $surrounding-stripe-width + $center-stripe-width;
+    background-image:
+      sharp-repeating-linear-gradient(
+        $first-angle,
+        $stops...
+      ),
+      sharp-repeating-linear-gradient(
+        $second-angle,
+        $stops...
+      );
+    background-blend-mode: multiply;
+}
+
+/// @link http://bennettfeely.com/gradients/
+/// @param {color} $first-color [crimson]
+/// @param {color} $background-color [orangered]
+/// @param {color} $third-color [orange]
+/// @param {color} $fourth-color [gold]
+/// @param {color} $fifth-color [white]
+/// @param {color} $sixth-color [lightblue]
+/// @param {color} $seventh-color [skyblue]
+/// @param {color} $eighth-color [steelblue]
+/// @param {color} $ninth-color [#38678f]
+/// @param {length} $scale [5em]
+/// @param {direction} $first-angle [180deg]
+/// @param {direction} $second-angle [90deg]
+@mixin chunk-street(
+  $first-color: crimson,
+  $background-color: orangered,
+  $third-color: orange,
+  $fourth-color: gold,
+  $fifth-color: white,
+  $sixth-color: lightblue,
+  $seventh-color: skyblue,
+  $eighth-color: steelblue,
+  $ninth-color: #38678f,
+  $scale: 5em,
+  $first-angle: 180deg,
+  $second-angle: 90deg,
+) {
+    $per: .05 * $scale;
+    $stops:
+      $first-color          $per,
+      $background-color  2 * $per,
+      $third-color       3 * $per,
+      $fourth-color      4 * $per,
+      $fifth-color       5 * $per,
+      $sixth-color       6 * $per,
+      $seventh-color     7 * $per,
+      $eighth-color      8 * $per,
+      $ninth-color       9 * $per,
+      $seventh-color    10 * $per,
+      $ninth-color      11 * $per,
+      $eighth-color     12 * $per,
+      $seventh-color    13 * $per,
+      $sixth-color      14 * $per,
+      $fifth-color      15 * $per,
+      $fourth-color     16 * $per,
+      $third-color      17 * $per,
+      $background-color 18 * $per,
+      $first-color      19 * $per,
+      $fourth-color     20 * $per;
+    background-image:
+      sharp-repeating-linear-gradient(
+        $first-angle,
+        $stops...
+      ),
+      sharp-repeating-linear-gradient(
+        $second-angle,
+        $stops...
+      );
+    background-blend-mode: multiply, normal;
+}
+
+/// @link http://bennettfeely.com/gradients/
+/// @param {color} $color [lightcoral]
+/// @param {color} $background-color [floralwhite]
+/// @param {length} $scale [80px]
+/// @param {direction} $first-angle [180deg]
+/// @param {direction} $second-angle [90deg]
+/// @param {length} $center-stripe-width [25%]
+/// @param {length} $surrounding-stripe-width [6.25%]
+/// @param {length} $surrounding-gap-width [6.25%]
+@mixin stringham(
+  $color: lightcoral,
+  $background-color: floralwhite,
+  $scale: 80px,
+  $first-angle: 180deg,
+  $second-angle: 90deg,
+  $center-stripe-width: 25%,
+  $surrounding-stripe-width: 6.25%,
+  $surrounding-gap-width: 6.25%,
+) {
+    $center-stripe-width:      percent-to-decimal($center-stripe-width     ) * $scale;
+    $surrounding-stripe-width: percent-to-decimal($surrounding-stripe-width) * $scale;
+    $surrounding-gap-width:    percent-to-decimal($surrounding-gap-width   ) * $scale;
+    $inter-gap-width: ($scale - $center-stripe-width - 2 * $surrounding-stripe-width - 2 * $surrounding-gap-width);
+    $stops:
+      $tr    $inter-gap-width * .25,
+      $color $surrounding-stripe-width,
+      $tr    $surrounding-gap-width,
+      $color $center-stripe-width,
+      $tr    $surrounding-gap-width,
+      $color $surrounding-stripe-width,
+      $tr    $inter-gap-width * .75;
+    background-image:
+      cumulative-sharp-repeating-linear-gradient(
+        $first-angle,
+        $stops...
+      ),
+      cumulative-sharp-repeating-linear-gradient(
+        $second-angle,
+        $stops...
+      );
     background-blend-mode: multiply;
 }
