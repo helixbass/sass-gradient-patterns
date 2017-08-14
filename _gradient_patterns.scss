@@ -6,6 +6,10 @@
   @return sharp-stagger($repeating: true, $angle: $angle, $stops: $stops);
 }
 
+@function offset-sharp-repeating-linear-gradient($angle, $stops...) {
+  @return sharp-stagger($repeating: true, $initial-offset: true, $angle: $angle, $stops: $stops);
+}
+
 @function cumulative-sharp-repeating-linear-gradient($angle, $stops...) {
   @return sharp-stagger($repeating: true, $cumulative: true, $angle: $angle, $stops: $stops);
 }
@@ -29,7 +33,7 @@
   @return type-of($angle) == 'color';
 }
 
-@function sharp-stagger($repeating: false, $type: 'linear', $angle: 180deg, $stagger: 0, $cumulative: false, $stops: ()) {
+@function sharp-stagger($repeating: false, $type: 'linear', $angle: 180deg, $stagger: 0, $cumulative: false, $initial-offset: false, $stops: ()) {
   $args: ();
   $has-angle: true;
   $cum: 0;
@@ -61,7 +65,7 @@
       }
     }
     @else {
-      @if $repeating {
+      @if $repeating and not $initial-offset {
         $dump: append($dump, $stop-color 0);
       }
       $dump: append($dump, $stop);
@@ -2304,4 +2308,97 @@ $default-threshold: pi()/180/10;
         $stops...
       );
     background-blend-mode: multiply;
+}
+
+/// @link http://lea.verou.me/css3patterns/#madras
+/// @param {color} $background-color [hsl(34, 53%, 82%)]
+/// @param {color} $first-color [hsla(197, 62%, 11%, 0.5)]
+/// @param {color} $second-color [hsla(5, 53%, 63%, 0.5)]
+/// @param {color} $third-color [hsla(35, 91%, 65%, 0.5)]
+/// @param {length} $scale [160px]
+/// @param {direction} $first-angle [45deg]
+/// @param {direction} $second-angle [135deg]
+@mixin madras(
+  $background-color: hsl(34, 53%, 82%),
+  $first-color: hsla(197, 62%, 11%, 0.5),
+  $second-color: hsla(5, 53%, 63%, 0.5),
+  $third-color: hsla(35, 91%, 65%, 0.5),
+  $scale: 160px,
+  $first-angle: 45deg,
+  $second-angle: 135deg,
+) {
+    background-image:
+      offset-sharp-repeating-linear-gradient(
+        $first-angle,
+        $tr           $scale * 5   / 160,
+        $first-color  $scale * 10  / 160,
+        $tr           $scale * 35  / 160,
+        $second-color $scale * 40  / 160,
+        $first-color  $scale * 50  / 160,
+        $tr           $scale * 60  / 160,
+        $second-color $scale * 70  / 160,
+        $third-color  $scale * 80  / 160,
+        $tr           $scale * 90  / 160,
+        $second-color $scale * 110 / 160,
+        $tr           $scale * 120 / 160,
+        $first-color  $scale * 140 / 160
+      ),
+      offset-sharp-repeating-linear-gradient(
+        $second-angle,
+        $tr           $scale * 5   / 160,
+        $first-color  $scale * 10  / 160,
+        $tr           $scale * 35  / 160,
+        $second-color $scale * 40  / 160,
+        $first-color  $scale * 50  / 160,
+        $tr           $scale * 60  / 160,
+        $second-color $scale * 70  / 160,
+        $third-color  $scale * 80  / 160,
+        $tr           $scale * 90  / 160,
+        $second-color $scale * 110 / 160,
+        $tr           $scale * 140 / 160,
+        $first-color  $scale
+      );
+    background-color: $background-color;
+}
+
+/// @link http://lea.verou.me/css3patterns/#argyle
+/// @param {color} $background-color [#6d695c]
+/// @param {color} $diamond-color [rgba(0, 0, 0, .1)]
+/// @param {color} $line-color [rgba(255, 255, 255, .1)]
+/// @param {length} $line-width [1px]
+/// @param {length} $scale [120px]
+@mixin argyle(
+  $background-color: #6d695c,
+  $diamond-color: rgba(0, 0, 0, .1),
+  $line-color: rgba(255, 255, 255, .1),
+  $line-width: 1px,
+  $scale: 120px
+) {
+  background-image:
+    sharp-repeating-linear-gradient(
+      120deg,
+      $line-color $line-width / 2,
+      $tr $scale / 2 - $line-width / 2,
+      $line-color $scale / 2
+    ),
+    sharp-repeating-linear-gradient(
+      60deg,
+      $line-color $line-width / 2,
+      $tr $scale / 2 - $line-width / 2,
+      $line-color $scale / 2
+    ),
+    sharp-linear-gradient(
+      60deg,
+      $diamond-color 25%,
+      $tr 75%,
+      $diamond-color
+    ),
+    sharp-linear-gradient(
+      120deg,
+      $diamond-color 25%,
+      $tr 75%,
+      $diamond-color
+    );
+  background-color: $background-color;
+  background-size: $scale * 7 / 12 $scale;
 }
