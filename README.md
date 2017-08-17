@@ -14,7 +14,7 @@ Check out the [interactive tool][tool] for customizing (and animating!) these mi
 
     OR [Download _gradient_patterns.scss](https://raw.github.com/helixbass/sass-gradient-patterns/master/_gradient_patterns.scss) to your Sass project.
 
-2. Import the partial in your Sass files (`@import 'gradient_patterns';`)
+2. Import the partial in your Sass files: `@import 'gradient_patterns';`
 
 3. Use any of the pattern mixins (see below for examples)
 
