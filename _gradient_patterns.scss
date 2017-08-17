@@ -2446,3 +2446,42 @@ $default-threshold: pi()/180/10;
   background-color: $background-color;
   background-size: $scale * 7 / 12 $scale;
 }
+
+/// @link http://lea.verou.me/css3patterns/#zig-zag
+/// @group lea-verou
+/// @param {color} $background-color [#EC173A]
+/// @param {color} $color [#ECEDDC]
+/// @param {length} $scale [100px]
+@mixin zig-zag(
+  $background-color: #EC173A,
+  $color: #ECEDDC,
+  $scale: 100px
+) {
+  $stops:
+    $color 25%,
+    $tr;
+  background-image:
+    sharp-linear-gradient(
+      135deg,
+      $stops...
+    ),
+    sharp-linear-gradient(
+      225deg,
+      $stops...
+    ),
+    sharp-linear-gradient(
+      315deg,
+      $stops...
+    ),
+    sharp-linear-gradient(
+      45deg,
+      $stops...
+    );
+  background-position:
+    - $scale / 2 0,
+    - $scale / 2 0,
+    0 0,
+    0 0;
+  background-color: $background-color;
+  background-size: $scale $scale;
+}
