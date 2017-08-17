@@ -4,7 +4,8 @@
   "description": "CSS3 gradient pattern Sass mixins",
   "keywords": [
     "sass",
-    "gradient"
+    "gradient",
+    "eyeglass-module"
   ],
   "ignore": [
     "sassdoc",
