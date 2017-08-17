@@ -381,6 +381,69 @@ $default-threshold: pi()/180/10;
     background-color: $background-color;
 }
 
+/// @link http://lea.verou.me/css3patterns/#carbon
+/// @group lea-verou
+/// @param {color} $background-color [#131313]
+/// @param {color} $first-color [#151515]
+/// @param {color} $second-color [#222]
+/// @param {color} $third-color [#1b1b1b]
+/// @param {color} $fourth-color [#1d1d1d]
+/// @param {color} $fifth-color [#1a1a1a]
+/// @param {color} $sixth-color [#242424]
+/// @param {length} $scale [20px]
+@mixin carbon(
+  $background-color: #131313,
+  $first-color: #151515,
+  $second-color: #222,
+  $third-color: #1b1b1b,
+  $fourth-color: #1d1d1d,
+  $fifth-color: #1a1a1a,
+  $sixth-color: #242424,
+  $scale: 20px
+) {
+    background-image:
+      sharp-linear-gradient(
+        27deg,
+        $first-color $scale * .25,
+        $tr
+      ),
+      sharp-linear-gradient(
+        207deg,
+        $first-color $scale * .25,
+        $tr
+      ),
+      sharp-linear-gradient(
+        27deg,
+        $second-color $scale * .25,
+        $tr
+      ),
+      sharp-linear-gradient(
+        207deg,
+        $second-color $scale * .25,
+        $tr
+      ),
+      sharp-linear-gradient(
+        90deg,
+        $third-color $scale * .5,
+        $tr
+      ),
+      sharp-linear-gradient(
+        $fourth-color 25%,
+        $fifth-color 50%,
+        $tr 75%,
+        $sixth-color
+      );
+    background-position:
+      0 $scale * .25,
+      $scale * .5 0,
+      0 $scale * .5,
+      $scale * .5 $scale * .25,
+      0 0,
+      0 0;
+    background-color: $background-color;
+    background-size: $scale $scale;
+}
+
 /// @link http://lea.verou.me/css3patterns/#marrakesh
 /// @group lea-verou
 /// @param {color} $background-color [white]
@@ -2148,6 +2211,69 @@ $default-threshold: pi()/180/10;
     background-blend-mode: multiply;
 }
 
+/// @link http://lea.verou.me/css3patterns/#starry-night
+/// @group lea-verou
+/// @param {color} $background-color [black]
+/// @param {color} $star-color [white]
+/// @param {length} $first-star-intensity [20%]
+/// @param {length} $first-star-size [2px]
+/// @param {length} $first-star-repeat [550px]
+/// @param {length} $second-star-intensity [15%]
+/// @param {length} $second-star-size [1px]
+/// @param {length} $second-star-repeat [350px]
+/// @param {length} $third-star-intensity [10%]
+/// @param {length} $third-star-size [2px]
+/// @param {length} $third-star-repeat [250px]
+@mixin starry-night(
+  $background-color: black,
+  $star-color: white,
+  $first-star-intensity: 20%,
+  $first-star-size: 2px,
+  $first-star-repeat: 550px,
+  $second-star-intensity: 15%,
+  $second-star-size: 1px,
+  $second-star-repeat: 350px,
+  $third-star-intensity: 10%,
+  $third-star-size: 2px,
+  $third-star-repeat: 250px
+) {
+    $first-star-intensity: percent-to-decimal($first-star-intensity);
+    $second-star-intensity: percent-to-decimal($second-star-intensity);
+    $third-star-intensity: percent-to-decimal($third-star-intensity);
+    background-image:
+      radial-gradient(
+        $star-color,
+        rgba($star-color, $first-star-intensity) $first-star-size,
+        $tr 40px
+      ),
+      radial-gradient(
+        $star-color,
+        rgba($star-color, $second-star-intensity) $second-star-size,
+        $tr 30px
+      ),
+      radial-gradient(
+        $star-color,
+        rgba($star-color, $third-star-intensity) $third-star-size,
+        $tr 40px
+      ),
+      radial-gradient(
+        rgba($star-color, .4),
+        rgba($star-color, .1) 2px,
+        $tr 30px
+      );
+    background-position:
+      0 0,
+      40px 60px,
+      130px 270px,
+      70px 100px;
+    background-color: $background-color;
+    background-size:
+      $first-star-repeat $first-star-repeat,
+      $second-star-repeat $second-star-repeat,
+      $third-star-repeat $third-star-repeat,
+      150px 150px;
+}
+
 /// @link http://bennettfeely.com/gradients/
 /// @group blend-modes
 /// @param {color} $background-color [whitesmoke]
@@ -2486,69 +2612,6 @@ $default-threshold: pi()/180/10;
   background-size: $scale $scale;
 }
 
-/// @link http://lea.verou.me/css3patterns/#carbon
-/// @group lea-verou
-/// @param {color} $background-color [#131313]
-/// @param {color} $first-color [#151515]
-/// @param {color} $second-color [#222]
-/// @param {color} $third-color [#1b1b1b]
-/// @param {color} $fourth-color [#1d1d1d]
-/// @param {color} $fifth-color [#1a1a1a]
-/// @param {color} $sixth-color [#242424]
-/// @param {length} $scale [20px]
-@mixin carbon(
-  $background-color: #131313,
-  $first-color: #151515,
-  $second-color: #222,
-  $third-color: #1b1b1b,
-  $fourth-color: #1d1d1d,
-  $fifth-color: #1a1a1a,
-  $sixth-color: #242424,
-  $scale: 20px
-) {
-    background-image:
-      sharp-linear-gradient(
-        27deg,
-        $first-color $scale * .25,
-        $tr
-      ),
-      sharp-linear-gradient(
-        207deg,
-        $first-color $scale * .25,
-        $tr
-      ),
-      sharp-linear-gradient(
-        27deg,
-        $second-color $scale * .25,
-        $tr
-      ),
-      sharp-linear-gradient(
-        207deg,
-        $second-color $scale * .25,
-        $tr
-      ),
-      sharp-linear-gradient(
-        90deg,
-        $third-color $scale * .5,
-        $tr
-      ),
-      sharp-linear-gradient(
-        $fourth-color 25%,
-        $fifth-color 50%,
-        $tr 75%,
-        $sixth-color
-      );
-    background-position:
-      0 $scale * .25,
-      $scale * .5 0,
-      0 $scale * .5,
-      $scale * .5 $scale * .25,
-      0 0,
-      0 0;
-    background-color: $background-color;
-    background-size: $scale $scale;
-}
-
 /// @link http://lea.verou.me/css3patterns/#rainbow-bokeh
 /// @group lea-verou
 /// @param {length} $first-bubble-size [470px]
@@ -2633,4 +2696,77 @@ $default-threshold: pi()/180/10;
       $fifth-bubble-size $fifth-bubble-size,
       $sixth-bubble-size $sixth-bubble-size,
       100% 100%;
+}
+
+/// @link http://lea.verou.me/css3patterns/#upholstery
+/// @group lea-verou
+/// @param {hue} $hue [0]
+/// @param {length} $button-size [10%]
+/// @param {length} $scale [100px]
+@mixin upholstery(
+  $hue: 0,
+  $button-size: 10%,
+  $scale: 100px
+) {
+    background-image:
+      radial-gradient(
+        hsl($hue, 100%, 27%)     $button-size * .4,
+        hsl($hue, 100%, 18%)     $button-size * .9,
+        hsla($hue, 100%, 20%, 0) $button-size * .9
+      ),
+      radial-gradient(
+        hsl($hue, 100%, 27%)     $button-size * .4,
+        hsl($hue, 100%, 18%)     $button-size * .8,
+        hsla($hue, 100%, 20%, 0) $button-size
+      ),
+      radial-gradient(
+        hsla($hue, 100%, 30%, .8) 20%,
+        hsla($hue, 100%, 20%, 0)
+      ),
+      radial-gradient(
+        hsla($hue, 100%, 30%, .8) 20%,
+        hsla($hue, 100%, 20%, 0)
+      ),
+      radial-gradient(
+        hsla($hue, 100%, 20%, 1) 35%,
+        hsla($hue, 100%, 20%, 0) 60%
+      ),
+      radial-gradient(
+        hsla($hue, 100%, 20%, 1) 35%,
+        hsla($hue, 100%, 20%, 0) 60%
+      ),
+      radial-gradient(
+        hsla($hue, 100%, 15%, .7) 35%,
+        hsla($hue, 100%, 20%, 0)
+      ),
+      radial-gradient(
+        hsla($hue, 100%, 15%, .7) 35%,
+        hsla($hue, 100%, 20%, 0)
+      ),
+      linear-gradient(
+        45deg,
+        hsla($hue, 100%, 20%, 0) 49%,
+        hsla($hue, 100%, 0%, 1) 50%,
+        hsla($hue, 100%, 20%, 0) 70%
+      ),
+      linear-gradient(
+        -45deg,
+        hsla($hue, 100%, 20%, 0) 49%,
+        hsla($hue, 100%, 0%, 1) 50%,
+        hsla($hue, 100%, 20%, 0) 70%
+      );
+    background-position:
+      0 0,
+      $scale / 2 $scale / 2,
+      $scale / 2 0,
+      0 $scale / 2,
+      $scale / 2 0,
+      $scale $scale / 2,
+      0 0,
+      $scale / 2 $scale / 2,
+      0 0,
+      0 0;
+    background-color: hsl($hue, 100%, 10%);
+    background-size:
+      $scale $scale;
 }
