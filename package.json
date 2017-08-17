@@ -22,6 +22,11 @@
     "test": "./scripts/test.sh",
     "sassdoc": "./scripts/sassdoc.sh"
   },
+  "eyeglass": {
+    "needs": ">= 0.8.2",
+    "sassDir": "./_mq.scss",
+    "exports": false
+  },
   "repository": "https://github.com/helixbass/sass-gradient-patterns.git",
   "bugs": {
     "url": "https://github.com/helixbass/sass-gradient-patterns/issues"

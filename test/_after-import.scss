@@ -1,0 +1,7 @@
+.test-simple {
+  @include gingham;
+}
+
+.test-params {
+  @include gingham($scale: 100px, $color-width: 80%);
+}
