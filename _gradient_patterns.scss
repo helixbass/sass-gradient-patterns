@@ -2485,3 +2485,152 @@ $default-threshold: pi()/180/10;
   background-color: $background-color;
   background-size: $scale $scale;
 }
+
+/// @link http://lea.verou.me/css3patterns/#carbon
+/// @group lea-verou
+/// @param {color} $background-color [#131313]
+/// @param {color} $first-color [#151515]
+/// @param {color} $second-color [#222]
+/// @param {color} $third-color [#1b1b1b]
+/// @param {color} $fourth-color [#1d1d1d]
+/// @param {color} $fifth-color [#1a1a1a]
+/// @param {color} $sixth-color [#242424]
+/// @param {length} $scale [20px]
+@mixin carbon(
+  $background-color: #131313,
+  $first-color: #151515,
+  $second-color: #222,
+  $third-color: #1b1b1b,
+  $fourth-color: #1d1d1d,
+  $fifth-color: #1a1a1a,
+  $sixth-color: #242424,
+  $scale: 20px
+) {
+    background-image:
+      sharp-linear-gradient(
+        27deg,
+        $first-color $scale * .25,
+        $tr
+      ),
+      sharp-linear-gradient(
+        207deg,
+        $first-color $scale * .25,
+        $tr
+      ),
+      sharp-linear-gradient(
+        27deg,
+        $second-color $scale * .25,
+        $tr
+      ),
+      sharp-linear-gradient(
+        207deg,
+        $second-color $scale * .25,
+        $tr
+      ),
+      sharp-linear-gradient(
+        90deg,
+        $third-color $scale * .5,
+        $tr
+      ),
+      sharp-linear-gradient(
+        $fourth-color 25%,
+        $fifth-color 50%,
+        $tr 75%,
+        $sixth-color
+      );
+    background-position:
+      0 $scale * .25,
+      $scale * .5 0,
+      0 $scale * .5,
+      $scale * .5 $scale * .25,
+      0 0,
+      0 0;
+    background-color: $background-color;
+    background-size: $scale $scale;
+}
+
+/// @link http://lea.verou.me/css3patterns/#rainbow-bokeh
+/// @group lea-verou
+/// @param {length} $first-bubble-size [470px]
+/// @param {length} $second-bubble-size [970px]
+/// @param {length} $third-bubble-size [410px]
+/// @param {length} $fourth-bubble-size [610px]
+/// @param {length} $fifth-bubble-size [530px]
+/// @param {length} $sixth-bubble-size [730px]
+/// @param {direction} $background-angle [45deg]
+@mixin rainbow-bokeh(
+  $first-bubble-size: 470px,
+  $second-bubble-size: 970px,
+  $third-bubble-size: 410px,
+  $fourth-bubble-size: 610px,
+  $fifth-bubble-size: 530px,
+  $sixth-bubble-size: 730px,
+  $background-angle: 45deg
+) {
+    background-image:
+      radial-gradient(
+        rgba(255, 255, 255, 0) 0,
+        rgba(255, 255, 255, .15) 30%,
+        rgba(255, 255, 255, .3) 32%,
+        rgba(255, 255, 255, 0) 33%
+      ),
+      radial-gradient(
+        rgba(255, 255, 255, 0) 0,
+        rgba(255, 255, 255, .1) 11%,
+        rgba(255, 255, 255, .3) 13%,
+        rgba(255, 255, 255, 0) 14%
+      ),
+      radial-gradient(
+        rgba(255, 255, 255, 0) 0,
+        rgba(255, 255, 255, .2) 17%,
+        rgba(255, 255, 255, .43) 19%,
+        rgba(255, 255, 255, 0) 20%
+      ),
+      radial-gradient(
+        rgba(255, 255, 255, 0) 0,
+        rgba(255, 255, 255, .2) 11%,
+        rgba(255, 255, 255, .4) 13%,
+        rgba(255, 255, 255, 0) 14%
+      ),
+      radial-gradient(
+        rgba(255, 255, 255, 0) 0,
+        rgba(255, 255, 255, .2) 11%,
+        rgba(255, 255, 255, .4) 13%,
+        rgba(255, 255, 255, 0) 14%
+      ),
+      radial-gradient(
+        rgba(255, 255, 255, 0) 0,
+        rgba(255, 255, 255, .1) 11%,
+        rgba(255, 255, 255, .2) 13%,
+        rgba(255, 255, 255, 0) 14%
+      ),
+      linear-gradient(
+        $background-angle,
+        #343702 0%,
+        #184500 20%,
+        #187546 30%,
+        #006782 40%,
+        #0b1284 50%,
+        #760ea1 60%,
+        #83096e 70%,
+        #840b2a 80%,
+        #b13e12 90%,
+        #e27412 100%
+      );
+    background-position:
+      0 0,
+      0 0,
+      0 110px,
+      -130px -170px,
+      130px 370px,
+      0 0,
+      0 0;
+    background-size:
+      $first-bubble-size $first-bubble-size,
+      $second-bubble-size $second-bubble-size,
+      $third-bubble-size $third-bubble-size,
+      $fourth-bubble-size $fourth-bubble-size,
+      $fifth-bubble-size $fifth-bubble-size,
+      $sixth-bubble-size $sixth-bubble-size,
+      100% 100%;
+}

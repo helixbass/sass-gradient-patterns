@@ -84,7 +84,7 @@ implement it.
 These patterns use CSS3 gradients (`linear-gradient()`, `radial-gradient()`, `repeating-linear-gradient()`, `repeating-radial-gradient()`)
 so depend on browser support, see eg [caniuse](http://caniuse.com)
 
-[sassdocs]: http://helixbass.net/projects/sass_gradient_patterns
+[sassdocs]: http://helixbass.net/sass_gradient_patterns_sassdoc/index.html
 [tool]: http://helixbass.net/projects/gradients
 
 ## License
