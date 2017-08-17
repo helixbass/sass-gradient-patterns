@@ -7,7 +7,7 @@ Lea Verou's [Patterns Gallery](http://lea.verou.me/css3patterns/),
 Bennett Feely's `background-blend-mode` [pattern gallery](http://bennettfeely.com/gradients/)
 and more.
 
-Check out the [interactive tool](tool) for customizing (and animating!) these mixins
+Check out the [interactive tool][tool] for customizing (and animating!) these mixins
 
 ## How to use it
 1. Install with [npm](https://www.npmjs.com/): `npm install sass-gradient-patterns --save`
@@ -19,13 +19,13 @@ Check out the [interactive tool](tool) for customizing (and animating!) these mi
 3. Use any of the pattern mixins (see below for examples)
 
 ## Included patterns
-[Here](sassdocs) is a list of
+[Here][sassdocs] is a list of
 all of the included mixins (grouped by source gallery) and their keyword parameters.
 <!-- All patterns from Lea Verou's and Beennett Feely's galleries are included. -->
 
 ## Customizing
 All of the mixins accept keyword parameters
-(listed [here](sassdocs) by mixin)
+(listed [here][sassdocs] by mixin)
 so that you can easily tweak 
 individual aspects (eg colors, angles, sizes) of the pattern. Or just include the mixin
 with no arguments for the default version of the pattern found in the original gallery.
@@ -75,8 +75,8 @@ feel free to open a Github [issue](https://github.com/helixbass/sass-gradient-pa
 ## Contributing
 Got more patterns to contribute? Or want to add more parameters to an existing pattern?
 Feel free to open a pull request on [Github](https://github.com/helixbass/sass-gradient-patterns).
-Please try and follow the Sassdoc conventions if you can so that the [documentation](sassdocs)
-and [interactive tool](tool) will update seamlessly.
+Please try and follow the Sassdoc conventions if you can so that the [documentation][sassdocs]
+and [interactive tool][tool] will update seamlessly.
 Or just open an issue with a link to a pattern you think is cool and I'll see if I can
 implement it.
 
