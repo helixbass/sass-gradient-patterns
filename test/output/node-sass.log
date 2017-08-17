@@ -1,8 +1,0 @@
-[31m{
-  "status": 1,
-  "file": "/Users/jrosse/prj/sass-gradient-patterns/_gradient_patterns.scss",
-  "line": 996,
-  "column": 24,
-  "message": "required parameters must precede optional parameters",
-  "formatted": "Error: required parameters must precede optional parameters\n        on line 996 of _gradient_patterns.scss\n>>   $other-angle: to left,\n   -----------------------^\n"
-}[39m

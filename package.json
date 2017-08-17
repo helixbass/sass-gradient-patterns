@@ -1,11 +1,10 @@
 {
   "name": "sass-gradient-patterns",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "CSS3 gradient pattern Sass mixins",
   "keywords": [
     "sass",
-    "gradient",
-    "eyeglass-module"
+    "gradient"
   ],
   "ignore": [
     "sassdoc",
@@ -22,11 +21,6 @@
   "scripts": {
     "test": "./scripts/test.sh",
     "sassdoc": "./scripts/sassdoc.sh"
-  },
-  "eyeglass": {
-    "needs": ">= 0.8.2",
-    "sassDir": "./_mq.scss",
-    "exports": false
   },
   "repository": "https://github.com/helixbass/sass-gradient-patterns.git",
   "bugs": {

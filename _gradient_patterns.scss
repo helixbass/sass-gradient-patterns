@@ -993,7 +993,7 @@ $default-threshold: pi()/180/10;
   $third-color: moccasin,
   $scale: 6em,
   $angle: to top left,
-  $other-angle: to left,
+  $other-angle: to left
 ) {
     $single-width: $scale / 3;
     background-image:
@@ -1291,7 +1291,7 @@ $default-threshold: pi()/180/10;
   $background-color: black,
   $scale: 50px,
   $ring-width: 30%,
-  $line-width: 5%,
+  $line-width: 5%
 ) {
     $line-width: percent-to-decimal($line-width) * $scale;
     $ring-width: percent-to-decimal($ring-width) * $scale;
@@ -1359,7 +1359,7 @@ $default-threshold: pi()/180/10;
   $size: 30%,
   $line-thickness: 26.6%,
   $dot-size: 20%,
-  $stroke-width: 20%,
+  $stroke-width: 20%
 ) {
     $size:           percent-to-decimal($size          );
     $line-thickness: percent-to-decimal($line-thickness) * $scale * $size;
@@ -1579,7 +1579,7 @@ $default-threshold: pi()/180/10;
   $background-color: linen,
   $scale: 40px,
   $ring-start: 50%,
-  $ring-width: 12.5%,
+  $ring-width: 12.5%
 ) {
     $ring-start: percent-to-decimal($ring-start) * $scale;
     $ring-width: percent-to-decimal($ring-width) * $scale;
@@ -1629,7 +1629,7 @@ $default-threshold: pi()/180/10;
   $third-color: coral,
   $first-angle: 180deg,
   $second-angle: 90deg,
-  $third-angle: -90deg,
+  $third-angle: -90deg
 ) {
     background-image:
       linear-gradient(
@@ -1664,7 +1664,7 @@ $default-threshold: pi()/180/10;
   $third-color: yellow,
   $first-angle: 180deg,
   $second-angle: -45deg,
-  $third-angle: 45deg,
+  $third-angle: 45deg
 ) {
     background-image:
       linear-gradient(
@@ -1693,7 +1693,7 @@ $default-threshold: pi()/180/10;
 @mixin stairs(
   $color: #999,
   $background-color: #444,
-  $scale: 48px,
+  $scale: 48px
 ) {
     background-image:
       sharp-linear-gradient(
@@ -1735,7 +1735,7 @@ $default-threshold: pi()/180/10;
   $mortar-color: silver,
   $scale: 58px,
   $mortar-width: 6.9%,
-  $mortar-height: 6.9%,
+  $mortar-height: 6.9%
 ) {
     $mortar-width:  percent-to-decimal($mortar-width ) * $scale;
     $mortar-height: percent-to-decimal($mortar-height) * $scale;
@@ -1786,7 +1786,7 @@ $default-threshold: pi()/180/10;
   $second-color: #d45d55,
   $third-color: #6a201b,
   $fourth-color: #561a16,
-  $scale: 20px,
+  $scale: 20px
 ) {
     @if $first-color != #a7332b {
       @if $second-color == #d45d55 {
@@ -1836,7 +1836,7 @@ $default-threshold: pi()/180/10;
 @mixin houndstooth(
   $color: black,
   $background-color: white,
-  $scale: 2em,
+  $scale: 2em
 ) {
     background-image:
       sharp-linear-gradient(
@@ -1879,7 +1879,7 @@ $default-threshold: pi()/180/10;
   $sky-color: white,
   $water-color: #48b,
   $wave-width: 55px,
-  $offset: 200px,
+  $offset: 200px
 ) {
     background-image:
       sharp-linear-gradient(
@@ -1925,7 +1925,7 @@ $default-threshold: pi()/180/10;
   $scale: 10em,
   $first-ring-size: 10%,
   $second-ring-size: 40%,
-  $third-ring-size: 40%,
+  $third-ring-size: 40%
 ) {
     $first-ring-size:  percent-to-decimal($first-ring-size ) * $scale;
     $second-ring-size: percent-to-decimal($second-ring-size) * $scale;
@@ -1989,7 +1989,7 @@ $default-threshold: pi()/180/10;
   $crossing-stripe-color: rgba(0, 0, 0, .2),
   $crossing-stripe-width: 1px,
   $crossing-stripe-gap: 4px,
-  $crossing-stripe-angle: 125deg,
+  $crossing-stripe-angle: 125deg
 ) {
     $thick-stripe-width: percent-to-decimal($thick-stripe-width) * $scale;
     $thin-stripe-width:  percent-to-decimal($thin-stripe-width ) * $scale;
@@ -2015,7 +2015,7 @@ $default-threshold: pi()/180/10;
         $crossing-stripe-angle,
         $tr                    $crossing-stripe-gap / 2,
         $crossing-stripe-color $crossing-stripe-gap / 2 + $crossing-stripe-width,
-        $tr                    $crossing-stripe-gap     + $crossing-stripe-width,
+        $tr                    $crossing-stripe-gap     + $crossing-stripe-width
       );
     background-color: $background-color;
 }
@@ -2030,7 +2030,7 @@ $default-threshold: pi()/180/10;
   $background-color: #282828,
   $hole-color: black,
   $shadow-color: rgba(255, 255, 255, .1),
-  $scale: 16px,
+  $scale: 16px
 ) {
     $shadow-size: $scale * .0625;
     background-image:
@@ -2081,7 +2081,7 @@ $default-threshold: pi()/180/10;
   $third-size: 37px,
   $fourth-color: rgba(255, 255, 255, .19),
   $fourth-size: 53px,
-  $angle: 90deg,
+  $angle: 90deg
 ) {
     background-image:
       sharp-repeating-linear-gradient(
@@ -2125,7 +2125,7 @@ $default-threshold: pi()/180/10;
   $second-width: 50%,
   $scale: 7em,
   $first-angle: -45deg,
-  $second-angle: 45deg,
+  $second-angle: 45deg
 ) {
     $first-width:  percent-to-decimal($first-width ) * $scale;
     $second-width: percent-to-decimal($second-width) * $scale;
@@ -2172,7 +2172,7 @@ $default-threshold: pi()/180/10;
   $scale: 2em,
   $first-angle: 45deg,
   $second-angle: -45deg,
-  $stripe-width: 50%,
+  $stripe-width: 50%
 ) {
     $stripe-width: percent-to-decimal($stripe-width) * $scale;
     $tr-width: $scale - $stripe-width;
@@ -2186,7 +2186,7 @@ $default-threshold: pi()/180/10;
         $tr           3 * $tr-width + 2 * $stripe-width,
         $third-color  3 * $tr-width + 3 * $stripe-width,
         $tr           4 * $tr-width + 3 * $stripe-width,
-        $fourth-color 4 * $tr-width + 4 * $stripe-width,
+        $fourth-color 4 * $tr-width + 4 * $stripe-width
       ),
       sharp-repeating-linear-gradient(
         $second-angle,
@@ -2195,7 +2195,7 @@ $default-threshold: pi()/180/10;
         $tr           2 * $tr-width +     $stripe-width,
         $fourth-color 2 * $tr-width + 2 * $stripe-width,
         $tr           3 * $tr-width + 2 * $stripe-width,
-        $sixth-color  3 * $tr-width + 3 * $stripe-width,
+        $sixth-color  3 * $tr-width + 3 * $stripe-width
       );
     background-color: $background-color;
     background-blend-mode: multiply;
@@ -2223,7 +2223,7 @@ $default-threshold: pi()/180/10;
   $first-angle: 90deg,
   $second-angle: 180deg,
   $center-stripe-width: 16.7%,
-  $surrounding-stripe-width: 8.3%,
+  $surrounding-stripe-width: 8.3%
 ) {
     $center-stripe-width:      percent-to-decimal($center-stripe-width     ) * $scale;
     $surrounding-stripe-width: percent-to-decimal($surrounding-stripe-width) * $scale;
@@ -2272,7 +2272,7 @@ $default-threshold: pi()/180/10;
   $ninth-color: #38678f,
   $scale: 5em,
   $first-angle: 180deg,
-  $second-angle: 90deg,
+  $second-angle: 90deg
 ) {
     $per: .05 * $scale;
     $stops:
@@ -2326,7 +2326,7 @@ $default-threshold: pi()/180/10;
   $second-angle: 90deg,
   $center-stripe-width: 25%,
   $surrounding-stripe-width: 6.25%,
-  $surrounding-gap-width: 6.25%,
+  $surrounding-gap-width: 6.25%
 ) {
     $center-stripe-width:      percent-to-decimal($center-stripe-width     ) * $scale;
     $surrounding-stripe-width: percent-to-decimal($surrounding-stripe-width) * $scale;
@@ -2368,7 +2368,7 @@ $default-threshold: pi()/180/10;
   $third-color: hsla(35, 91%, 65%, 0.5),
   $scale: 160px,
   $first-angle: 45deg,
-  $second-angle: 135deg,
+  $second-angle: 135deg
 ) {
     background-image:
       offset-sharp-repeating-linear-gradient(
