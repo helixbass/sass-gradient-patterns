@@ -1,0 +1,8 @@
+{
+  "package": {
+    "title": "Sass Gradient Patterns",
+    "name": "sass-gradient-patterns",
+    "homepage": "https://github.com/helixbass/sass-gradient-patterns",
+    "description": "Mixins for CSS3 gradient patterns"
+  }
+}

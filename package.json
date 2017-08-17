@@ -1,10 +1,33 @@
 {
   "name": "sass-gradient-patterns",
-  "version": "0.1",
+  "version": "0.1.0",
   "description": "CSS3 gradient pattern Sass mixins",
-  "main": "index.js",
-  "repository": "git@github.com:helixbass/sass-gradient-patterns.git",
-  "author": "Julian Rosse",
+  "keywords": [
+    "sass",
+    "gradient"
+  ],
+  "ignore": [
+    "sassdoc",
+    "scripts",
+    "**/.*",
+    "test"
+  ],
+  "files": [
+    "_gradient_patterns.scss",
+    "LICENSE",
+    "README.md"
+  ],
+  "main": "_gradient_patterns.scss",
+  "scripts": {
+    "test": "./scripts/test.sh",
+    "sassdoc": "./scripts/sassdoc.sh"
+  },
+  "repository": "https://github.com/helixbass/sass-gradient-patterns.git",
+  "bugs": {
+    "url": "https://github.com/helixbass/sass-gradient-patterns/issues"
+  },
+  "homepage": "http://helixbass.net/projects/sass_gradient_patterns",
+  "author": "Julian Rosse <julian@helixbass.net",
   "license": "MIT",
   "devDependencies": {
     "sassdoc": "^2.3.0"

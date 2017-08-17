@@ -222,6 +222,7 @@ $default-threshold: pi()/180/10;
 }
 
 /// @link http://lea.verou.me/css3patterns/#honeycomb
+/// @group lea-verou
 /// @param {color} $background-color [#fb1]
 /// @param {color} $line-color [#b71]
 /// @param {length} $scale [60px]
@@ -251,6 +252,7 @@ $default-threshold: pi()/180/10;
 }
 
 /// @link http://lea.verou.me/css3patterns/#tablecloth
+/// @group lea-verou
 /// @param {color} $color [rgb(200, 0, 0)]
 /// @param {color} $background-color [white]
 /// @param {length} $scale [50px]
@@ -267,6 +269,7 @@ $default-threshold: pi()/180/10;
 }
 
 /// @link http://lea.verou.me/css3patterns/#chocolate-weave
+/// @group lea-verou
 /// @param {color} $background-color [#753]
 /// @param {length} $scale [25px]
 /// @param {color} $first-color [#dca]
@@ -289,6 +292,7 @@ $default-threshold: pi()/180/10;
 }
 
 /// @link http://lea.verou.me/css3patterns/#seigaiha
+/// @group lea-verou
 /// @param {color} $color [white]
 /// @param {color} $background-color [silver]
 /// @param {length} $scale [100px]
@@ -304,11 +308,12 @@ $default-threshold: pi()/180/10;
 }
 
 /// @link http://lea.verou.me/css3patterns/#japanese-cube
+/// @group lea-verou
 /// @param {color} $background-color [#556]
 /// @param {color} $second-color [#445]
 /// @param {color} $third-color [#99a]
 /// @param {length} $scale [140px]
-@mixin cubes($background-color: #556, $second-color: #445, $third-color: #99a, $scale: 140px) {
+@mixin japanese-cube($background-color: #556, $second-color: #445, $third-color: #99a, $scale: 140px) {
     @if $background-color != #556 {
       @if $second-color == #445 {
         $second-color: darken(saturate($background-color, 2%), 7%);
@@ -377,6 +382,7 @@ $default-threshold: pi()/180/10;
 }
 
 /// @link http://lea.verou.me/css3patterns/#marrakesh
+/// @group lea-verou
 /// @param {color} $background-color [white]
 /// @param {color} $color [midnightblue]
 /// @param {length} $scale [90px] - hint: use a multiple of 3px
@@ -397,21 +403,27 @@ $default-threshold: pi()/180/10;
 }
 
 /// @link http://lea.verou.me/css3patterns/#diagonal-stripes
+/// @group lea-verou
 /// @param {color} $background-color [gray]
 /// @param {color} $stripe-color [rgba(255, 255, 255, .5)]
 /// @param {direction} $angle [45deg]
 /// @param {length} $scale [70px]
-/// @param {length} $stripe-width [$scale / 2 (35px)]
-@mixin diagonal-stripes($background-color: gray, $stripe-color: rgba(255, 255, 255, .5), $angle: 45deg, $scale: 70px, $stripe-width: $scale / 2) {
-    @if $stripe-width == 35px {
-      $stripe-width: $scale / 2;
-    }
+/// @param {length} $stripe-width [50%]
+@mixin diagonal-stripes(
+  $background-color: gray,
+  $stripe-color: rgba(255, 255, 255, .5),
+  $angle: 45deg,
+  $scale: 70px,
+  $stripe-width: 50%
+) {
+    $stripe-width: percent-to-decimal($stripe-width) * $scale;
     background-color: $background-color;
     background-image:
       repeating-linear-gradient($angle, $tr, $tr $scale - $stripe_width, $stripe-color $scale - $stripe_width, $stripe-color $scale);
 }
 
 /// @link http://lea.verou.me/css3patterns/#horizontal-stripes
+/// @group lea-verou
 /// @param {color} $background-color [gray]
 /// @param {color} $stripe-color [rgba(255, 255, 255, .5)]
 /// @param {length} $scale [50px]
@@ -424,6 +436,7 @@ $default-threshold: pi()/180/10;
 }
 
 /// @link http://lea.verou.me/css3patterns/#vertical-stripes
+/// @group lea-verou
 /// @param {color} $background-color [gray]
 /// @param {color} $stripe-color [rgba(255, 255, 255, .5)]
 /// @param {length} $scale [50px]
@@ -436,6 +449,7 @@ $default-threshold: pi()/180/10;
 }
 
 /// @link http://lea.verou.me/css3patterns/#microbial-mat
+/// @group lea-verou
 /// @param {color} $background-color [#8a3]
 /// @param {color} $line-color [#613]
 /// @param {length} $scale [20px]
@@ -458,6 +472,7 @@ $default-threshold: pi()/180/10;
 }
 
 /// @link http://lea.verou.me/css3patterns/#checkerboard
+/// @group lea-verou
 /// @param {color} $background-color [#eee]
 /// @param {color} $color [black]
 /// @param {length} $scale [60px]
@@ -474,6 +489,7 @@ $default-threshold: pi()/180/10;
 }
 
 /// @link http://lea.verou.me/css3patterns/#diagonal-checkerboard
+/// @group lea-verou
 /// @param {color} $background-color [#eee]
 /// @param {color} $color [black]
 /// @param {length} $scale [60px]
@@ -487,6 +503,7 @@ $default-threshold: pi()/180/10;
 }
 
 /// @link http://lea.verou.me/css3patterns/#weave
+/// @group lea-verou
 /// @param {color} $background-color [#708090]
 /// @param {color} $line-color [#d9ecff]
 /// @param {length} $scale [128px]
@@ -509,6 +526,7 @@ $default-threshold: pi()/180/10;
 }
 
 /// @link http://lea.verou.me/css3patterns/#hearts
+/// @group lea-verou
 /// @param {color} $background-color [#b03]
 /// @param {color} $color [#d35]
 /// @param {length} $scale [100px]
@@ -530,6 +548,7 @@ $default-threshold: pi()/180/10;
 }
 
 /// @link http://lea.verou.me/css3patterns/#arrows
+/// @group lea-verou
 /// @param {color} $background-color [#e1ebbd]
 /// @param {color} $color [#92baac]
 /// @param {length} $scale [128px]
@@ -547,6 +566,7 @@ $default-threshold: pi()/180/10;
 }
 
 /// @link http://lea.verou.me/css3patterns/#half-rombes
+/// @group lea-verou
 /// @param {color} $background-color [#36c]
 /// @param {color} $color [rgba(255, 255, 255, .8)]
 /// @param {length} $scale [15px]
@@ -567,6 +587,7 @@ $default-threshold: pi()/180/10;
 }
 
 /// @link http://lea.verou.me/css3patterns/#polka-dot
+/// @group lea-verou
 /// @param {color} $background-color [#001]
 /// @param {color} $dot-color [white]
 /// @param {length} $scale [60px]
@@ -590,6 +611,7 @@ $default-threshold: pi()/180/10;
 }
 
 /// @link http://lea.verou.me/css3patterns/#blueprint-grid
+/// @group lea-verou
 /// @param {color} $background-color [#269]
 /// @param {color} $thick-line-color [white]
 /// @param {color} $thin-line-color [rgba($thick-line-color, .3) (rgba(255, 255, 255, .3))]
@@ -613,6 +635,7 @@ $default-threshold: pi()/180/10;
 }
 
 /// @link http://lea.verou.me/css3patterns/#lined-paper
+/// @group lea-verou
 /// @param {color} $background-color [white]
 /// @param {color} $thick-line-color [#abced4]
 /// @param {color} $thin-line-color [#eee]
@@ -629,6 +652,7 @@ $default-threshold: pi()/180/10;
 }
 
 /// @link http://lea.verou.me/css3patterns/#steps
+/// @group lea-verou
 /// @param {color} $background-color [#ff7d9d]
 /// @param {color} $color [#c90032]
 /// @param {length} $scale [58px]
@@ -658,6 +682,7 @@ $default-threshold: pi()/180/10;
 }
 
 /// @link http://lea.verou.me/css3patterns/#waves
+/// @group lea-verou
 /// @param {color} $background-color [slategray]
 /// @param {color} $line-color [rgba(255, 255, 255, .3)]
 /// @param {length} $scale [100px]
@@ -674,6 +699,7 @@ $default-threshold: pi()/180/10;
 }
 
 /// @link http://lea.verou.me/css3patterns/#cross
+/// @group lea-verou
 /// @param {color} $background-color [slategray]
 /// @param {color} $line-color [#a8b1bb]
 /// @param {length} $scale [100px]
@@ -695,13 +721,14 @@ $default-threshold: pi()/180/10;
 }
 
 /// @link http://lea.verou.me/css3patterns/#yin-yang
+/// @group lea-verou
 /// @param {color} $background-color [#63773f]
 /// @param {color} $first-color [#d2caab]
 /// @param {color} $second-color [#364e27]
 /// @param {length} $scale [100px]
 /// @param {length} $size [16%]
 /// @param {length} $inner-circle-size [3%]
-// TODO: @param {direction} $rotation [0deg]
+/// @todo @param {direction} $rotation [0deg]
 @mixin yin-yang($background-color: #63773f, $first-color: #d2caab, $second-color: #364e27, $scale: 100px, $size: 16%, $inner-circle-size: 3%) {
     $tr-first-color:  rgba($first-color, 0);
     $tr-second-color: rgba($second-color, 0);
@@ -734,6 +761,7 @@ $default-threshold: pi()/180/10;
 }
 
 /// @link http://lea.verou.me/css3patterns/#stars
+/// @group lea-verou
 /// @param {color} $background-color [#232927]
 /// @param {color} $color [#e3d7bf]
 /// @param {length} $scale [100px]
@@ -780,6 +808,7 @@ $default-threshold: pi()/180/10;
 }
 
 /// @link http://lea.verou.me/css3patterns/#shippo
+/// @group lea-verou
 /// @param {color} $background-color [#def]
 /// @param {color} $color [rgba(0, 0, 0, .3)]
 /// @param {length} $scale [80px]
@@ -796,6 +825,7 @@ $default-threshold: pi()/180/10;
 }
 
 /// @link http://lea.verou.me/css3patterns/#brady-bunch
+/// @group lea-verou
 /// @param {color} $background-color [#c8d3a7]
 /// @param {color} $first-color [#b6cc66]
 /// @param {color} $second-color [#edffdb]
@@ -1255,7 +1285,7 @@ $default-threshold: pi()/180/10;
 /// @param {length} $scale [50px]
 /// @param {length} $ring-width [30%]
 /// @param {length} $line-width [5%]
-@mixin band-weave(
+@mixin viking(
   $ring-color: gold,
   $line-color: black,
   $background-color: black,
@@ -1656,6 +1686,7 @@ $default-threshold: pi()/180/10;
 }
 
 /// @link http://lea.verou.me/css3patterns/#stairs
+/// @group lea-verou
 /// @param {color} $color [#999]
 /// @param {color} $background-color [#444]
 /// @param {length} $scale [48px]
@@ -1691,6 +1722,7 @@ $default-threshold: pi()/180/10;
 }
 
 /// @link http://lea.verou.me/css3patterns/#bricks
+/// @group lea-verou
 /// @param {color} $top-color [#d00]
 /// @param {color} $bottom-color [#b00]
 /// @param {color} $mortar-color [silver]
@@ -1743,6 +1775,7 @@ $default-threshold: pi()/180/10;
 }
 
 /// @link http://lea.verou.me/css3patterns/#pyramid
+/// @group lea-verou
 /// @param {color} $first-color [#a7332b]
 /// @param {color} $second-color [#d45d55]
 /// @param {color} $third-color [#6a201b]
@@ -1796,6 +1829,7 @@ $default-threshold: pi()/180/10;
 }
 
 /// @link http://lea.verou.me/css3patterns/#houndstooth
+/// @group lea-verou
 /// @param {color} $color [black]
 /// @param {color} $background-color [white]
 /// @param {length} $scale [2em]
@@ -1836,6 +1870,7 @@ $default-threshold: pi()/180/10;
 }
 
 /// @link http://lea.verou.me/css3patterns/#wave
+/// @group lea-verou
 /// @param {color} $sky-color [white]
 /// @param {color} $water-color [#48b]
 /// @param {length} $wave-width [55px]
@@ -1986,6 +2021,7 @@ $default-threshold: pi()/180/10;
 }
 
 /// @link http://lea.verou.me/css3patterns/#carbon-fibre
+/// @group lea-verou
 /// @param {color} $background-color [#282828]
 /// @param {color} $hole-color [black]
 /// @param {color} $shadow-color [rgba(255, 255, 255, .1)]
@@ -2024,6 +2060,7 @@ $default-threshold: pi()/180/10;
 }
 
 /// @link http://lea.verou.me/css3patterns/#cicada-stripes
+/// @group lea-verou
 /// @param {color} $background-color [#026873]
 /// @param {color} $first-color [rgba(255, 255, 255, .07)]
 /// @param {length} $first-size [13px]
@@ -2071,6 +2108,7 @@ $default-threshold: pi()/180/10;
 }
 
 /// @link http://bennettfeely.com/gradients/
+/// @group blend-modes
 /// @param {color} $background-color [wheat]
 /// @param {color} $first-color [tomato]
 /// @param {length} $first-width [50%]
@@ -2111,6 +2149,7 @@ $default-threshold: pi()/180/10;
 }
 
 /// @link http://bennettfeely.com/gradients/
+/// @group blend-modes
 /// @param {color} $background-color [whitesmoke]
 /// @param {color} $first-color [moccasin]
 /// @param {color} $second-color [powderblue]
@@ -2163,6 +2202,7 @@ $default-threshold: pi()/180/10;
 }
 
 /// @link http://bennettfeely.com/gradients/
+/// @group blend-modes
 /// @param {color} $first-color [firebrick]
 /// @param {color} $second-color [beige]
 /// @param {color} $third-color [forestgreen]
@@ -2207,6 +2247,7 @@ $default-threshold: pi()/180/10;
 }
 
 /// @link http://bennettfeely.com/gradients/
+/// @group blend-modes
 /// @param {color} $first-color [crimson]
 /// @param {color} $background-color [orangered]
 /// @param {color} $third-color [orange]
@@ -2268,6 +2309,7 @@ $default-threshold: pi()/180/10;
 }
 
 /// @link http://bennettfeely.com/gradients/
+/// @group blend-modes
 /// @param {color} $color [lightcoral]
 /// @param {color} $background-color [floralwhite]
 /// @param {length} $scale [80px]
@@ -2311,6 +2353,7 @@ $default-threshold: pi()/180/10;
 }
 
 /// @link http://lea.verou.me/css3patterns/#madras
+/// @group lea-verou
 /// @param {color} $background-color [hsl(34, 53%, 82%)]
 /// @param {color} $first-color [hsla(197, 62%, 11%, 0.5)]
 /// @param {color} $second-color [hsla(5, 53%, 63%, 0.5)]
@@ -2362,6 +2405,7 @@ $default-threshold: pi()/180/10;
 }
 
 /// @link http://lea.verou.me/css3patterns/#argyle
+/// @group lea-verou
 /// @param {color} $background-color [#6d695c]
 /// @param {color} $diamond-color [rgba(0, 0, 0, .1)]
 /// @param {color} $line-color [rgba(255, 255, 255, .1)]
