@@ -21,7 +21,7 @@ Check out the [interactive tool][tool] for customizing (and animating!) these mi
 ## Included patterns
 [Here][sassdocs] is a list of
 all of the included mixins (grouped by source gallery) and their keyword parameters.
-<!-- All patterns from Lea Verou's and Beennett Feely's galleries are included. -->
+All patterns from Lea Verou's and Bennett Feely's galleries are included.
 
 ## Customizing
 All of the mixins accept keyword parameters

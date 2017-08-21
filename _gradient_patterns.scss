@@ -26,6 +26,10 @@
   @return sharp-stagger($repeating: true, $type: 'radial', $angle: $angle, $stops: $stops);
 }
 
+@function cumulative-sharp-radial-gradient($angle, $stops...) {
+  @return sharp-stagger($type: 'radial', $cumulative: true, $angle: $angle, $stops: $stops);
+}
+
 @function is-stop($angle) {
   @if type-of($angle) == 'list' {
     @return type-of(nth($angle, 1)) == 'color';
@@ -2769,4 +2773,324 @@ $default-threshold: pi()/180/10;
     background-color: hsl($hue, 100%, 10%);
     background-size:
       $scale $scale;
+}
+
+/// @link http://bennettfeely.com/gradients/
+/// @group blend-modes
+/// @param {color} $background-color [beige]
+/// @param {color} $first-color [wheat]
+/// @param {color} $second-color [forestgreen]
+/// @param {color} $third-color [crimson]
+/// @param {length} $scale [60px]
+/// @param {direction} $angle [to top left]
+/// @param {direction} $other-angle [to left]
+@mixin slanted-stripes-2(
+  $background-color: beige,
+  $first-color: wheat,
+  $second-color: forestgreen,
+  $third-color: crimson,
+  $scale: 60px,
+  $angle: to top left,
+  $other-angle: to left
+) {
+    $single-width: $scale / 3;
+    background-image:
+      sharp-repeating-linear-gradient($angle, $first-color $single-width, $tr $single-width * 2, $second-color $single-width * 3),
+      sharp-repeating-linear-gradient($other-angle, $third-color $single-width, $first-color $single-width * 2, $second-color $single-width * 3);
+    background-color: $background-color;
+    background-blend-mode: multiply;
+}
+
+/// @link http://bennettfeely.com/gradients/
+/// @group blend-modes
+/// @param {color} $background-color [wheat]
+/// @param {color} $first-color [#96526b]
+/// @param {color} $second-color [#f5cf66]
+/// @param {color} $third-color [#ebad60]
+/// @param {color} $fourth-color [#8bab8d]
+/// @param {length} $scale [20em]
+/// @param {direction} $angle [to top left]
+/// @param {direction} $other-angle [to top right]
+/// @param {length} $stripe-width [50%]
+@mixin chard(
+  $background-color: wheat,
+  $first-color: #96526b,
+  $second-color: #f5cf66,
+  $third-color: #ebad60,
+  $fourth-color: #8bab8d,
+  $scale: 20em,
+  $angle: to top left,
+  $other-angle: to top right,
+  $stripe-width: 50%
+) {
+    $stripe-width: percent-to-decimal($stripe-width) * $scale / 2;
+    $tr-width: $scale / 2 - $stripe-width;
+    background-image:
+      cumulative-sharp-repeating-linear-gradient(
+        $angle,
+        $tr $tr-width,
+        $first-color $stripe-width,
+        $tr $tr-width,
+        $second-color $stripe-width
+      ),
+      cumulative-sharp-repeating-linear-gradient(
+        $other-angle,
+        $tr $tr-width,
+        $third-color $stripe-width,
+        $tr $tr-width,
+        $fourth-color $stripe-width
+      );
+    background-color: $background-color;
+    background-blend-mode: multiply;
+}
+
+/// @link http://bennettfeely.com/gradients/
+/// @group blend-modes
+/// @param {color} $background-color [orangered]
+/// @param {color} $first-color [rgb(128, 0, 128)]
+/// @param {color} $second-color [rgb(0, 0, 139)]
+/// @param {color} $third-color [rgb(220, 20, 60)]
+/// @param {color} $fourth-color [rgb(255, 69, 0)]
+/// @param {length} $first-size [13em]
+/// @param {length} $second-size [11em]
+/// @param {length} $third-size [5em]
+/// @param {length} $fourth-size [11em]
+/// @param {length} $inner-ring-size [35%]
+/// @param {length} $outer-ring-size [55%]
+/// @param {opacity} $opacity [.4]
+@mixin drops(
+  $background-color: orangered,
+  $first-color: rgb(128, 0, 128),
+  $second-color: rgb(0, 0, 139),
+  $third-color: rgb(220, 20, 60),
+  $fourth-color: rgb(255, 69, 0),
+  $first-size: 13em,
+  $second-size: 11em,
+  $third-size: 5em,
+  $fourth-size: 11em,
+  $inner-ring-size: 35%,
+  $outer-ring-size: 55%,
+  $opacity: .4
+) {
+    $fifth-color: rgb(255, 215, 0);
+    $sixth-color: rgb(154, 205, 0);
+    $seventh-color: rgb(70, 130, 180);
+    $fifth-size: 7em;
+    $sixth-size: 5em;
+    $seventh-size: 3em;
+    background-image:
+      radial-gradient(
+        rgba(255, 255, 255, .2) $inner-ring-size - 15%,
+        rgba($first-color, $opacity) $inner-ring-size - 4%,
+        rgba($first-color, $opacity) $inner-ring-size,
+        rgba(255, 255, 255, .2) $inner-ring-size + 1%,
+        rgba(255, 255, 255, .2) $inner-ring-size + 5%,
+        rgba($first-color, $opacity) $outer-ring-size - 4%,
+        rgba($first-color, $opacity) $outer-ring-size,
+        rgba(255, 255, 255, .2) $outer-ring-size + 1%
+      ),
+      radial-gradient(
+        rgba(255, 255, 255, .2) $inner-ring-size - 15%,
+        rgba($second-color, $opacity) $inner-ring-size - 4%,
+        rgba($second-color, $opacity) $inner-ring-size,
+        rgba(255, 255, 255, .2) $inner-ring-size + 1%,
+        rgba(255, 255, 255, .2) $inner-ring-size + 5%,
+        rgba($second-color, $opacity) $outer-ring-size - 4%,
+        rgba($second-color, $opacity) $outer-ring-size,
+        rgba(255, 255, 255, .2) $outer-ring-size + 1%
+      ),
+      radial-gradient(
+        rgba(255, 255, 255, .2) $inner-ring-size - 15%,
+        rgba($third-color, $opacity) $inner-ring-size - 4%,
+        rgba($third-color, $opacity) $inner-ring-size,
+        rgba(255, 255, 255, .2) $inner-ring-size + 1%,
+        rgba(255, 255, 255, .2) $inner-ring-size + 5%,
+        rgba($third-color, $opacity) $outer-ring-size - 4%,
+        rgba($third-color, $opacity) $outer-ring-size,
+        rgba(255, 255, 255, .2) $outer-ring-size + 1%
+      ),
+      radial-gradient(
+        rgba(255, 255, 255, .2) $inner-ring-size - 15%,
+        rgba($fourth-color, $opacity) $inner-ring-size - 4%,
+        rgba($fourth-color, $opacity) $inner-ring-size,
+        rgba(255, 255, 255, .2) $inner-ring-size + 1%,
+        rgba(255, 255, 255, .2) $inner-ring-size + 5%,
+        rgba($fourth-color, $opacity) $outer-ring-size - 4%,
+        rgba($fourth-color, $opacity) $outer-ring-size,
+        rgba(255, 255, 255, .2) $outer-ring-size + 1%
+      ),
+      radial-gradient(
+        rgba(255, 255, 255, .2) $inner-ring-size - 15%,
+        rgba($fifth-color, $opacity) $inner-ring-size - 4%,
+        rgba($fifth-color, $opacity) $inner-ring-size,
+        rgba(255, 255, 255, .2) $inner-ring-size + 1%,
+        rgba(255, 255, 255, .2) $inner-ring-size + 5%,
+        rgba($fifth-color, $opacity) $outer-ring-size - 4%,
+        rgba($fifth-color, $opacity) $outer-ring-size,
+        rgba(255, 255, 255, .2) $outer-ring-size + 1%
+      ),
+      radial-gradient(
+        rgba(255, 255, 255, .2) $inner-ring-size - 15%,
+        rgba($sixth-color, $opacity) $inner-ring-size - 4%,
+        rgba($sixth-color, $opacity) $inner-ring-size,
+        rgba(255, 255, 255, .2) $inner-ring-size + 1%,
+        rgba(255, 255, 255, .2) $inner-ring-size + 5%,
+        rgba($sixth-color, $opacity) $outer-ring-size - 4%,
+        rgba($sixth-color, $opacity) $outer-ring-size,
+        rgba(255, 255, 255, .2) $outer-ring-size + 1%
+      ),
+      radial-gradient(
+        rgba(255, 255, 255, .2) $inner-ring-size - 15%,
+        rgba($seventh-color, $opacity) $inner-ring-size - 4%,
+        rgba($seventh-color, $opacity) $inner-ring-size,
+        rgba(255, 255, 255, .2) $inner-ring-size + 1%,
+        rgba(255, 255, 255, .2) $inner-ring-size + 5%,
+        rgba($seventh-color, $opacity) $outer-ring-size - 4%,
+        rgba($seventh-color, $opacity) $outer-ring-size,
+        rgba(255, 255, 255, .2) $outer-ring-size + 1%
+      );
+    background-color: $background-color;
+    background-size:
+      $first-size $first-size,
+      $second-size $second-size,
+      $third-size $third-size,
+      $fourth-size $fourth-size,
+      $fifth-size $fifth-size,
+      $sixth-size $sixth-size,
+      $seventh-size $seventh-size;
+    background-position:
+      50% 50%,
+      20% 20%,
+      30% 30%,
+      70% 70%;
+    background-blend-mode:
+      overlay,
+      normal,
+      hard-light,
+      overlay,
+      multiply,
+      soft-light;
+}
+
+/// @link http://bennettfeely.com/gradients/
+/// @group blend-modes
+/// @param {length} $scale [8em]
+/// @param {color} $first-color [dodgerblue]
+/// @param {color} $second-color [lightskyblue]
+/// @param {color} $third-color [deepskyblue]
+/// @param {color} $fourth-color [gainsboro]
+/// @param {color} $fifth-color [lightsteelblue]
+/// @param {color} $sixth-color [deepskyblue]
+/// @param {color} $seventh-color [lightskyblue]
+/// @param {color} $first-fade-color [coral]
+/// @param {color} $second-fade-color [darkslateblue]
+@mixin finger-wave(
+  $scale: 8em,
+  $first-color: dodgerblue,
+  $second-color: skyblue,
+  $third-color: deepskyblue,
+  $fourth-color: gainsboro,
+  $fifth-color: lightsteelblue,
+  $sixth-color: deepskyblue,
+  $seventh-color: lightskyblue,
+  $first-fade-color: coral,
+  $second-fade-color: darkslateblue
+) {
+    $single-width: $scale / 8;
+    background-image:
+      cumulative-sharp-radial-gradient(
+        at bottom right,
+        $first-color $single-width,
+        $second-color $single-width,
+        $third-color $single-width,
+        $fourth-color $single-width,
+        $fifth-color $single-width,
+        $sixth-color $single-width,
+        $seventh-color $single-width,
+        $tr
+      ),
+      cumulative-sharp-radial-gradient(
+        at top left,
+        $tr $single-width,
+        $seventh-color $single-width,
+        $sixth-color $single-width,
+        $fifth-color $single-width,
+        $fourth-color $single-width,
+        $third-color $single-width,
+        $second-color $single-width,
+        $first-color $single-width,
+        $tr
+      ),
+      radial-gradient(
+        circle at center bottom,
+        $first-fade-color,
+        $second-fade-color
+      );
+    background-size:
+      $scale $scale,
+      $scale $scale,
+      cover;
+    background-blend-mode: overlay;
+}
+
+/// @link http://bennettfeely.com/gradients/
+/// @group blend-modes
+/// @param {length} $scale [4em]
+/// @param {color} $first-color [#99eb47]
+/// @param {color} $second-color [#b3e87d]
+/// @param {color} $third-color [#ccebad]
+/// @param {color} $fourth-color [#a6ed5e]
+/// @param {color} $background-color [#99e052]
+@mixin slither-wave(
+  $scale: 4em,
+  $first-color: #99eb47,
+  $second-color: #b3e87d,
+  $third-color: #ccebad,
+  $fourth-color: #a6ed5e,
+  $background-color: #99e052
+) {
+    $stops:
+      $first-color 3.36927%,
+      $tr 6.73854%,
+      $second-color 10.10782%,
+      $tr 13.47709%,
+      $third-color 16.84636%,
+      $tr 20.21563%,
+      $fourth-color 23.58491%,
+      $tr 26.95418%,
+      $third-color 30.32345%,
+      $tr 33.69272%,
+      $second-color 37.06199%,
+      $tr 40.43126%,
+      $first-color 43.80054%,
+      $tr;
+    background-image:
+      sharp-radial-gradient(
+        circle at left,
+        $stops...
+      ),
+      sharp-radial-gradient(
+        circle at right,
+        $stops...
+      ),
+      sharp-radial-gradient(
+        circle at left,
+        $stops...
+      ),
+      sharp-radial-gradient(
+        circle at right,
+        $stops...
+      );
+    background-size: $scale $scale;
+    background-position:
+      0 0,
+      0 $scale / 2,
+      $scale / 2 0,
+      $scale / 2 $scale / 2;
+    background-color: $background-color;
+    background-blend-mode:
+      overlay,
+      overlay,
+      normal,
+      normal;
 }
