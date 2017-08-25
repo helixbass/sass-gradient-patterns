@@ -15,7 +15,7 @@ Check out the [interactive tool][tool] for customizing (and animating!) these mi
     OR [Download _gradient_patterns.scss](https://raw.github.com/helixbass/sass-gradient-patterns/master/_gradient_patterns.scss) to your Sass project.
 
 2. Import the partial in your Sass files: `@import 'gradient_patterns';`
-    > I couldn't figure out how to get Eyeglass working so currently this may take some `load_paths` tinkering if you installed with `npm`
+    > may require some `load_paths` tinkering to correctly find the partial if you installed with `npm`
 
 3. Use any of the pattern mixins (see [here][sassdocs] for a list of all mixins, see below for some typical usage examples)
 
