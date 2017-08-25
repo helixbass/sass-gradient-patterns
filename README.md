@@ -16,14 +16,14 @@ Check out the [interactive tool][tool] for customizing (and animating!) these mi
 
 2. Import the partial in your Sass files: `@import 'gradient_patterns';`
 
-3. Use any of the pattern mixins (see below for examples)
+3. Use any of the pattern mixins (see [here][sassdocs] for a list of all mixins, see below for some typical usage examples)
 
 ## Included patterns
 [Here][sassdocs] is a list of
 all of the included mixins (grouped by source gallery) and their keyword parameters.
 All patterns from Lea Verou's and Bennett Feely's galleries are included.
 
-## Customizing
+## Usage/customizing
 All of the mixins accept keyword parameters
 (listed [here][sassdocs] by mixin)
 so that you can easily tweak 
@@ -32,6 +32,9 @@ with no arguments for the default version of the pattern found in the original g
 
 The `$scale` parameter is accepted by most of the mixins to control the
 overall repeating pattern size.
+
+The `$set-relative` parameter is accepted by some mixins to allow setting the value of one parameter to
+control the value of some other parameters (mostly used for generating nice relative color combinations).
 
 For example, let's look at the `diagonal-stripes` mixin (from Lea Verou's [pattern](http://lea.verou.me/css3patterns/#diagonal-stripes)).
 

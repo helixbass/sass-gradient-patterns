@@ -230,8 +230,14 @@ $default-threshold: pi()/180/10;
 /// @param {color} $background-color [#fb1]
 /// @param {color} $line-color [#b71]
 /// @param {length} $scale [60px]
-@mixin honeycomb($background-color: #fb1, $line-color: #b71, $scale: 60px) {
-  @if $background-color != #fb1 {
+/// @param {boolean} $set-relative [true] - if true, $background-color can also control $line-color
+@mixin honeycomb(
+  $background-color: #fb1,
+  $line-color: #b71,
+  $scale: 60px,
+  $set-relative: true
+) {
+  @if $set-relative and $background-color != #fb1 {
     @if $line-color == #b71 {
       $line-color: darken(adjust-hue(desaturate($background-color, 17%), -7deg), 13%);
     }
@@ -257,13 +263,16 @@ $default-threshold: pi()/180/10;
 
 /// @link http://lea.verou.me/css3patterns/#tablecloth
 /// @group lea-verou
-/// @param {color} $color [rgb(200, 0, 0)]
+/// @param {color} $color [rgba(200, 0, 0, .5)]
 /// @param {color} $background-color [white]
 /// @param {length} $scale [50px]
-/// @param {opacity} $color-opacity [.5]
 /// @param {length} $color-width [50%]
-@mixin gingham($color: rgb(200, 0, 0), $background-color: white, $scale: 50px, $color-opacity: .5, $color-width: 50%) {
-  $color: rgba($color, $color-opacity);
+@mixin gingham(
+  $color: rgba(200, 0, 0, .5),
+  $background-color: white,
+  $scale: 50px,
+  $color-width: 50%
+) {
   $stops: $color $color-width, $tr;
   background-image:
     sharp-linear-gradient(90deg, $stops...),
@@ -278,8 +287,15 @@ $default-threshold: pi()/180/10;
 /// @param {length} $scale [25px]
 /// @param {color} $first-color [#dca]
 /// @param {color} $second-color [#a85]
-@mixin weave($background-color: #753, $scale: 25px, $first-color: #dca, $second-color: #a85) {
-  @if $background-color != #753 {
+/// @param {boolean} $set-relative [true] - if true, $background-color can also control $first-color and $second-color
+@mixin weave(
+  $background-color: #753,
+  $scale: 25px,
+  $first-color: #dca,
+  $second-color: #a85,
+  $set-relative: true
+) {
+  @if $set-relative and $background-color != #753 {
     @if $second-color == #a85 {
       $second-color: lighten(adjust-hue(desaturate($background-color, 7%), 6deg), 17%);
     }
@@ -317,8 +333,15 @@ $default-threshold: pi()/180/10;
 /// @param {color} $second-color [#445]
 /// @param {color} $third-color [#99a]
 /// @param {length} $scale [140px]
-@mixin japanese-cube($background-color: #556, $second-color: #445, $third-color: #99a, $scale: 140px) {
-    @if $background-color != #556 {
+/// @param {boolean} $set-relative [true] - if true, $background-color can also control $second-color and $third-color
+@mixin japanese-cube(
+  $background-color: #556,
+  $second-color: #445,
+  $third-color: #99a,
+  $scale: 140px,
+  $set-relative: true
+) {
+    @if $set-relative and $background-color != #556 {
       @if $second-color == #445 {
         $second-color: darken(saturate($background-color, 2%), 7%);
       }
@@ -453,11 +476,14 @@ $default-threshold: pi()/180/10;
 /// @param {color} $background-color [white]
 /// @param {color} $color [midnightblue]
 /// @param {length} $scale [90px] - hint: use a multiple of 3px
-/// @param {length} $dot-size [$scale / 10 (9px)]
-@mixin marrakesh($background-color: white, $color: midnightblue, $scale: 90px, $dot-size: $scale / 10) {
-    @if $dot-size == 9px {
-      $dot-size: $scale / 10;
-    }
+/// @param {length} $dot-size [10%] - relative to $scale
+@mixin marrakesh(
+  $background-color: white,
+  $color: midnightblue,
+  $scale: 90px,
+  $dot-size: 10%
+) {
+    $dot-size: percent-to-decimal($dot-size) * $scale;
     background-color: $background-color;
     background-image:
       // sharp-stagger(false, "radial", circle, 1, $color 43%, $tr),
@@ -475,7 +501,7 @@ $default-threshold: pi()/180/10;
 /// @param {color} $stripe-color [rgba(255, 255, 255, .5)]
 /// @param {direction} $angle [45deg]
 /// @param {length} $scale [70px]
-/// @param {length} $stripe-width [50%]
+/// @param {length} $stripe-width [50%] - relative to $scale
 @mixin diagonal-stripes(
   $background-color: gray,
   $stripe-color: rgba(255, 255, 255, .5),
@@ -661,7 +687,14 @@ $default-threshold: pi()/180/10;
 /// @param {length} $dot-width [15%]
 /// @param {color} $ring-color [$background-color (#001)]
 /// @param {length} $ring-width [0%]
-@mixin polka-dot($background-color: #001, $dot-color: white, $scale: 60px, $dot-width: 15%, $ring-color: $background-color, $ring-width: 0%) {
+@mixin polka-dot(
+  $background-color: #001,
+  $dot-color: white,
+  $scale: 60px,
+  $dot-width: 15%,
+  $ring-color: $background-color,
+  $ring-width: 0%
+) {
     // $stops: $color $dot-width, $tr $dot-width + 1%;
     $stops: $dot-color $dot-width, $tr $dot-width + 1%, $tr $dot-width + $ring-width + 1%, $tr $dot-width + $ring-width + 1%;
     @if $ring-width > 0% {
@@ -903,6 +936,7 @@ $default-threshold: pi()/180/10;
 /// @param {length} $scale [110px]
 /// @param {length} $start-position [75%]
 /// @param {length} $ring-width [9%]
+/// @param {boolean} $set-relative [true] - if true, $first-color can also control $second-color, $fourth-color, $fifth-color, $sixth-color and $background-color
 @mixin brady-bunch(
   $background-color: #c8d3a7,
   $first-color: #b6cc66,
@@ -913,9 +947,10 @@ $default-threshold: pi()/180/10;
   $sixth-color: #e0ead7,
   $scale: 110px,
   $start-position: 75%,
-  $ring-width: 9%
+  $ring-width: 9%,
+  $set-relative: true
 ) {
-    @if $first-color != #b6cc66 {
+    @if $set-relative and $first-color != #b6cc66 {
       @if $second-color == #edffdb {
         $second-color: lighten(adjust-hue(saturate($first-color, 50%), 17deg), 33%);
       }
@@ -1111,14 +1146,16 @@ $default-threshold: pi()/180/10;
 /// @param {color} $second-color [olivedrab]
 /// @param {color} $third-color [green]
 /// @param {length} $ring-width [4em]
+/// @param {boolean} $set-relative [true] - if true, $first-color can also control $second-color, $third-color and $background-color
 @mixin vesica-pisces(
   $background-color: lightgreen,
   $first-color: limegreen,
   $second-color: olivedrab,
   $third-color: green,
-  $ring-width: 4em
+  $ring-width: 4em,
+  $set-relative: true
 ) {
-    @if $first-color != limegreen {
+    @if $set-relative and $first-color != limegreen {
       @if $second-color == olivedrab {
         $second-color: darken(adjust-hue(desaturate($first-color, 1%), -40deg), 15%);
       }
@@ -1229,13 +1266,14 @@ $default-threshold: pi()/180/10;
 /// @param {color} $third-color [#f3f5c4]
 /// @param {color} $fourth-color [#f9cb84]
 /// @param {length} $horizontal-scale [6em]
-/// @param {length} $horizontal-stripe-width [50%]
+/// @param {length} $horizontal-stripe-width [50%] - relative to $scale
 /// @param {length} $vertical-scale [$horizontal-scale (6em)]
-/// @param {length} $vertical-stripe-width [50%]
+/// @param {length} $vertical-stripe-width [50%] - relative to $scale
 /// @param {color} $cross-color [$first-color (#f19181)]
 /// @param {length} $cross-scale [2 * $horizontal-scale (12em)]
 /// @param {length} $first-cross-angle [45deg]
 /// @param {length} $second-cross-angle [-45deg]
+/// @param {boolean} $set-relative [true] - if true, $first-color can also control $cross-color and $horizontal-scale can also control $vertical-scale and $cross-scale
 @mixin cross-multiply(
   $first-color: #f19181,
   $second-color: #3cbac8,
@@ -1249,14 +1287,15 @@ $default-threshold: pi()/180/10;
   $cross-color: #f19181,
   $cross-scale: 12em,
   $first-cross-angle: 45deg,
-  $second-cross-angle: -45deg
+  $second-cross-angle: -45deg,
+  $set-relative: true
 ) {
-    @if $first-color != #f19181 {
+    @if $set-relative and $first-color != #f19181 {
       @if $cross-color == #f19181 {
         $cross-color: $first-color;
       }
     }
-    @if $horizontal-scale != 6em {
+    @if $set-relative and $horizontal-scale != 6em {
       @if $vertical-scale == 6em {
         $vertical-scale: $horizontal-scale;
       }
@@ -1298,8 +1337,8 @@ $default-threshold: pi()/180/10;
 /// @param {color} $fourth-color [pink]
 /// @param {color} $background-color [linen]
 /// @param {length} $scale [5em]
-/// @param {length} $ring-start [40%]
-/// @param {length} $ring-width [10%]
+/// @param {length} $ring-start [40%] - relative to $scale
+/// @param {length} $ring-width [10%] - relative to $scale
 @mixin flowa(
   $first-color: lightblue,
   $second-color: aquamarine,
@@ -1350,8 +1389,8 @@ $default-threshold: pi()/180/10;
 /// @param {color} $line-color [black]
 /// @param {color} $background-color [black]
 /// @param {length} $scale [50px]
-/// @param {length} $ring-width [30%]
-/// @param {length} $line-width [5%]
+/// @param {length} $ring-width [30%] - relative to $scale
+/// @param {length} $line-width [5%] - relative to $scale
 @mixin viking(
   $ring-color: gold,
   $line-color: black,
@@ -1414,10 +1453,10 @@ $default-threshold: pi()/180/10;
 /// @param {color} $stroke-color [black]
 /// @param {color} $background-color [white]
 /// @param {length} $scale [145px]
-/// @param {length} $size [30%]
-/// @param {length} $line-thickness [26.6%]
-/// @param {length} $dot-size [20%]
-/// @param {length} $stroke-width [20%]
+/// @param {length} $size [30%] - relative to $scale
+/// @param {length} $line-thickness [26.6%] - relative to $size
+/// @param {length} $dot-size [20%] - relative to $size
+/// @param {length} $stroke-width [20%] - relative to $size
 @mixin svg-logo(
   $first-color: #ffb13b,
   $stroke-color: black,
@@ -1638,8 +1677,8 @@ $default-threshold: pi()/180/10;
 /// @param {color} $second-color [#3cb371]
 /// @param {color} $background-color [linen]
 /// @param {length} $scale [40px]
-/// @param {length} $ring-start [50%]
-/// @param {length} $ring-width [12.5%]
+/// @param {length} $ring-start [50%] - relative to $scale
+/// @param {length} $ring-width [12.5%] - relative to $scale
 @mixin ring-pairs(
   $first-color: #dc143c,
   $second-color: #3cb371,
@@ -1794,8 +1833,8 @@ $default-threshold: pi()/180/10;
 /// @param {color} $bottom-color [#b00]
 /// @param {color} $mortar-color [silver]
 /// @param {length} $scale [58px] - hint: use a multiple of 2px
-/// @param {length} $mortar-width [6.9%]
-/// @param {length} $mortar-height [6.9%]
+/// @param {length} $mortar-width [6.9%] - relative to $scale
+/// @param {length} $mortar-height [6.9%] - relative to $scale
 @mixin bricks(
   $top-color: #d00,
   $bottom-color: #b00,
@@ -1848,14 +1887,16 @@ $default-threshold: pi()/180/10;
 /// @param {color} $third-color [#6a201b]
 /// @param {color} $fourth-color [#561a16]
 /// @param {length} $scale [20px]
+/// @param {boolean} $set-relative [true] - if true, $first-color can also control $second-color, $third-color and $fourth-color
 @mixin pyramid(
   $first-color: #a7332b,
   $second-color: #d45d55,
   $third-color: #6a201b,
   $fourth-color: #561a16,
-  $scale: 20px
+  $scale: 20px,
+  $set-relative: true
 ) {
-    @if $first-color != #a7332b {
+    @if $set-relative and $first-color != #a7332b {
       @if $second-color == #d45d55 {
         $second-color: lighten(saturate($first-color, 1%), 17%);
       }
@@ -1980,9 +2021,9 @@ $default-threshold: pi()/180/10;
 /// @param {color} $fourth-color [gold]
 /// @param {color} $background-color [white]
 /// @param {length} $scale [10em]
-/// @param {length} $first-ring-size [10%]
-/// @param {length} $second-ring-size [40%]
-/// @param {length} $third-ring-size [40%]
+/// @param {length} $first-ring-size [10%] - relative to $scale
+/// @param {length} $second-ring-size [40%] - relative to $scale
+/// @param {length} $third-ring-size [40%] - relative to $scale
 @mixin hot-tomato(
   $first-color: hotpink,
   $second-color: tomato,
@@ -2035,11 +2076,11 @@ $default-threshold: pi()/180/10;
 /// @param {color} $background-color [hsl(2, 57%, 40%)]
 /// @param {length} $scale [232px]
 /// @param {color} $thick-stripe-color [rgba(0, 0, 0, .5)]
-/// @param {length} $thick-stripe-width [50%]
+/// @param {length} $thick-stripe-width [50%] - relative to $scale
 /// @param {color} $thin-stripe-color [rgba(0, 0, 0, .4)]
 /// @param {color} $thin-stripe-overlay-color [rgba(255, 255, 255, .2)]
-/// @param {length} $thin-stripe-width [1.3%]
-/// @param {length} $thin-stripe-between-width [4.3%]
+/// @param {length} $thin-stripe-width [1.3%] - relative to $scale
+/// @param {length} $thin-stripe-between-width [4.3%] - relative to $scale
 /// @param {color} $crossing-stripe-color [rgba(0, 0, 0, .2)]
 /// @param {length} $crossing-stripe-width [1px]
 /// @param {length} $crossing-stripe-gap [4px]
@@ -2178,9 +2219,9 @@ $default-threshold: pi()/180/10;
 /// @group blend-modes
 /// @param {color} $background-color [wheat]
 /// @param {color} $first-color [tomato]
-/// @param {length} $first-width [50%]
+/// @param {length} $first-width [50%] - relative to $scale
 /// @param {color} $second-color [dodgerblue]
-/// @param {length} $second-width [50%]
+/// @param {length} $second-width [50%] - relative to $scale
 /// @param {length} $scale [7em]
 /// @param {direction} $first-angle [-45deg]
 /// @param {direction} $second-angle [45deg]
@@ -2290,7 +2331,7 @@ $default-threshold: pi()/180/10;
 /// @param {length} $scale [2em]
 /// @param {direction} $first-angle [45deg]
 /// @param {direction} $second-angle [-45deg]
-/// @param {length} $stripe-width [50%]
+/// @param {length} $stripe-width [50%] - relative to $scale
 @mixin j-crew(
   $background-color: whitesmoke,
   $first-color: moccasin,
@@ -2341,8 +2382,8 @@ $default-threshold: pi()/180/10;
 /// @param {length} $scale [60px]
 /// @param {direction} $first-angle [90deg]
 /// @param {direction} $second-angle [180deg]
-/// @param {length} $center-stripe-width [16.7%]
-/// @param {length} $surrounding-stripe-width [8.3%]
+/// @param {length} $center-stripe-width [16.7%] - relative to $scale
+/// @param {length} $surrounding-stripe-width [8.3%] - relative to $scale
 @mixin thatchy(
   $first-color: firebrick,
   $second-color: beige,
@@ -2445,9 +2486,9 @@ $default-threshold: pi()/180/10;
 /// @param {length} $scale [80px]
 /// @param {direction} $first-angle [180deg]
 /// @param {direction} $second-angle [90deg]
-/// @param {length} $center-stripe-width [25%]
-/// @param {length} $surrounding-stripe-width [6.25%]
-/// @param {length} $surrounding-gap-width [6.25%]
+/// @param {length} $center-stripe-width [25%] - relative to $scale
+/// @param {length} $surrounding-stripe-width [6.25%] - relative to $scale
+/// @param {length} $surrounding-gap-width [6.25%] - relative to $scale
 @mixin stringham(
   $color: lightcoral,
   $background-color: floralwhite,
@@ -2479,6 +2520,7 @@ $default-threshold: pi()/180/10;
         $second-angle,
         $stops...
       );
+    background-color: $background-color;
     background-blend-mode: multiply;
 }
 
@@ -2811,7 +2853,7 @@ $default-threshold: pi()/180/10;
 /// @param {length} $scale [20em]
 /// @param {direction} $angle [to top left]
 /// @param {direction} $other-angle [to top right]
-/// @param {length} $stripe-width [50%]
+/// @param {length} $stripe-width [50%] - relative to $scale / 2
 @mixin chard(
   $background-color: wheat,
   $first-color: #96526b,
